@@ -1,14 +1,14 @@
-<div class="alert alert-error"><strong><%-strings.failure%></strong>
-<% if(validation) { %>
+<div class="alert alert-error"><strong><%-ctx.strings.failure%></strong>
+<% if(ctx.validation) { %>
     <ul>
-        <% _.each(validation, function(result, component) { %>
+        <% _.each(ctx.validation, function(result, component) { %>
             <% if(!result.valid) { %>
                 <li><strong><%-component%></strong>: <%-result.data%></li>
             <% } %>
         <% }); %>
     </ul>
 <% } else { %>
-    <%- message %>
+    <%- ctx.message %>
 <% } %>
 </div>
-<p><%-strings.failureText%></p>
+<p><%-ctx.strings.failureText%></p>

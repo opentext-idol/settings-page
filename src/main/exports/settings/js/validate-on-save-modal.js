@@ -21,7 +21,7 @@ define([
 
             this.successTemplate = _.template('<div class="alert alert-success"><strong>' + this.strings.success +'</strong> ' + this.strings.successMessage + '</strong></div>');
 
-            this.errorTemplate = _.template(errorTemplate);
+            this.errorTemplate = _.template(errorTemplate, undefined, {variable: 'ctx'});
 
             this.throbberTemplate = _.template('<i class="icon-spinner icon-spin icon-2x" style="vertical-align: middle;"></i> <strong style="vertical-align: middle;">'
                 + this.strings.saving + '</strong>');
@@ -60,7 +60,10 @@ define([
                     this.$body.html(this.errorTemplate({message: exceptionMessage, strings: this.strings}));
                 }
             } catch (e) {
-                this.$body.html(this.errorTemplate({message: this.strings.unknown}));
+                this.$body.html(this.errorTemplate({
+                    message: this.strings.unknown,
+                    strings: this.strings
+                }));
             }
         },
 
