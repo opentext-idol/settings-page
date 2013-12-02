@@ -1,0 +1,24 @@
+.settings-info {
+    margin-left: 3px;
+}
+
+.settings-client-validation {
+    color: #BD4247;
+}
+
+.hide {
+    display: none;
+}
+
+.settings-required-flag {
+    color: #FF0000;
+    font-size: 11px;
+    font-weight: bold;
+    padding-left: 3px;
+}
+
+label.settings-optional-toggle,
+.control-group.success label.settings-optional-toggle,
+.control-group.error label.settings-optional-toggle {
+    color: #555555;
+}

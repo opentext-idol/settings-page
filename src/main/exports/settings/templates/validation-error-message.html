@@ -1,0 +1,14 @@
+<div class="alert alert-error"><strong><%-strings.failure%></strong>
+<% if(validation) { %>
+    <ul>
+        <% _.each(validation, function(result, component) { %>
+            <% if(!result.valid) { %>
+                <li><strong><%-component%></strong>: <%-result.data%></li>
+            <% } %>
+        <% }); %>
+    </ul>
+<% } else { %>
+    <%- message %>
+<% } %>
+</div>
+<p><%-strings.failureText%></p>
