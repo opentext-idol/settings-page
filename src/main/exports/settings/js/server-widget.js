@@ -7,7 +7,7 @@ define([
     template = _.template(template);
 
     return Widget.extend({
-        className: Widget.prototype.className + ' servergroup control-group form-horizontal',
+        className: Widget.prototype.className + ' settings-servergroup control-group form-horizontal',
 
         events: {
             'change input,select': 'handleInputChange',

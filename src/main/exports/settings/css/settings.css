@@ -22,3 +22,16 @@ label.settings-optional-toggle,
 .control-group.error label.settings-optional-toggle {
     color: #555555;
 }
+
+.settings-label {
+    display: inline-block;
+    min-width: 70px;
+}
+
+.settings-servergroup input[name="port"] {
+    width: 5em;
+}
+
+.settings-servergroup select[name="protocol"] {
+    width: 5em;
+}
