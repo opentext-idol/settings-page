@@ -100,6 +100,9 @@ define([
             },
             shouldValidate: function() {
                 return false;
+            },
+            validateInputs: function() {
+                return true;
             }
         }, jasmine.createSpyObj('TasksWidget', ['updateConfig'])));
 

@@ -102,24 +102,29 @@ define([
 
         validateInputs: function() {
             var isValid = true;
-            var config = this.getConfig();
 
-            if (config.host === '') {
-                isValid = false;
-                this.updateInputValidation(this.$host);
+            if (this.shouldValidate()) {
+                var config = this.getConfig();
+
+                if (config.host === '') {
+                    isValid = false;
+                    this.updateInputValidation(this.$host);
+                }
+
+                if (config.username === '') {
+                    isValid = false;
+                    this.updateInputValidation(this.$username);
+                }
+
+                if (config.database === '') {
+                    isValid = false;
+                    this.updateInputValidation(this.$database);
+                }
+
+                isValid = isValid && this.passwordView.validateInputs();
             }
 
-            if (config.username === '') {
-                isValid = false;
-                this.updateInputValidation(this.$username);
-            }
-
-            if (config.database === '') {
-                isValid = false;
-                this.updateInputValidation(this.$database);
-            }
-
-            return isValid && this.passwordView.validateInputs();
+            return isValid;
         }
     });
 

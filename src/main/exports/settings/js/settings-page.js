@@ -116,16 +116,14 @@ define([
             var hasScrolled = false;
 
             _.each(this.widgets, function(widget) {
-                if (widget.shouldValidate()) {
-                    var isValid = widget.validateInputs();
+                var isValid = widget.validateInputs();
 
-                    if (!isValid) {
-                        passedClientValidation = false;
+                if (!isValid) {
+                    passedClientValidation = false;
 
-                        if (!hasScrolled) {
-                            this.scrollToWidget(widget);
-                            hasScrolled = true;
-                        }
+                    if (!hasScrolled) {
+                        this.scrollToWidget(widget);
+                        hasScrolled = true;
                     }
                 }
             }, this);

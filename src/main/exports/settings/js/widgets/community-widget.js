@@ -61,7 +61,7 @@ define([
         },
 
         handleInputChange: function() {
-            this.hideConnectionInfo();
+            this.hideValidationInfo();
 
             if (!_.isUndefined(this.lastValidation) && !this.communityHasChanged()) {
                 this.setValidationFormatting(this.lastValidation ? 'success' : 'error');
@@ -81,7 +81,7 @@ define([
             if (_.isEqual(config.community, this.lastValidationConfig.community)) {
                 this.lastValidation = response.valid;
                 this.lastValidation && this.fetchNewSecurityTypes(config.community);
-                this.hideConnectionInfo();
+                this.hideValidationInfo();
 
                 this.displayValidationMessage(!this.communityHasChanged(), response);
             }

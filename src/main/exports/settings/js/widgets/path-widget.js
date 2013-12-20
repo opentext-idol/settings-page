@@ -20,7 +20,17 @@ define([
         },
 
         updateConfig: function(config) {
+            Widget.prototype.updateConfig.apply(this, arguments);
             this.$path.val(config.path);
+        },
+
+        validateInputs: function() {
+            if (this.$path.val() === '') {
+                this.updateInputValidation(this.$path);
+                return false;
+            }
+
+            return true;
         }
     });
 

@@ -9,17 +9,9 @@ define([
     return Widget.extend({
         className: Widget.prototype.className + ' settings-servergroup control-group form-horizontal',
 
-        events: {
-            'change input,select': 'handleInputChange',
+        events: _.extend({
             'click button[name=validate]': 'triggerValidation'
-        },
-
-        initialize: function(options) {
-            Widget.prototype.initialize.call(this, options);
-
-            _.bindAll(this, 'hideConnectionInfo', 'handleInputChange', 'handleValidation', 'setValidationFormatting', 'shouldValidate',
-                'triggerValidation', 'validateInputs');
-        },
+        }, Widget.prototype.events),
 
         render: function() {
             Widget.prototype.render.call(this);
@@ -28,19 +20,17 @@ define([
         },
 
         handleInputChange: function() {
-            this.hideConnectionInfo();
+            Widget.prototype.handleInputChange.apply(this, arguments);
 
             if (!_.isUndefined(this.lastValidation) && _.isEqual(this.lastValidationConfig, this.getConfig())) {
                 this.setValidationFormatting(this.lastValidation ? 'success' : 'error');
-            } else {
-                this.setValidationFormatting('clear');
             }
         },
 
         handleValidation: function(config, response) {
             if (_.isEqual(config, this.lastValidationConfig)) {
                 this.lastValidation = response.valid;
-                this.hideConnectionInfo();
+                this.hideValidationInfo();
 
                 this.displayValidationMessage(_.isEqual(this.getConfig(), config), response)
             }
@@ -62,20 +52,9 @@ define([
             }
         },
 
-        hideConnectionInfo: function() {
+        hideValidationInfo: function() {
+            Widget.prototype.hideValidationInfo.apply(this, arguments);
             this.$connectionState.text('').css({opacity: 0}).stop();
-            this.$('.settings-client-validation').addClass('hide');
-        },
-
-        setValidationFormatting: function(state) {
-            this.$el.find('.control-group').removeClass('success error');
-
-            if (state === 'clear') {
-                this.$el.removeClass('success error');
-            } else {
-                this.$el.addClass(state)
-                    .removeClass(state === 'success' ? 'error' : 'success');
-            }
         },
 
         shouldValidate: function() {
@@ -84,7 +63,7 @@ define([
 
         triggerValidation: function() {
             this.setValidationFormatting('clear');
-            this.hideConnectionInfo();
+            this.hideValidationInfo();
 
             if (this.validateInputs()) {
                 this.trigger('validate');
@@ -92,28 +71,9 @@ define([
         },
 
         updateConfig: function() {
+            Widget.prototype.updateConfig.apply(this, arguments);
             delete this.lastValidation;
             delete this.lastValidationConfig;
-            this.setValidationFormatting('clear');
-            this.hideConnectionInfo();
-        },
-
-        updateInputValidation: function($input, isValid) {
-            var $controlGroup = $input.parent();
-            var $span = $controlGroup.find('.settings-client-validation');
-
-            if (isValid) {
-                $controlGroup.removeClass('error');
-                $span.addClass('hide');
-            } else {
-                $controlGroup.addClass('error');
-                $span.removeClass('hide');
-            }
-        },
-
-        // Override to add client side validation.
-        validateInputs: function() {
-            return true;
         }
     });
 

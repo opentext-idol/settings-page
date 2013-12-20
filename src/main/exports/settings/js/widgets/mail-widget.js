@@ -70,12 +70,12 @@ define([
                 from: this.$from.val(),
                 host: this.$host.val(),
                 port: Number(this.$port.val()),
-                to: _.compact(_.map(this.$to.val().split(','), function (val) {
+                to: _.compact(_.map(this.$to.val().split(','), function(val) {
                     return $.trim(val);
                 }))
             };
 
-            if(authenticationRequired) {
+            if (authenticationRequired) {
                 return _.extend(baseConfig, this.passwordView.getConfig(), {username: this.$username.val()});
             }
             else {
@@ -132,31 +132,34 @@ define([
 
         validateInputs: function() {
             var isValid = true;
-            var config = this.getConfig();
 
-            if (config.host === '') {
-                isValid = false;
-                this.updateInputValidation(this.$host);
-            }
+            if (this.shouldValidate()) {
+                var config = this.getConfig();
 
-            if (config.from === '') {
-                isValid = false;
-                this.updateInputValidation(this.$from);
-            }
-
-            if (!config.to.length) {
-                isValid = false;
-                this.updateInputValidation(this.$to);
-            }
-
-            if (this.$authCheckbox.prop('checked')) {
-                if (!this.passwordView.validateInputs()) {
+                if (config.host === '') {
                     isValid = false;
+                    this.updateInputValidation(this.$host);
                 }
 
-                if (config.username === '') {
+                if (config.from === '') {
                     isValid = false;
-                    this.updateInputValidation(this.$username);
+                    this.updateInputValidation(this.$from);
+                }
+
+                if (!config.to.length) {
+                    isValid = false;
+                    this.updateInputValidation(this.$to);
+                }
+
+                if (this.$authCheckbox.prop('checked')) {
+                    if (!this.passwordView.validateInputs()) {
+                        isValid = false;
+                    }
+
+                    if (config.username === '') {
+                        isValid = false;
+                        this.updateInputValidation(this.$username);
+                    }
                 }
             }
 
