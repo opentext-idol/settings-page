@@ -79,7 +79,7 @@ define([
                 return _.extend(baseConfig, this.passwordView.getConfig(), {username: this.$username.val()});
             }
             else {
-                return baseConfig
+                return baseConfig;
             }
         },
 

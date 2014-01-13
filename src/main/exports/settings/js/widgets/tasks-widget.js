@@ -40,7 +40,7 @@ define([
                 dashboardHistorySecs: this.$dashboard.val() * 60,
                 footerHistorySecs: this.$footer.val() * 60,
                 historySecs: keepHistoryForever ? -historySecs : historySecs
-            }
+            };
         },
 
         processPlurals: function() {

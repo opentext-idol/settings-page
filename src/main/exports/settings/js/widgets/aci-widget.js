@@ -27,9 +27,9 @@ define([
                 host: this.$host.val(),
                 port: Number(this.$port.val()),
                 protocol: this.$protocol.val(),
-				productType: this.productType,
-				indexErrorMessage: this.indexErrorMessage
-            }
+                productType: this.productType,
+                indexErrorMessage: this.indexErrorMessage
+            };
         },
 
         updateConfig: function(config) {
@@ -38,8 +38,8 @@ define([
             this.$host.val(config.host);
             this.$port.val(config.port);
             this.$protocol.val(config.protocol);
-			this.productType = config.productType;
-			this.indexErrorMessage = config.indexErrorMessage;
+            this.productType = config.productType;
+            this.indexErrorMessage = config.indexErrorMessage;
         },
 
         validateInputs: function() {

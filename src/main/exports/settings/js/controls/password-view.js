@@ -32,7 +32,7 @@ define([
             return {
                 password: this.$input.val(),
                 passwordRedacted: this.isRedacted
-            }
+            };
         },
 
         handleInputChange: function() {

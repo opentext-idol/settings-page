@@ -57,7 +57,7 @@ define([
             return {
                 community: this.getCommunity(),
                 method: this.$loginType.val() || this.currentSecurityType
-            }
+            };
         },
 
         handleInputChange: function() {

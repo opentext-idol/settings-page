@@ -1,8 +1,7 @@
 define([
-    'backbone',
     'settings/js/widget',
     'text!settings/templates/server-widget.html'
-], function(Backbone, Widget, template) {
+], function(Widget, template) {
 
     template = _.template(template);
 
@@ -32,7 +31,7 @@ define([
                 this.lastValidation = response.valid;
                 this.hideValidationInfo();
 
-                this.displayValidationMessage(_.isEqual(this.getConfig(), config), response)
+                this.displayValidationMessage(_.isEqual(this.getConfig(), config), response);
             }
         },
 
