@@ -124,7 +124,13 @@ define([
                     this.$loginType.append(new Option(type, type, false, type === currentType));
                 }, this);
 
-                this.$loginType.val(currentType || _.first(types));
+                var currentOption = this.$loginType.find('[value="' + currentType + '"]')
+
+                if(currentOption.length) {
+                    this.$loginType.val(currentType)
+                } else {
+                    this.$loginType.val(_.first(types))
+                }
             } else if (currentType) {
                 this.$loginType.append(new Option(currentType, currentType, true, true));
             }
