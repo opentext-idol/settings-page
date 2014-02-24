@@ -28,7 +28,7 @@ label.settings-optional-toggle,
     min-width: 70px;
 }
 
-.settings-servergroup input[name="port"] {
+.settings-port-input {
     width: 5em;
 }
 
