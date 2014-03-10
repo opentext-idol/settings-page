@@ -70,6 +70,21 @@ define([
             }
         },
 
+        getValidationSuccessMessage: function(response) {
+            // if we get back flyway migration data, use that in the message
+            if (response.data) {
+                if(response.data.sourceVersion === '0') {
+                    return this.strings.flywayMigrationFromEmpty;
+                }
+                else {
+                    return this.strings.flywayMigrationUpgrade;
+                }
+            }
+            else {
+                return ServerWidget.prototype.getValidationSuccessMessage.call(this, response);
+            }
+        },
+
         shouldValidate: function() {
             if (this.enableView) {
                 return this.enableView.getConfig();

@@ -39,16 +39,22 @@ define([
             if (isEqual) {
                 this.setValidationFormatting(this.lastValidation ? 'success' : 'error');
 
-                var $validation = this.$('.settings-server-validation').text(this.lastValidation ? this.strings.validateSuccess : (response.data || this.strings.validateFailed))
+                this.$('.settings-server-validation').text(this.lastValidation
+                        ? this.getValidationSuccessMessage(response)
+                        : this.getValidationFailureMessage(response))
                     .stop()
                     .animate({opacity: 1});
-
-                if (this.lastValidation) {
-                    $validation.delay(1000).animate({opacity: 0}, 1000);
-                }
             } else {
                 this.setValidationFormatting('clear');
             }
+        },
+
+        getValidationSuccessMessage: function(response) {
+            return this.strings.validateSuccess;
+        },
+
+        getValidationFailureMessage: function(response) {
+            return response.data || this.strings.validateFailed;
         },
 
         hideValidationInfo: function() {
