@@ -52,9 +52,8 @@ define([
 
             expect(this.server.requests.length).toEqual(2);
 
-            this.server.requests[0].respond(200, {'Content-Type': 'application/json'}, JSON.stringify({
-                securityTypes: ['autonomy', 'secure-login-v1.0.1']
-            }));
+            // as of sinon 1.9.0 we can't respond to an aborted request
+            expect(this.server.requests[0].readyState).toBe(0);
 
             expect(this.model.get('securityTypes').length).toEqual(1);
             expect(this.model.get('securityTypes')[0]).toEqual('yoda');
