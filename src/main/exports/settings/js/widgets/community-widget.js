@@ -90,6 +90,8 @@ define([
         setValidationFormatting: function(state) {
             if (state === 'clear') {
                 this.$aciDetails.removeClass('success error');
+                this.$loginType.parent().removeClass('error');
+                this.$('.fetch-security-types').removeClass('hide');
             } else {
                 this.$aciDetails.addClass(state)
                     .removeClass(state === 'success' ? 'error' : 'success');
@@ -99,6 +101,15 @@ define([
         toggleSecurityTypesInput: function(isEnabled) {
             this.$typesSpan.toggleClass('hide', isEnabled);
             this.$loginType.attr('disabled', !isEnabled);
+        },
+
+        triggerValidation: function() {
+            this.setValidationFormatting('clear');
+            this.hideValidationInfo();
+
+            if (AciWidget.prototype.validateInputs.apply(this, arguments)) {
+                this.trigger('validate');
+            }
         },
 
         updateConfig: function(config) {
@@ -124,16 +135,27 @@ define([
                     this.$loginType.append(new Option(type, type, false, type === currentType));
                 }, this);
 
-                var currentOption = this.$loginType.find('[value="' + currentType + '"]')
+                var currentOption = this.$loginType.find('[value="' + currentType + '"]');
 
                 if(currentOption.length) {
-                    this.$loginType.val(currentType)
+                    this.$loginType.val(currentType);
                 } else {
-                    this.$loginType.val(_.first(types))
+                    this.$loginType.val(_.first(types));
                 }
             } else if (currentType) {
                 this.$loginType.append(new Option(currentType, currentType, true, true));
             }
+        },
+
+        validateInputs: function() {
+            var isLoginTypeValid = this.getConfig().method !== 'default';
+
+            if (!isLoginTypeValid) {
+                this.updateInputValidation(this.$loginType);
+                this.$('.fetch-security-types').addClass('hide');
+            }
+
+            return AciWidget.prototype.validateInputs.apply(this, arguments) && isLoginTypeValid;
         }
     });
 

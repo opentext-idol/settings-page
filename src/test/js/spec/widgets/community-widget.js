@@ -153,7 +153,7 @@ define([
                 expect(this.widget.$el).not.toHaveClass('success');
                 expect(this.$aciDetails).toHaveClass('error');
                 expect(this.$aciDetails).not.toHaveClass('success');
-                expect($clientValidationSpan).not.toHaveClass('hide');
+                expect($clientValidationSpan).toHaveClass('hide');
 
                 $host.val('yoda').trigger('change');
 
