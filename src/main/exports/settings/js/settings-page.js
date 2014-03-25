@@ -199,8 +199,9 @@ define([
         },
 
         scrollToWidget: function(widget) {
-            this.$scrollElement.scrollTop(this.$scrollElement.scrollTop() + widget.$el.position().top - this.$scrollElement.offset().top);
-
+            widget.$('.collapse-' + widget.configItem).collapse('show').on('shown', _.bind(function() {
+                this.$scrollElement.scrollTop(this.$scrollElement.scrollTop() + widget.$el.position().top - this.$scrollElement.offset().top);
+            }, this));
         },
 
         validate: function(servers) {
