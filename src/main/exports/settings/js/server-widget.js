@@ -14,7 +14,11 @@ define([
 
         render: function() {
             Widget.prototype.render.call(this);
-            this.$el.append(template({strings: this.strings}));
+
+            this.$content.append(template({
+                strings: this.strings
+            }));
+
             this.$connectionState = this.$('.settings-server-validation');
         },
 

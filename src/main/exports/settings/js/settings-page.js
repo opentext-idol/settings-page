@@ -19,7 +19,9 @@ define([
         strings: {},
         validateUrl: '',
         vent: {},
-        widgets: [],
+        leftWidgets: [],
+        rightWidgets: [],
+        middleWidgets: [],
         // ====================== //
 
         events: {
@@ -33,6 +35,7 @@ define([
             _.bindAll(this, 'getConfig', 'handleBeforeUnload', 'initializeWidgets', 'loadFromConfig', 'scrollToWidget', 'validate');
             this.listenTo(listenable(window), 'beforeunload', this.handleBeforeUnload);
             this.initializeWidgets();
+            this.widgets = this.leftWidgets.concat(this.middleWidgets.concat(this.rightWidgets));
 
             _.each(this.widgets, function(widget) {
                 widget.on('validate', function() {
@@ -47,11 +50,19 @@ define([
             this.$el.html(_.template(template, {icon: this.icon, strings: this.strings}));
             this.$form = this.$('form');
             this.$scrollElement = $(this.scrollSelector);
-            var $hr = this.$form.find('hr');
 
-            _.each(this.widgets, function(widget) {
-                widget.render();
-                $hr.before(widget.el);
+            _.invoke(this.widgets, 'render');
+
+            _.each(this.leftWidgets, function(widget) {
+                this.$form.find('.left-widgets').append(widget.el)
+            }, this);
+
+            _.each(this.middleWidgets, function(widget) {
+                this.$form.find('.middle-widgets').append(widget.el)
+            }, this);
+
+            _.each(this.rightWidgets, function(widget) {
+                this.$form.find('.right-widgets').append(widget.el)
             }, this);
 
             this.configModel.onLoad(this.loadFromConfig);
@@ -120,7 +131,6 @@ define([
 
                 if (!isValid) {
                     passedClientValidation = false;
-
                     if (!hasScrolled) {
                         this.scrollToWidget(widget);
                         hasScrolled = true;
@@ -190,6 +200,7 @@ define([
 
         scrollToWidget: function(widget) {
             this.$scrollElement.scrollTop(this.$scrollElement.scrollTop() + widget.$el.position().top - this.$scrollElement.offset().top);
+
         },
 
         validate: function(servers) {

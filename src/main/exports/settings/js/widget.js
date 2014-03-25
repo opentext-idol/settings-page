@@ -6,7 +6,7 @@ define([
     template = _.template(template);
 
     return Backbone.View.extend({
-        className: 'row-fluid',
+        className: 'row-fluid accordion-group',
         getConfig: $.noop,
 
         events: {
@@ -25,13 +25,19 @@ define([
             this.serverName = options.serverName;
             this.strings = options.strings;
             this.title = options.title;
+            this.isOpened = options.isOpened;
         },
 
         render: function() {
             this.$el.html(template({
                 description: this.description,
-                title: this.title
+                title: this.title,
+                configItem: this.configItem,
+                isOpened: this.isOpened,
+                iconClass: this.strings.iconClass
             }));
+
+            this.$content = this.$('.widget-content');
         },
 
         getName: function() {

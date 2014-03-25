@@ -15,7 +15,7 @@ define([
 
         render: function() {
             Widget.prototype.render.call(this);
-            this.$el.append(template({locales: this.locales, strings: this.strings}));
+            this.$content.append(template({locales: this.locales, strings: this.strings}));
             this.$select = this.$('select[name=locale]');
         },
 

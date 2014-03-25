@@ -142,13 +142,19 @@ define([
             },
 
             initializeWidgets: function() {
-                this.widgets = [
-                    new CommunityWidget(),
-                    new CoordinatorWidget(),
+                this.leftWidgets = [
+                    new CommunityWidget()
+                ];
+
+                this.middleWidgets = [
+                    new CoordinatorWidget()
+                ];
+
+                this.rightWidgets = [
                     new TasksWidget()
                 ];
 
-                _.each(this.widgets, function(widget) {
+                _.each(this.leftWidgets.concat(this.middleWidgets.concat(this.rightWidgets)), function(widget) {
                     spyOn(widget, 'getConfig').andCallThrough();
                     spyOn(widget, 'render').andCallThrough();
                 });
@@ -207,12 +213,16 @@ define([
                 expect(widget.render).toHaveBeenCalled();
             });
 
-            var $widgetPs = this.settingsPage.$('form > div > p');
-            // 4 since this selector also picks up the save description.
-            expect($widgetPs).toHaveLength(4);
-            expect($widgetPs.filter(':contains(Community)')).toHaveLength(1);
-            expect($widgetPs.filter(':contains(Coordinator)')).toHaveLength(1);
-            expect($widgetPs.filter(':contains(Tasks)')).toHaveLength(1);
+            var $leftWidgets = this.settingsPage.$('form .left-widgets p');
+            var $middleWidgets = this.settingsPage.$('form .middle-widgets p');
+            var $rightWidgets = this.settingsPage.$('form .right-widgets p');
+
+            expect($leftWidgets).toHaveLength(1);
+            expect($middleWidgets).toHaveLength(1);
+            expect($rightWidgets).toHaveLength(1);
+            expect($leftWidgets.filter(':contains(Community)')).toHaveLength(1);
+            expect($middleWidgets.filter(':contains(Coordinator)')).toHaveLength(1);
+            expect($rightWidgets .filter(':contains(Tasks)')).toHaveLength(1);
         });
 
         it('should update the page description on config load', function() {

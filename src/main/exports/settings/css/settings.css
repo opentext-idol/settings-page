@@ -35,3 +35,11 @@ label.settings-optional-toggle,
 .settings-servergroup select[name="protocol"] {
     width: 5em;
 }
+
+a[data-toggle="collapse"] {
+    cursor: pointer;
+}
+
+.settings-control {
+    margin-bottom: 10px;
+}

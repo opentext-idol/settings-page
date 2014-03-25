@@ -9,7 +9,7 @@ define([
 
         render: function() {
             Widget.prototype.render.call(this);
-            this.$el.append(this.template({strings: this.strings}));
+            this.$content.append(this.template({strings: this.strings}));
             this.$port = this.$('input[name="port"]');
         },
 

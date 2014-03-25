@@ -1,4 +1,21 @@
-<h3><%-title%></h3>
+<div class="accordion-heading">
+    <a class="accordion-toggle" data-toggle="collapse" data-target=".collapse-<%- configItem%>">
+        <h3><i class="icon-<%- iconClass%>"></i> <%-title%></h3>
+    </a>
+</div>
+
+<%
+    var openedClass = isOpened ? 'in' : '';
+%>
+
 <% if (description) { %>
-    <p><%-description%></p>
+    <div class="accordion-body collapse collapse-<%- configItem%> <%- openedClass %>">
+        <div class="accordion-inner">
+            <p><%-description%></p>
+        </div>
+    </div>
 <% } %>
+
+<div class="accordion-body collapse collapse-<%- configItem%> <%- openedClass %>">
+    <div class="accordion-inner widget-content"></div>
+</div>

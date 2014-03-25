@@ -19,7 +19,7 @@ define([
 
         render: function() {
             Widget.prototype.render.call(this);
-            this.$el.append(template({strings: this.strings}));
+            this.$content.append(template({strings: this.strings}));
             this.$input = this.$('input[name=history-secs]');
             this.$span = this.$input.siblings('span');
         },

@@ -24,7 +24,7 @@ define([
                 expect($title).toHaveLength(1);
                 expect($title).toHaveText(title);
 
-                var $description = $title.next('p');
+                var $description = this.widget.$('p');
 
                 if (description) {
                     expect($description).toHaveLength(1);
