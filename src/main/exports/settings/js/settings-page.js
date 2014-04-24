@@ -93,11 +93,12 @@ define([
 
         handleCancelButton: function() {
             confirm({
-                cancelClass: 'btn-success',
+                cancelClass: '',
                 cancelIcon: 'icon-remove',
                 cancelText: this.strings.cancelCancel,
                 okText: this.strings.cancelOk,
                 okClass: 'btn-warning',
+                okIcon: 'icon-undo',
                 message: this.strings.cancelMessage,
                 title: this.strings.cancelTitle,
                 okHandler: _.bind(function() {
