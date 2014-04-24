@@ -10,6 +10,11 @@ define([
         initialize: function() {
             Widget.prototype.initialize.apply(this, arguments);
 
+            this.logFileToggle = new EnableView({
+                enableIcon: 'icon-file-text',
+                strings: this.strings.logFileToggle
+            });
+
             this.syslogToggle = new EnableView({
                 enableIcon: 'icon-' + this.strings.iconClass,
                 strings: this.strings.syslogToggle
@@ -23,25 +28,29 @@ define([
             this.$syslogHost = this.$('[name="syslog-host"]');
             this.$syslogPort = this.$('[name="syslog-port"]');
 
-            this.syslogToggle.render();
-            this.$content.append(this.syslogToggle.$el);
+            this.logFileToggle.setElement(this.$('.logfile-toggle')).render();
+            this.syslogToggle.setElement(this.$('.syslog-toggle')).render();
         },
 
         getConfig: function() {
             return {
-                enableFile: this.enableFile,
-                enableSyslog: this.syslogToggle.getConfig(),
-                syslogHost: this.$syslogHost.val(),
-                syslogPort: this.$syslogPort.val()
+                logFile: {
+                    enabled: this.logFileToggle.getConfig()
+                },
+                syslog: {
+                    enabled: this.syslogToggle.getConfig(),
+                    host: this.$syslogHost.val(),
+                    port: this.$syslogPort.val()
+                }
             };
         },
 
         updateConfig: function(config) {
             Widget.prototype.updateConfig.apply(this, arguments);
-            this.enableFile = config.enableFile;
-            this.$syslogHost.val(config.syslogHost);
-            this.$syslogPort.val(config.syslogPort);
-            this.syslogToggle.updateConfig(config.enableSyslog);
+            this.logFileToggle.updateConfig(config.logFile.enabled);
+            this.$syslogHost.val(config.syslog.host);
+            this.$syslogPort.val(config.syslog.port);
+            this.syslogToggle.updateConfig(config.syslog.enabled);
         },
 
         validateInputs: function() {
