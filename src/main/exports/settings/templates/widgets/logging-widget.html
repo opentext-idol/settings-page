@@ -12,7 +12,7 @@
     </div>
     <div class="control-group">
         <label class="settings-label" for="max-history-<%-uid%>"><%-strings.maxHistory%>: </label>
-        <input id="max-history-<%-uid%>" type="number" min="0" max="99999" name="max-history" class="input-mini">
+        <input id="max-history-<%-uid%>" type="number" min="0" max="99999" step="1" name="max-history" class="input-mini">
         <span class="settings-client-validation hide"><%-strings.invalidMaxHistory%></span>
     </div>
     <div class="control-group">
@@ -24,7 +24,12 @@
     </div>
     <div class="control-group">
         <label class="settings-label" for="size-<%-uid%>"><%-strings.maxSize%>: </label>
-        <input id="size-<%-uid%>" type="number" name="max-size" min="0" max="9223372036854775807" class="input-mini">
+        <input id="size-<%-uid%>" type="number" name="max-size" min="0" class="input-mini" step="1">
+        <select name="max-size-unit" class="input-mini">
+            <option value="1024">KB</option>
+            <option value="1048576">MB</option>
+            <option value="1073741824">GB</option>
+        </select>
         <span class="settings-client-validation hide"><%-strings.invalidMaxSize%></span>
     </div>
     <div class="control-group logfile-toggle"></div>
@@ -33,7 +38,7 @@
     <h4><%-strings.syslog%></h4>
     <div class="control-group">
         <input name="syslog-host" type="text" value="" placeholder="<%-strings.syslogHostPlaceholder%>"> :
-        <input class="settings-port-input" name="syslog-port" type="number" min="1" max="65535" maxlength="5" value=""
+        <input class="settings-port-input" name="syslog-port" type="number" min="1" max="65535" step="1"
                placeholder="<%-strings.syslogPortPlaceholder%>">
         <span class="settings-client-validation hide"><%-strings.invalidSyslogServer%></span>
     </div>

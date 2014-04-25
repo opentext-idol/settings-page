@@ -13,7 +13,7 @@ define([
         },
 
         initialize: function(options) {
-            _.bindAll(this, 'getConfig', 'toggleEnabled', 'updateConfig', 'updateFormatting');
+            _.bindAll(this, 'getConfig', 'updateConfig', 'updateFormatting');
             this.icon = options.enableIcon;
             this.strings = options.strings;
         },
@@ -30,12 +30,19 @@ define([
         toggleEnabled: function() {
             if (!_.isUndefined(this.enabled)) {
                 this.enabled = !this.enabled;
+                this.trigger('change', this.enabled);
                 this.updateFormatting();
             }
         },
 
         updateConfig: function(config) {
+            var old = this.enabled;
             this.enabled = config;
+
+            if (this.enabled != old){
+                this.trigger('change', this.enabled);
+            }
+
             this.updateFormatting();
         },
 
