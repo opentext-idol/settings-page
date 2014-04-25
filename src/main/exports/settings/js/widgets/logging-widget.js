@@ -25,6 +25,7 @@ define([
             Widget.prototype.render.apply(this, arguments);
 
             this.$content.append(templateFunction({strings: this.strings}));
+            this.$compression = this.$('[name="file-compression"]');
             this.$syslogHost = this.$('[name="syslog-host"]');
             this.$syslogPort = this.$('[name="syslog-port"]');
 
@@ -35,6 +36,7 @@ define([
         getConfig: function() {
             return {
                 logFile: {
+                    compression: this.$compression.val(),
                     enabled: this.logFileToggle.getConfig()
                 },
                 syslog: {
@@ -47,7 +49,10 @@ define([
 
         updateConfig: function(config) {
             Widget.prototype.updateConfig.apply(this, arguments);
+
+            this.$compression.val(config.logFile.compression);
             this.logFileToggle.updateConfig(config.logFile.enabled);
+
             this.$syslogHost.val(config.syslog.host);
             this.$syslogPort.val(config.syslog.port);
             this.syslogToggle.updateConfig(config.syslog.enabled);

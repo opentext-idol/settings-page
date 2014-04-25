@@ -43,3 +43,12 @@ a[data-toggle="collapse"] {
 .settings-control {
     margin-bottom: 10px;
 }
+
+.settings-logging-section:not(:last-child) {
+    margin-bottom: 15px;
+}
+
+.settings-logging-section select,
+.settings-logging-section input {
+    margin-bottom: 0;
+}

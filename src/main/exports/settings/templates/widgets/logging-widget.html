@@ -1,13 +1,24 @@
-<h4><%-strings.logFile%></h4>
+<% var uid = _.uniqueId('settings-logging'); %>
 
-<div class="control-group logfile-toggle"></div>
-
-<h4><%-strings.syslog%></h4>
-
-<div class="control-group">
-    <input name="syslog-host" type="text" value="" placeholder="<%-strings.syslogHostPlaceholder%>"> :
-    <input class="settings-port-input" name="syslog-port" type="number" min="1" max="65535" maxlength="5"  value="" placeholder="<%-strings.syslogPortPlaceholder%>">
-    <span class="settings-client-validation hide"><%-strings.invalidSyslogServer%></span>
+<div class="settings-logging-section">
+    <h4><%-strings.logFile%></h4>
+    <div class="control-group">
+        <label class="settings-label" for="compression-<%-uid%>"><%-strings.compression%>: </label>
+        <select id="compression-<%-uid%>" name="file-compression" class="input-small">
+            <option value="NONE"><%-strings.none%></option>
+            <option value="ZIP"><%-strings.zip%></option>
+            <option value="GZ"><%-strings.gzip%></option>
+        </select>
+    </div>
+    <div class="control-group logfile-toggle"></div>
 </div>
-
-<div class="control-group syslog-toggle"></div>
+<div class="settings-logging-section">
+    <h4><%-strings.syslog%></h4>
+    <div class="control-group">
+        <input name="syslog-host" type="text" value="" placeholder="<%-strings.syslogHostPlaceholder%>"> :
+        <input class="settings-port-input" name="syslog-port" type="number" min="1" max="65535" maxlength="5" value=""
+               placeholder="<%-strings.syslogPortPlaceholder%>">
+        <span class="settings-client-validation hide"><%-strings.invalidSyslogServer%></span>
+    </div>
+    <div class="control-group syslog-toggle"></div>
+</div>
