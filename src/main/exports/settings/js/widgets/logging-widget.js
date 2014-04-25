@@ -26,6 +26,7 @@ define([
 
             this.$content.append(templateFunction({strings: this.strings}));
             this.$compression = this.$('[name="file-compression"]');
+            this.$maxHistory = this.$('[name="max-history"]');
             this.$syslogHost = this.$('[name="syslog-host"]');
             this.$syslogPort = this.$('[name="syslog-port"]');
 
@@ -37,12 +38,13 @@ define([
             return {
                 logFile: {
                     compression: this.$compression.val(),
-                    enabled: this.logFileToggle.getConfig()
+                    enabled: this.logFileToggle.getConfig(),
+                    maxHistory: Number(this.$maxHistory.val())
                 },
                 syslog: {
                     enabled: this.syslogToggle.getConfig(),
                     host: this.$syslogHost.val(),
-                    port: this.$syslogPort.val()
+                    port: Number(this.$syslogPort.val())
                 }
             };
         },
@@ -51,6 +53,7 @@ define([
             Widget.prototype.updateConfig.apply(this, arguments);
 
             this.$compression.val(config.logFile.compression);
+            this.$maxHistory.val(config.logFile.maxHistory);
             this.logFileToggle.updateConfig(config.logFile.enabled);
 
             this.$syslogHost.val(config.syslog.host);
@@ -59,19 +62,32 @@ define([
         },
 
         validateInputs: function() {
+            var isValid = true;
+
             if (this.syslogToggle.getConfig()) {
                 if ($.trim(this.$syslogHost.val()) === '') {
                     this.updateInputValidation(this.$syslogHost);
-                    return false;
+                    isValid = false;
                 }
 
-                if (this.$syslogPort.val() <= 0 || this.$syslogPort.val() >= 65536) {
+                var port = Number(this.$syslogPort.val());
+
+                if (_.isNaN(port) || port <= 0 || port >= 65536) {
                     this.updateInputValidation(this.$syslogPort);
-                    return false;
+                    isValid = false;
                 }
             }
 
-            return true;
+            if (this.logFileToggle.getConfig()) {
+                var maxHistory = Number(this.$maxHistory.val());
+
+                if (_.isNaN(maxHistory) || maxHistory < 1 || maxHistory > 99999) {
+                    this.updateInputValidation(this.$maxHistory);
+                    isValid = false;
+                }
+            }
+
+            return isValid;
         }
     });
 

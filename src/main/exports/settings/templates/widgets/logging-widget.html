@@ -10,6 +10,11 @@
             <option value="GZ"><%-strings.gzip%></option>
         </select>
     </div>
+    <div class="control-group">
+        <label class="settings-label" for="max-history-<%-uid%>"><%-strings.maxHistory%>: </label>
+        <input id="max-history-<%-uid%>" type="number" min="1" max="99999" name="max-history" class="input-mini">
+        <span class="settings-client-validation hide"><%-strings.invalidMaxHistory%></span>
+    </div>
     <div class="control-group logfile-toggle"></div>
 </div>
 <div class="settings-logging-section">
