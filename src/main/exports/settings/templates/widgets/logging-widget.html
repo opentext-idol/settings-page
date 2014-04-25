@@ -12,8 +12,20 @@
     </div>
     <div class="control-group">
         <label class="settings-label" for="max-history-<%-uid%>"><%-strings.maxHistory%>: </label>
-        <input id="max-history-<%-uid%>" type="number" min="1" max="99999" name="max-history" class="input-mini">
+        <input id="max-history-<%-uid%>" type="number" min="0" max="99999" name="max-history" class="input-mini">
         <span class="settings-client-validation hide"><%-strings.invalidMaxHistory%></span>
+    </div>
+    <div class="control-group">
+        <label class="settings-label" for="frequency-<%-uid%>"><%-strings.rolloverFrequency%>: </label>
+        <select id="frequency-<%-uid%>" name="rollover-frequency" class="input-medium">
+            <option value="DAILY"><%-strings.daily%></option>
+            <option value="MONTHLY"><%-strings.monthly%></option>
+        </select>
+    </div>
+    <div class="control-group">
+        <label class="settings-label" for="size-<%-uid%>"><%-strings.maxSize%>: </label>
+        <input id="size-<%-uid%>" type="number" name="max-size" min="0" max="9223372036854775807" class="input-mini">
+        <span class="settings-client-validation hide"><%-strings.invalidMaxSize%></span>
     </div>
     <div class="control-group logfile-toggle"></div>
 </div>

@@ -26,7 +26,9 @@ define([
 
             this.$content.append(templateFunction({strings: this.strings}));
             this.$compression = this.$('[name="file-compression"]');
+            this.$frequency = this.$('[name="rollover-frequency"]');
             this.$maxHistory = this.$('[name="max-history"]');
+            this.$maxSize = this.$('[name="max-size"]');
             this.$syslogHost = this.$('[name="syslog-host"]');
             this.$syslogPort = this.$('[name="syslog-port"]');
 
@@ -39,7 +41,9 @@ define([
                 logFile: {
                     compression: this.$compression.val(),
                     enabled: this.logFileToggle.getConfig(),
-                    maxHistory: Number(this.$maxHistory.val())
+                    maxHistory: Number(this.$maxHistory.val()),
+                    maxSize: Number(this.$maxSize.val()),
+                    rolloverFrequency: this.$frequency.val()
                 },
                 syslog: {
                     enabled: this.syslogToggle.getConfig(),
@@ -53,7 +57,9 @@ define([
             Widget.prototype.updateConfig.apply(this, arguments);
 
             this.$compression.val(config.logFile.compression);
+            this.$frequency.val(config.logFile.rolloverFrequency);
             this.$maxHistory.val(config.logFile.maxHistory);
+            this.$maxSize.val(config.logFile.maxSize);
             this.logFileToggle.updateConfig(config.logFile.enabled);
 
             this.$syslogHost.val(config.syslog.host);
@@ -81,8 +87,15 @@ define([
             if (this.logFileToggle.getConfig()) {
                 var maxHistory = Number(this.$maxHistory.val());
 
-                if (_.isNaN(maxHistory) || maxHistory < 1 || maxHistory > 99999) {
+                if (_.isNaN(maxHistory) || maxHistory < 0 || maxHistory > 99999) {
                     this.updateInputValidation(this.$maxHistory);
+                    isValid = false;
+                }
+
+                var maxSize = Number(this.$maxSize.val());
+
+                if (_.isNaN(maxSize) || maxSize < 0) {
+                    this.updateInputValidation(this.$maxSize);
                     isValid = false;
                 }
             }
