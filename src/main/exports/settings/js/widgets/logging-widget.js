@@ -7,8 +7,38 @@ define([
     var templateFunction = _.template(template);
 
     return Widget.extend({
-        initialize: function() {
+        events: _.extend(Widget.prototype.events, {
+            'click [name="test-logging"]': function() {
+                if (!this.testRequest) {
+                    this.$testButton.prop('disabled', true)
+                        .find('i').removeClass('icon-ok').addClass('icon-refresh icon-spin');
+
+                    this.testRequest = $.ajax({
+                        contentType: 'application/json',
+                        data: JSON.stringify(this.getConfig().syslog),
+                        dataType: 'json',
+                        type: 'POST',
+                        url: this.testURL,
+                        complete: _.bind(function() {
+                            this.testRequest = null;
+
+                            this.$testButton.prop('disabled', false)
+                                .find('i').addClass('icon-ok').removeClass('icon-refresh icon-spin');
+                        }, this),
+                        error: _.bind(function() {
+                            this.$testResponse.text(this.strings.testFailure).removeClass('hide');
+                        }, this),
+                        success: _.bind(function(response) {
+                            this.$testResponse.text(this.strings.testSuccess(response.message)).removeClass('hide');
+                        }, this)
+                    });
+                }
+            }
+        }),
+
+        initialize: function(options) {
             Widget.prototype.initialize.apply(this, arguments);
+            this.testURL = options.testURL;
 
             this.logFileToggle = new EnableView({
                 enableIcon: 'icon-file-text',
@@ -33,15 +63,25 @@ define([
             this.$maxSizeUnit = this.$('[name="max-size-unit"]');
             this.$syslogHost = this.$('[name="syslog-host"]');
             this.$syslogPort = this.$('[name="syslog-port"]');
+            this.$testButton = this.$('[name="test-logging"]');
+            this.$testResponse = this.$('.logging-test-response');
 
             this.logFileToggle.setElement(this.$('.logfile-toggle')).render();
             this.syslogToggle.setElement(this.$('.syslog-toggle')).render();
 
-            _.each([this.logFileToggle, this.syslogToggle], function(view) {
-                this.listenTo(view, 'change', function(enabled) {
-                    view.$el.closest('.settings-logging-section').find('input, select').prop('disabled', !enabled);
-                });
-            }, this);
+            this.listenTo(this.logFileToggle, 'change', function(enabled) {
+                this.logFileToggle.$el.closest('.settings-logging-section').find('.logging-control').prop('disabled', !enabled);
+            });
+
+            this.listenTo(this.syslogToggle, 'change', function(enabled) {
+                if (!enabled && this.testRequest) {
+                    this.testRequest.abort();
+                    this.testRequest = null;
+                }
+
+                this.$testResponse.addClass('hide');
+                this.syslogToggle.$el.closest('.settings-logging-section').find('.logging-control').prop('disabled', !enabled);
+            });
         },
 
         getConfig: function() {
