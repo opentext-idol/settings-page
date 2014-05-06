@@ -52,3 +52,11 @@ a[data-toggle="collapse"] {
 .settings-logging-section input {
     margin-bottom: 0;
 }
+
+a.settings-widget-title:hover {
+    text-decoration: none;
+}
+
+a.settings-widget-title h3:hover {
+    color: rgb(42, 165, 235);
+}
