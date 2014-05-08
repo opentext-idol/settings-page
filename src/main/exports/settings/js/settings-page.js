@@ -81,8 +81,12 @@ define([
             return config;
         },
 
+        canLeavePage: function() {
+            return _.isEqual(this.getConfig(), this.lastSavedConfig);
+        },
+
         handleBeforeUnload: function() {
-            if (this.lastSavedConfig && !_.isEqual(this.getConfig(), this.lastSavedConfig)) {
+            if (!this.canLeavePage()) {
                 setTimeout(_.bind(function() {
                     this.vent.navigate(this.routeRoot, {trigger: true});
                 }, this), 100);
