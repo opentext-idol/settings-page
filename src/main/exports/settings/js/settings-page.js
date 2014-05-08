@@ -36,7 +36,6 @@ define([
             this.listenTo(listenable(window), 'beforeunload', this.handleBeforeUnload);
             this.initializeWidgets();
             this.widgets = this.leftWidgets.concat(this.middleWidgets.concat(this.rightWidgets));
-            this.isValidated = false;
 
             _.each(this.widgets, function(widget) {
                 widget.on('validate', function() {
@@ -160,6 +159,7 @@ define([
                     success: _.bind(function() {
                         this.lastSavedConfig = currentConfig;
                         this.$scrollElement.scrollTop(0);
+                        this.hasSavedSettings = true;
                     }, this),
                     strings: this.strings.saveModal
                 });
@@ -182,7 +182,6 @@ define([
                         widget.handleValidation(currentConfig[serverName], {valid: isValid});
                     }, this);
 
-                    this.isValidated = true;
                 }, this);
             }
 
@@ -215,7 +214,6 @@ define([
         validate: function(servers) {
             servers = ensureArray(servers);
             var config = {};
-            var isValidated = this.isValidated;
 
             _.each(servers, function(server) {
                 server.lastValidationConfig = config[server.configItem] = server.getConfig();
@@ -232,7 +230,6 @@ define([
                     });
                 }
             });
-            return isValidated;
         }
     });
 });
