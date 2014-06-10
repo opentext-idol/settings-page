@@ -32,8 +32,8 @@ define([
         initialize: function() {
             BasePage.prototype.initialize.apply(this, arguments);
 
-            _.bindAll(this, 'getConfig', 'handleBeforeUnload', 'initializeWidgets', 'loadFromConfig', 'scrollToWidget', 'validate');
-            this.listenTo(listenable(window), 'beforeunload', this.handleBeforeUnload);
+            // TODO: Listenable should take a context
+            this.listenTo(listenable(window), 'beforeunload', _.bind(this.handleBeforeUnload, this));
             this.initializeWidgets();
             this.widgets = this.leftWidgets.concat(this.middleWidgets.concat(this.rightWidgets));
 
@@ -65,7 +65,7 @@ define([
                 this.$form.find('.right-widgets').append(widget.el)
             }, this);
 
-            this.configModel.onLoad(this.loadFromConfig);
+            this.configModel.onLoad(this.loadFromConfig, this);
             this.configModel.loaded || this.configModel.fetch();
             this.hasRendered = true;
         },
@@ -81,7 +81,11 @@ define([
         },
 
         canLeavePage: function() {
-            return _.isEqual(this.getConfig(), this.lastSavedConfig);
+            if (this.lastSavedConfig) {
+                return _.isEqual(this.getConfig(), this.lastSavedConfig);
+            }
+
+            return true;
         },
 
         handleBeforeUnload: function() {
@@ -170,16 +174,16 @@ define([
                         validation = {};
 
                         _.each(serversToValidate, function(serverName) {
-                            validation[serverName] = true;
+                            validation[serverName] = {valid: true};
                         });
                     }
 
-                    _.each(validation, function(isValid, serverName) {
+                    _.each(validation, function(response, serverName) {
                         var widget = _.find(this.widgets, function(widget) {
                             return widget.configItem === serverName;
                         });
 
-                        widget.handleValidation(currentConfig[serverName], {valid: isValid});
+                        widget.handleValidation(currentConfig[serverName], response);
                     }, this);
 
                 }, this);

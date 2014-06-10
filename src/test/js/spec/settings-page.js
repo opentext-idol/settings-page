@@ -180,8 +180,8 @@ define([
                             return 'C:\\config_path';
                         }
                     }, this),
-                    onLoad: _.bind(function(callback) {
-                        this.configLoadCallback = callback;
+                    onLoad: _.bind(function(callback, ctx) {
+                        this.configLoadCallback = _.bind(callback, ctx);
                     }, this),
                     save: _.bind(function(attributes, options) {
                         this.saveErrorCallback = options.error;
@@ -482,7 +482,7 @@ define([
 
                     it('should handle validation errors', function() {
                         this.saveErrorCallback({}, {responseText: JSON.stringify({
-                            validation: {coordinator: false, login: true}
+                            validation: {coordinator: {valid: false}, login: {valid: true}}
                         })});
 
                         var coordinatorWidget = _.find(this.settingsPage.widgets, function(widget) {
