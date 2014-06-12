@@ -9,10 +9,7 @@ define([
     return Widget.extend({
         events: _.extend(Widget.prototype.events, {
             'click [name="test-logging"]': function() {
-                if (!this.testRequest) {
-                    this.$testButton.prop('disabled', true)
-                        .find('i').removeClass('icon-ok').addClass('icon-refresh icon-spin');
-
+                if (!this.testRequest && this.validateSyslogInputs()) {
                     this.testRequest = $.ajax({
                         contentType: 'application/json',
                         data: JSON.stringify(this.getConfig().syslog),
@@ -21,9 +18,7 @@ define([
                         url: this.testURL,
                         complete: _.bind(function() {
                             this.testRequest = null;
-
-                            this.$testButton.prop('disabled', false)
-                                .find('i').addClass('icon-ok').removeClass('icon-refresh icon-spin');
+                            this.updateTestSyslogButton();
                         }, this),
                         error: _.bind(function() {
                             this.$testResponse.text(this.strings.testFailure).removeClass('hide');
@@ -32,6 +27,8 @@ define([
                             this.$testResponse.text(this.strings.testSuccess(response.message)).removeClass('hide');
                         }, this)
                     });
+
+                    this.updateTestSyslogButton();
                 }
             }
         }),
@@ -81,7 +78,10 @@ define([
 
                 this.$testResponse.addClass('hide');
                 this.syslogToggle.$el.closest('.settings-logging-section').find('.logging-control').prop('disabled', !enabled);
+                this.updateTestSyslogButton();
             });
+
+            this.updateTestSyslogButton();
         },
 
         getConfig: function() {
@@ -101,6 +101,23 @@ define([
                     port: Math.floor(Number(this.$syslogPort.val()))
                 }
             };
+        },
+
+        updateTestSyslogButton: function() {
+            var $i = this.$testButton.find('i').removeClass();
+
+            if (this.syslogToggle.getConfig()) {
+                if (this.testRequest) {
+                    this.$testButton.prop('disabled', true);
+                    $i.addClass('icon-spin icon-refresh');
+                } else {
+                    this.$testButton.prop('disabled', false);
+                    $i.addClass('icon-ok');
+                }
+            } else {
+                this.$testButton.prop('disabled', true);
+                $i.addClass('icon-ok');
+            }
         },
 
         updateConfig: function(config) {
@@ -136,6 +153,29 @@ define([
         validateInputs: function() {
             var isValid = true;
 
+            if (this.logFileToggle.getConfig()) {
+                var maxHistory = Number(this.$maxHistory.val());
+
+                if (_.isNaN(maxHistory) || maxHistory % 1 !== 0 || maxHistory < 0 || maxHistory > 99999) {
+                    this.updateInputValidation(this.$maxHistory);
+                    isValid = false;
+                }
+
+                var maxSize = Number(this.$maxSize.val()) * Number(this.$maxSizeUnit.val());
+
+                if (_.isNaN(maxSize) || maxSize % 1 !== 0 || maxSize < 0) {
+                    this.updateInputValidation(this.$maxSize);
+                    isValid = false;
+                }
+            }
+
+            // Must be in this order or we won't see syslog validation messages if the log file section fails
+            return this.validateSyslogInputs() && isValid;
+        },
+
+        validateSyslogInputs: function() {
+            var isValid = true;
+
             if (this.syslogToggle.getConfig()) {
                 if ($.trim(this.$syslogHost.val()) === '') {
                     this.updateInputValidation(this.$syslogHost);
@@ -144,24 +184,8 @@ define([
 
                 var port = Number(this.$syslogPort.val());
 
-                if (_.isNaN(port) || port%1 != 0 || port <= 0 || port >= 65536) {
+                if (_.isNaN(port) || port % 1 !== 0 || port <= 0 || port >= 65536) {
                     this.updateInputValidation(this.$syslogPort);
-                    isValid = false;
-                }
-            }
-
-            if (this.logFileToggle.getConfig()) {
-                var maxHistory = Number(this.$maxHistory.val());
-
-                if (_.isNaN(maxHistory) || maxHistory%1 != 0 || maxHistory < 0 || maxHistory > 99999) {
-                    this.updateInputValidation(this.$maxHistory);
-                    isValid = false;
-                }
-
-                var maxSize = Number(this.$maxSize.val()) * Number(this.$maxSizeUnit.val());
-
-                if (_.isNaN(maxSize) || maxSize%1 != 0 || maxSize < 0) {
-                    this.updateInputValidation(this.$maxSize);
                     isValid = false;
                 }
             }
