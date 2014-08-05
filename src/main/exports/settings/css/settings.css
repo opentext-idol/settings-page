@@ -60,3 +60,8 @@ a.settings-widget-title:hover {
 a.settings-widget-title h3:hover {
     color: rgb(42, 165, 235);
 }
+
+.single-user-settings-label {
+    display: inline-block;
+    min-width: 18ch;
+}
