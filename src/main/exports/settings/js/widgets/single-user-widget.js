@@ -1,13 +1,48 @@
 define([
     'settings/js/widget',
+    'settings/js/controls/password-view',
     'text!settings/templates/widgets/single-user-widget.html'
-], function(Widget, template) {
+], function(Widget, PasswordView, template) {
 
     template = _.template(template);
 
     return Widget.extend({
 
         className: Widget.prototype.className + ' form-horizontal',
+
+        initialize: function(options) {
+            Widget.prototype.initialize.apply(this, arguments);
+
+            this.currentPassword = new PasswordView({
+                strings: {
+                    passwordLabel: this.strings.currentPassword,
+                    passwordRedacted: this.strings.passwordRedacted,
+                    validatePasswordBlank: this.strings.validateCurrentPasswordBlank
+                }
+            });
+
+            this.newPassword = new PasswordView({
+                strings: {
+                    passwordLabel: this.strings.newPassword,
+                    passwordRedacted: this.strings.passwordRedacted,
+                    validatePasswordBlank: this.strings.validateNewPasswordBlank
+                }
+            });
+
+            this.confirmPassword = new PasswordView({
+                strings: {
+                    passwordLabel: this.strings.confirmPassword,
+                    passwordRedacted: this.strings.passwordRedacted,
+                    validatePasswordBlank: this.strings.validateConfirmPasswordBlank
+                }
+            });
+
+            this.passwordViews = [
+                this.currentPassword,
+                this.newPassword,
+                this.confirmPassword
+            ];
+        },
 
         render: function() {
             Widget.prototype.render.call(this);
@@ -16,19 +51,29 @@ define([
                 strings: this.strings
             }));
 
+            _.each(this.passwordViews, function(view) {
+                view.render();
+
+                this.$('.passwords').append(view.el);
+            }, this);
+
+            this.$('.settings-label').addClass('single-user-settings-label');
+
             this.$username = this.$('input[name="username"]');
-            this.$currentPassword = this.$('input[name="currentPassword"]');
-            this.$newPassword = this.$('input[name="newPassword"]');
-            this.$confirmPassword = this.$('input[name="confirmPassword"]');
         },
 
         getConfig: function() {
+            var passwordRedacted = _.every(this.passwordViews, function(view) {
+                return view.getConfig().passwordRedacted
+            });
+
             return {
                 method: 'singleUser',
                 singleUser: {
-                    username: this.$username.val(),
-                    currentPassword: this.$currentPassword.val(),
-                    plaintextPassword: this.$newPassword.val()
+                    currentPassword: this.currentPassword.getConfig().password,
+                    passwordRedacted: passwordRedacted,
+                    plaintextPassword: this.newPassword.getConfig().password,
+                    username: this.$username.val()
                 }
             }
         },
@@ -36,24 +81,36 @@ define([
         updateConfig: function(config) {
             Widget.prototype.updateConfig.apply(this, arguments);
 
-            this.$username.val(config.singleUser.username);
+            var singleUser = config.singleUser;
+
+            this.$username.val(singleUser.username);
+
+            _.invoke(this.passwordViews, 'updateConfig', {password: null, passwordRedacted: singleUser.passwordRedacted});
         },
 
         validateInputs: function() {
             var isValid = true;
 
-            _.each([this.$username, this.$currentPassword, this.$newPassword, this.$confirmPassword], function($input) {
-                if(!$input.val()) {
-                    isValid = false;
-
-                    this.updateInputValidation($input, false);
-                }
-            }, this);
-
-            if(this.$newPassword.val() !== this.$confirmPassword.val()) {
+            if(!this.$username.val()) {
                 isValid = false;
-                this.updateInputValidation(this.$newPassword, false);
-                this.updateInputValidation(this.$confirmPassword, false);
+
+                this.updateInputValidation(this.$username, false);
+            }
+
+            _.each(this.passwordViews, function(view) {
+                // validate inputs first for better error handling
+                isValid = view.validateInputs() && isValid;
+            });
+
+            var currentPasswordConfig = this.currentPassword.getConfig();
+            var newPasswordConfig = this.newPassword.getConfig();
+            var confirmPasswordConfig = this.confirmPassword.getConfig();
+
+            // if any password has been modified, inequality means invalidation
+            if((!currentPasswordConfig.isRedacted || !newPasswordConfig.isRedacted || !confirmPasswordConfig.isRedacted)
+                    && newPasswordConfig.password !== confirmPasswordConfig.password) {
+                isValid = false;
+                this.$('.password-mismatch').removeClass('hide');
             }
 
             return isValid;

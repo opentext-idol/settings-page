@@ -5,21 +5,5 @@
     <span class="settings-required-flag"><i class="icon-asterisk"></i></span>
     <span class="settings-client-validation settings-info hide"><%-strings.validateUsernameBlank%></span>
 </div>
-<div class="control-group">
-    <label class="single-user-settings-label" for="current-password-<%=uniqueId%>"><%- strings.currentPassword %>:</label>
-    <input id="current-password-<%=uniqueId%>" type="password"  name="currentPassword" value="" autocomplete="off"/>
-    <span class="settings-required-flag"><i class="icon-asterisk"></i></span>
-    <span class="settings-client-validation settings-info hide"><%-strings.validateCurrentPasswordBlank%></span>
-</div>
-<div class="control-group">
-    <label class="single-user-settings-label" for="new-password-<%=uniqueId%>"><%- strings.newPassword %>:</label>
-    <input id="new-password-<%=uniqueId%>"  type="password" name="newPassword" value="" autocomplete="off"/>
-    <span class="settings-required-flag"><i class="icon-asterisk"></i></span>
-    <span class="settings-client-validation settings-info hide"><%-strings.validateNewPasswordBlank%></span>
-</div>
-<div class="control-group">
-    <label class="single-user-settings-label" for="confirm-password-<%=uniqueId%>"><%- strings.confirmPassword %>:</label>
-    <input id="confirm-password-<%=uniqueId%>"  type="password" name="confirmPassword" value="" autocomplete="off"/>
-    <span class="settings-required-flag"><i class="icon-asterisk"></i></span>
-    <span class="settings-client-validation settings-info hide"><%-strings.validateConfirmPasswordBlank%></span>
-</div>
+<div class="passwords"></div>
+<div class="password-mismatch settings-client-validation hide text-error"><%-strings.passwordMismatch%></div>
