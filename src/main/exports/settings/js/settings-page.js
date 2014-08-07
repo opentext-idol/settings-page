@@ -130,7 +130,9 @@ define([
             }
         },
 
-        handleSubmit: function() {
+        handleSubmit: function(e) {
+            e.preventDefault();
+
             var currentConfig = this.getConfig();
             var passedClientValidation = true;
             var hasScrolled = false;
