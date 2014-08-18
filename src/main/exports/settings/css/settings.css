@@ -36,6 +36,10 @@ label.settings-optional-toggle,
     width: 5em;
 }
 
+.no-bottom-margin {
+    margin-bottom: 0;
+}
+
 a[data-toggle="collapse"] {
     cursor: pointer;
 }

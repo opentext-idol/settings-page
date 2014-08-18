@@ -76,7 +76,7 @@ define([
         },
 
         updateInputValidation: function($input, isValid) {
-            var $controlGroup = $input.parent();
+            var $controlGroup = $input.closest('.control-group');
             var $span = $controlGroup.find('.settings-client-validation');
 
             if (isValid) {

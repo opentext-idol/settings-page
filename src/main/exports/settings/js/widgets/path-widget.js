@@ -14,9 +14,7 @@ define([
         },
 
         getConfig: function() {
-            return {
-                path: this.$path.val()
-            };
+            return {path: this.$path.val()};
         },
 
         updateConfig: function(config) {
