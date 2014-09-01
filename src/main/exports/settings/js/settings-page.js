@@ -26,7 +26,7 @@ define([
 
         events: {
             'click .settings-restore': 'handleCancelButton',
-            'submit form': 'handleSubmit'
+            'click button[type="submit"]': 'handleSubmit'
         },
 
         initialize: function() {
