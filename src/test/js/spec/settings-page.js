@@ -378,7 +378,7 @@ define([
                     });
 
                     spyOn(loginWidget, 'validateInputs').andReturn(false);
-                    this.settingsPage.$('form').submit();
+                    this.settingsPage.$('button[type="submit"]').click();
 
                     expect(loginWidget.validateInputs).toHaveBeenCalled();
                 });
@@ -394,7 +394,7 @@ define([
                 beforeEach(function() {
                     runs(function() {
                         this.configLoadCallback();
-                        this.settingsPage.$('form').submit();
+                        this.settingsPage.$('button[type="submit"]').click();
                     });
 
                     waitsFor(modalToOpen, 'save changes modal to open', waitTime);
