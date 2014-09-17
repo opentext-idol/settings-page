@@ -2,7 +2,7 @@ define([
     'settings/js/server-widget',
     'settings/js/controls/password-view',
     'settings/js/controls/enable-view',
-    'text!settings/templates/widgets/postgres-widget.html'
+    'text!settings/templates/widgets/database-widget.html'
 ], function(ServerWidget, PasswordView, EnableView, template) {
 
     template = _.template(template);
@@ -23,13 +23,16 @@ define([
             ServerWidget.prototype.render.call(this);
 
             var $validateButtonParent = this.$('button[name=validate]').parent();
-            $validateButtonParent.before(template({strings: this.strings}));
+            $validateButtonParent.before(template({
+                strings: this.strings
+            }));
 
             this.$database = this.$('input[name=database]');
             this.$databaseCheckbox = this.$('input[type="checkbox"]');
             this.$host = this.$('input[name=host]');
             this.$port = this.$('input[name=port]');
             this.$username = this.$('input[name=username]');
+            this.$protocol = this.$('.protocol');
 
             this.passwordView.render();
             this.$databaseCheckbox.parent().before(this.passwordView.$el);
@@ -42,6 +45,7 @@ define([
 
         getConfig: function() {
             var config = _.extend({
+                protocol: this.protocol,
                 database: this.$databaseCheckbox.prop('checked') ? this.$username.val() : this.$database.val(),
                 host: this.$host.val(),
                 port: Number(this.$port.val()),
@@ -96,6 +100,8 @@ define([
         updateConfig: function(config) {
             ServerWidget.prototype.updateConfig.apply(this, arguments);
 
+            this.protocol = config.protocol;
+            this.$protocol.text(this.protocol);
             this.$database.val(config.database);
             this.$host.val(config.host);
             this.$port.val(config.port);
