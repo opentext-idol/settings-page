@@ -22,6 +22,7 @@ define([
         leftWidgets: [],
         rightWidgets: [],
         middleWidgets: [],
+        SaveModalConstructor: SaveModal,
         // ====================== //
 
         events: {
@@ -159,7 +160,7 @@ define([
                     }
                 });
 
-                var saveModal = new SaveModal({
+                var saveModal = new this.SaveModalConstructor({
                     config: currentConfig,
                     configModel: this.configModel,
                     success: _.bind(function() {
