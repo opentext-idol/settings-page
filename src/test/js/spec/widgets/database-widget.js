@@ -1,9 +1,9 @@
 define([
-    'settings/js/widgets/postgres-widget',
+    'settings/js/widgets/database-widget',
     'test/server-widget-test-utils'
-], function(PostgresWidget, serverUtils) {
+], function(DatabaseWidget, serverUtils) {
 
-    describe('Postgres widget', function(initialConfig) {
+    describe('Database widget', function(initialConfig) {
         function testDatabaseCheckbox() {
             it('should use the username for the database name when the checkbox is checked', function() {
                 var $checkbox = this.widget.$('input[type="checkbox"]');
@@ -32,6 +32,7 @@ define([
                 expect($database).toHaveValue('myUser');
             });
 
+            //TODO: write test
             it('should fail client side validation on empty database', function() {
                 var $database = this.widget.$('input[name="database"]');
                 $database.val('');
@@ -48,12 +49,13 @@ define([
                 password: '',
                 passwordRedacted: true,
                 port: 123,
+                protocol: 'postgres',
                 username: 'user'
             };
 
             beforeEach(function() {
                 serverUtils.standardBeforeEach.call(this, {
-                    WidgetConstructor: PostgresWidget,
+                    WidgetConstructor: DatabaseWidget,
                     constructorOptions: _.extend({
                         canDisable: true,
                         strings: serverUtils.strings
@@ -91,12 +93,13 @@ define([
                 password: '',
                 passwordRedacted: true,
                 port: 123,
+                protocol: 'postgres',
                 username: 'user'
             };
 
             beforeEach(function() {
                 serverUtils.standardBeforeEach.call(this, {
-                    WidgetConstructor: PostgresWidget,
+                    WidgetConstructor: DatabaseWidget,
                     constructorOptions: _.extend({
                         canDisable: false,
                         strings: serverUtils.strings
