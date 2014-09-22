@@ -3,11 +3,11 @@ define([
     'text!settings/templates/widget.html'
 ], function(Backbone, template) {
 
-    template = _.template(template);
-
     return Backbone.View.extend({
         className: 'row-fluid accordion-group',
         getConfig: $.noop,
+
+        widgetTemplate: _.template(template),
 
         events: {
             'change input,select': 'handleInputChange'
@@ -29,7 +29,7 @@ define([
         },
 
         render: function() {
-            this.$el.html(template({
+            this.$el.html(this.widgetTemplate({
                 description: this.description,
                 title: this.title,
                 configItem: this.configItem,

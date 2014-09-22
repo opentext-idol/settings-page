@@ -1,12 +1,12 @@
-define([
+ define([
     'settings/js/widget',
     'text!settings/templates/server-widget.html'
 ], function(Widget, template) {
 
-    template = _.template(template);
-
     return Widget.extend({
         className: Widget.prototype.className + ' settings-servergroup control-group form-horizontal',
+
+        serverTemplate: _.template(template),
 
         events: _.extend({
             'click button[name=validate]': 'triggerValidation'
@@ -15,7 +15,7 @@ define([
         render: function() {
             Widget.prototype.render.call(this);
 
-            this.$content.append(template({
+            this.$content.append(this.serverTemplate({
                 strings: this.strings
             }));
 

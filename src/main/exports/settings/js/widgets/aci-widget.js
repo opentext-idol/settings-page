@@ -3,9 +3,9 @@ define([
     'text!settings/templates/widgets/aci-widget.html'
 ], function(ServerWidget, template) {
 
-    template = _.template(template);
-
     return ServerWidget.extend({
+        aciTemplate: _.template(template),
+
         initialize: function(options) {
             ServerWidget.prototype.initialize.call(this, options);
         },
@@ -13,7 +13,7 @@ define([
         render: function() {
             ServerWidget.prototype.render.call(this);
 
-            this.$('button[name=validate]').parent().before(template({
+            this.$('button[name=validate]').parent().before(this.aciTemplate({
                 strings: this.strings
             }));
 

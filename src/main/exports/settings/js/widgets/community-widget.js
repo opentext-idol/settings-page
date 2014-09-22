@@ -4,10 +4,9 @@ define([
     'text!settings/templates/widgets/community-widget.html'
 ], function(AciWidget, SecurityTypesModel, template) {
 
-    template = _.template(template);
-
     return AciWidget.extend({
         currentSecurityType: null,
+        communityTemplate: _.template(template),
 
         initialize: function(options) {
             AciWidget.prototype.initialize.call(this, options);
@@ -24,7 +23,7 @@ define([
         render: function() {
             AciWidget.prototype.render.call(this);
 
-            this.$('button[name="validate"]').parent().after(template({
+            this.$('button[name="validate"]').parent().after(this.communityTemplate({
                 strings: this.strings
             }));
 

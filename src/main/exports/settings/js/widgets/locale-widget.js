@@ -3,9 +3,8 @@ define([
     'text!settings/templates/widgets/locale-widget.html'
 ], function(Widget, template) {
 
-    template = _.template(template);
-
     return Widget.extend({
+        localeTemplate: _.template(template),
         className: Widget.prototype.className + ' form-horizontal',
 
         initialize: function(options) {
@@ -15,7 +14,7 @@ define([
 
         render: function() {
             Widget.prototype.render.call(this);
-            this.$content.append(template({locales: this.locales, strings: this.strings}));
+            this.$content.append(this.localeTemplate({locales: this.locales, strings: this.strings}));
             this.$select = this.$('select[name=locale]');
         },
 

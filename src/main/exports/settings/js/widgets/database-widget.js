@@ -5,10 +5,9 @@ define([
     'text!settings/templates/widgets/database-widget.html'
 ], function(ServerWidget, PasswordView, EnableView, template) {
 
-    template = _.template(template);
-
     return ServerWidget.extend({
         className: ServerWidget.prototype.className,
+        databaseTemplate: _.template(template),
 
         initialize: function(options) {
             ServerWidget.prototype.initialize.call(this, options);
@@ -23,7 +22,7 @@ define([
             ServerWidget.prototype.render.call(this);
 
             var $validateButtonParent = this.$('button[name=validate]').parent();
-            $validateButtonParent.before(template({
+            $validateButtonParent.before(this.databaseTemplate({
                 strings: this.strings
             }));
 

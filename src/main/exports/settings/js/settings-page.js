@@ -25,6 +25,8 @@ define([
         SaveModalConstructor: SaveModal,
         // ====================== //
 
+        template: _.template(template),
+
         events: {
             'click .settings-restore': 'handleCancelButton',
             'click button[type="submit"]': 'handleSubmit'
@@ -48,7 +50,7 @@ define([
         },
 
         render: function() {
-            this.$el.html(_.template(template, {icon: this.icon, strings: this.strings}));
+            this.$el.html(this.template({icon: this.icon, strings: this.strings}));
             this.$form = this.$('form');
             this.$scrollElement = $(this.scrollSelector);
 
