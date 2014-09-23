@@ -6,6 +6,7 @@ define([
     return Backbone.View.extend({
         className: 'row-fluid accordion-group',
         getConfig: $.noop,
+        controlGroupClass: 'control-group',
 
         widgetTemplate: _.template(template),
 
@@ -76,7 +77,7 @@ define([
         },
 
         updateInputValidation: function($input, isValid) {
-            var $controlGroup = $input.closest('.control-group');
+            var $controlGroup = $input.closest('.' + this.controlGroupClass);
             var $span = $controlGroup.find('.settings-client-validation');
 
             if (isValid) {
