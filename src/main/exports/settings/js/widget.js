@@ -7,6 +7,9 @@ define([
         className: 'row-fluid accordion-group',
         getConfig: $.noop,
         controlGroupClass: 'control-group',
+        formControlClass: '',
+        successClass: 'success',
+        errorClass: 'error',
 
         widgetTemplate: _.template(template),
 
@@ -57,13 +60,13 @@ define([
         },
 
         setValidationFormatting: function(state) {
-            this.$el.find('.control-group').removeClass('success error');
+            this.$el.find(this.controlGroupClass).removeClass(this.successClass + ' ' + this.errorClass);
 
             if (state === 'clear') {
-                this.$el.removeClass('success error');
+                this.$el.removeClass(this.successClass + ' ' + this.errorClass);
             } else {
                 this.$el.addClass(state)
-                    .removeClass(state === 'success' ? 'error' : 'success');
+                    .removeClass(state === this.successClass ? this.errorClass : this.successClass);
             }
         },
 
@@ -81,10 +84,10 @@ define([
             var $span = $controlGroup.find('.settings-client-validation');
 
             if (isValid) {
-                $controlGroup.removeClass('error');
+                $controlGroup.removeClass(this.errorClass);
                 $span.addClass('hide');
             } else {
-                $controlGroup.addClass('error');
+                $controlGroup.addClass(this.errorClass);
                 $span.removeClass('hide');
             }
         },

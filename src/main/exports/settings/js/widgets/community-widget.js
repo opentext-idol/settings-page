@@ -28,7 +28,7 @@ define([
             }));
 
             this.$loginType = this.$('select[name="login-type"]');
-            this.$aciDetails = this.$('div.control-group').eq(0);
+            this.$aciDetails = this.$('div.'+this.controlGroupClass).eq(0);
             this.$typesSpan = this.$('.fetch-security-types');
         },
 
@@ -63,7 +63,7 @@ define([
             this.hideValidationInfo();
 
             if (!_.isUndefined(this.lastValidation) && !this.communityHasChanged()) {
-                this.setValidationFormatting(this.lastValidation ? 'success' : 'error');
+                this.setValidationFormatting(this.lastValidation ? this.successClass : this.errorClass);
                 this.toggleSecurityTypesInput(this.lastValidation && this.securityTypesModel.get('securityTypes'));
             } else {
                 this.setValidationFormatting('clear');
@@ -88,12 +88,12 @@ define([
 
         setValidationFormatting: function(state) {
             if (state === 'clear') {
-                this.$aciDetails.removeClass('success error');
-                this.$loginType.parent().removeClass('error');
+                this.$aciDetails.removeClass(this.successClass + ' ' + this.errorClass);
+                this.$loginType.parent().removeClass(this.errorClass);
                 this.$('.fetch-security-types').removeClass('hide');
             } else {
                 this.$aciDetails.addClass(state)
-                    .removeClass(state === 'success' ? 'error' : 'success');
+                    .removeClass(state === this.successClass ? this.errorClass : this.successClass);
             }
         },
 

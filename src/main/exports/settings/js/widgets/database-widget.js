@@ -8,10 +8,15 @@ define([
     return ServerWidget.extend({
         className: ServerWidget.prototype.className,
         databaseTemplate: _.template(template),
+        formControlClass: '',
 
         initialize: function(options) {
             ServerWidget.prototype.initialize.call(this, options);
-            this.passwordView = new PasswordView({strings: this.strings});
+            this.passwordView = new PasswordView({
+                strings: this.strings,
+                className: this.controlGroupClass,
+                formControlClass: this.formControlClass
+            });
 
             if (options.canDisable) {
                 this.enableView = new EnableView({enableIcon: 'icon-file', strings: this.strings});

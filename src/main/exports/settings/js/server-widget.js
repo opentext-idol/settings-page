@@ -6,6 +6,10 @@
     return Widget.extend({
         className: Widget.prototype.className + ' settings-servergroup control-group form-horizontal',
 
+        successClass: 'success',
+        errorClass: 'error',
+        formControlClass: '',
+
         serverTemplate: _.template(template),
 
         events: _.extend({
@@ -26,7 +30,7 @@
             Widget.prototype.handleInputChange.apply(this, arguments);
 
             if (!_.isUndefined(this.lastValidation) && _.isEqual(this.lastValidationConfig, this.getConfig())) {
-                this.setValidationFormatting(this.lastValidation ? 'success' : 'error');
+                this.setValidationFormatting(this.lastValidation ? this.successClass : this.errorClass);
             }
         },
 
@@ -41,7 +45,7 @@
 
         displayValidationMessage: function(isEqual, response) {
             if (isEqual) {
-                this.setValidationFormatting(this.lastValidation ? 'success' : 'error');
+                this.setValidationFormatting(this.lastValidation ? this.successClass : this.errorClass);
 
                 this.$('.settings-server-validation').text(this.lastValidation
                         ? this.getValidationSuccessMessage(response)

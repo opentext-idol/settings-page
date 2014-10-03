@@ -16,12 +16,14 @@ define([
             _.bindAll(this, 'getConfig', 'updateConfig');
             this.enabled = !_.isUndefined(options.enabled) ? options.enabled : true;
             this.strings = options.strings;
+            this.formControlClass = options.formControlClass || '';
         },
 
         render: function() {
             this.$el.html(template({
                 enabled: this.enabled,
-                strings: this.strings
+                strings: this.strings,
+                formControlClass: this.formControlClass
             }));
 
             this.$input = this.$('input[name="password"]').prop('disabled', !this.enabled);
