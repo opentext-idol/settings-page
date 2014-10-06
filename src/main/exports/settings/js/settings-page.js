@@ -10,6 +10,7 @@ define([
     return BasePage.extend({
         // === Override these === //
         configModel: {},
+        groupClass: 'span4',
         icon: 'icon-cog',
         initializeWidgets: $.noop,
         router: {},
@@ -19,9 +20,9 @@ define([
         strings: {},
         validateUrl: '',
         vent: {},
-        leftWidgets: [],
-        rightWidgets: [],
-        middleWidgets: [],
+        widgets: [],
+        widgetGroups: [],
+        widgetGroupParent: 'form .row-fluid',
         SaveModalConstructor: SaveModal,
         // ====================== //
 
@@ -38,7 +39,7 @@ define([
             // TODO: Listenable should take a context
             this.listenTo(listenable(window), 'beforeunload', _.bind(this.handleBeforeUnload, this));
             this.initializeWidgets();
-            this.widgets = this.leftWidgets.concat(this.middleWidgets.concat(this.rightWidgets));
+            this.widgets = _.flatten(this.widgetGroups);
 
             _.each(this.widgets, function(widget) {
                 widget.on('validate', function() {
@@ -51,21 +52,19 @@ define([
 
         render: function() {
             this.$el.html(this.template({icon: this.icon, strings: this.strings}));
-            this.$form = this.$('form');
+            this.$form = this.$(this.widgetGroupParent);
             this.$scrollElement = $(this.scrollSelector);
 
             _.invoke(this.widgets, 'render');
 
-            _.each(this.leftWidgets, function(widget) {
-                this.$form.find('.left-widgets').append(widget.el)
-            }, this);
+            _.each(this.widgetGroups, function(row) {
+                var $newGroup = $('<div></div>').addClass(this.groupClass);
 
-            _.each(this.middleWidgets, function(widget) {
-                this.$form.find('.middle-widgets').append(widget.el)
-            }, this);
+                _.each(row, function(widget) {
+                    $newGroup.append(widget.el)
+                }, this);
 
-            _.each(this.rightWidgets, function(widget) {
-                this.$form.find('.right-widgets').append(widget.el)
+                this.$form.append($newGroup);
             }, this);
 
             this.configModel.onLoad(this.loadFromConfig, this);
