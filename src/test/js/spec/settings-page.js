@@ -142,19 +142,13 @@ define([
             },
 
             initializeWidgets: function() {
-                this.leftWidgets = [
-                    new CommunityWidget()
+                this.widgetGroups = [
+                    [new CommunityWidget()],
+                    [new CoordinatorWidget()],
+                    [new TasksWidget()]
                 ];
 
-                this.middleWidgets = [
-                    new CoordinatorWidget()
-                ];
-
-                this.rightWidgets = [
-                    new TasksWidget()
-                ];
-
-                _.each(this.leftWidgets.concat(this.middleWidgets.concat(this.rightWidgets)), function(widget) {
+                _.chain(this.widgetGroups).flatten().each(function(widget) {
                     spyOn(widget, 'getConfig').andCallThrough();
                     spyOn(widget, 'render').andCallThrough();
                 });
@@ -213,16 +207,12 @@ define([
                 expect(widget.render).toHaveBeenCalled();
             });
 
-            var $leftWidgets = this.settingsPage.$('form .left-widgets p');
-            var $middleWidgets = this.settingsPage.$('form .middle-widgets p');
-            var $rightWidgets = this.settingsPage.$('form .right-widgets p');
+            var $widgets = this.settingsPage.$('.span4');
 
-            expect($leftWidgets).toHaveLength(1);
-            expect($middleWidgets).toHaveLength(1);
-            expect($rightWidgets).toHaveLength(1);
-            expect($leftWidgets.filter(':contains(Community)')).toHaveLength(1);
-            expect($middleWidgets.filter(':contains(Coordinator)')).toHaveLength(1);
-            expect($rightWidgets .filter(':contains(Tasks)')).toHaveLength(1);
+            expect($widgets).toHaveLength(3);
+            expect($widgets.filter(':contains(Community)')).toHaveLength(1);
+            expect($widgets.filter(':contains(Coordinator)')).toHaveLength(1);
+            expect($widgets.filter(':contains(Tasks)')).toHaveLength(1);
         });
 
         it('should update the page description on config load', function() {

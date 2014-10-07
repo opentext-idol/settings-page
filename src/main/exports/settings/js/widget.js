@@ -60,7 +60,7 @@ define([
         },
 
         setValidationFormatting: function(state) {
-            this.$el.find(this.controlGroupClass).removeClass(this.successClass + ' ' + this.errorClass);
+            this.$el.find('.' + this.controlGroupClass).removeClass(this.successClass + ' ' + this.errorClass);
 
             if (state === 'clear') {
                 this.$el.removeClass(this.successClass + ' ' + this.errorClass);
