@@ -1,0 +1,26 @@
+{
+  "name": "hp-autonomy-settings-page",
+  "version": "1.0.0",
+  "authors": [
+    "Alex Scown <alex.scown@hp.com>"
+  ],
+  "description": "An application settings page and a collection of widgets",
+  "moduleType": [
+    "amd"
+  ],
+  "keywords": [
+    "configuration",
+    "backbone",
+    "bootstrap"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/hpautonomy/settings-page",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "travis.sh"
+  ]
+}
