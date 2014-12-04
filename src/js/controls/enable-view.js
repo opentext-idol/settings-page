@@ -39,7 +39,7 @@ define([
             var old = this.enabled;
             this.enabled = config;
 
-            if (this.enabled != old){
+            if (this.enabled !== old){
                 this.trigger('change', this.enabled);
             }
 

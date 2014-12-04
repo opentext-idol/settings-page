@@ -43,10 +43,11 @@ define([
             };
         },
 
+        // TODO: remove this as it internationalises badly
         processPlurals: function() {
-            this.$dashboardSpan.html(this.$dashboard.val() == 1 ? this.strings.min : this.strings.mins);
-            this.$footerSpan.html(this.$footer.val() == 1 ? this.strings.min : this.strings.mins);
-            this.$historySpan.html(this.$history.val() == 1 ? this.strings.day : this.strings.days);
+            this.$dashboardSpan.html(Number(this.$dashboard.val()) === 1 ? this.strings.min : this.strings.mins);
+            this.$footerSpan.html(Number(this.$footer.val()) === 1 ? this.strings.min : this.strings.mins);
+            this.$historySpan.html(Number(this.$history.val()) === 1 ? this.strings.day : this.strings.days);
         },
 
         updateConfig: function(config) {

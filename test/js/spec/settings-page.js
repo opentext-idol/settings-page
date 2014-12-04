@@ -53,7 +53,7 @@ define([
         var CoordinatorWidget = Backbone.View.extend(_.extend({
             configItem: 'coordinator',
             getConfig: function() {
-                return newConfig['coordinator'];
+                return newConfig.coordinator;
             },
             getName: function() {
                 return 'Coordinator';
@@ -72,7 +72,7 @@ define([
         var CommunityWidget = Backbone.View.extend(_.extend({
             configItem: 'login',
             getConfig: function() {
-                return newConfig['login'];
+                return newConfig.login;
             },
             getName: function() {
                 return 'Community';
@@ -91,7 +91,7 @@ define([
         var TasksWidget = Backbone.View.extend(_.extend({
             configItem: 'tasks',
             getConfig: function() {
-                return newConfig['tasks'];
+                return newConfig.tasks;
             },
             getName: function() {
                 return 'Tasks';
@@ -186,7 +186,7 @@ define([
                 vent: {
                     navigate: jasmine.createSpy('vent.navigate')
                 }
-            }));
+            }))();
 
             spyOn(this.settingsPage.configModel, 'get').andCallThrough();
             spyOn(this.settingsPage.configModel, 'save').andCallThrough();
@@ -237,8 +237,8 @@ define([
             expect(request.url).toEqual('example.com/validate');
 
             expect(JSON.parse(request.requestBody)).toEqual({
-                coordinator: newConfig['coordinator'],
-                login: newConfig['login']
+                coordinator: newConfig.coordinator,
+                login: newConfig.login
             });
         });
 
@@ -266,7 +266,7 @@ define([
             expect(request.url).toEqual('example.com/validate');
 
             expect(JSON.parse(request.requestBody)).toEqual({
-                coordinator: newConfig['coordinator']
+                coordinator: newConfig.coordinator
             });
         });
 

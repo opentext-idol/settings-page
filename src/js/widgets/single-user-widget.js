@@ -10,7 +10,7 @@ define([
 
         className: Widget.prototype.className + ' form-horizontal',
 
-        initialize: function(options) {
+        initialize: function() {
             Widget.prototype.initialize.apply(this, arguments);
 
             this.currentPassword = new PasswordView({
@@ -107,8 +107,8 @@ define([
             var confirmPasswordConfig = this.confirmPassword.getConfig();
 
             // if any password has been modified, inequality means invalidation
-            if((!currentPasswordConfig.isRedacted || !newPasswordConfig.isRedacted || !confirmPasswordConfig.isRedacted)
-                    && newPasswordConfig.password !== confirmPasswordConfig.password) {
+            if((!currentPasswordConfig.isRedacted || !newPasswordConfig.isRedacted || !confirmPasswordConfig.isRedacted) &&
+                    newPasswordConfig.password !== confirmPasswordConfig.password) {
                 isValid = false;
                 this.$('.password-mismatch').removeClass('hide');
             }

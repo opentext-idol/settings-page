@@ -25,7 +25,7 @@ define([
             }
         }, Widget.prototype.events),
 
-        initialize: function(options) {
+        initialize: function() {
             Widget.prototype.initialize.apply(this, arguments);
             this.collection = new Backbone.Collection();
 

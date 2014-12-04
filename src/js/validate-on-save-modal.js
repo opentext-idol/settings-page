@@ -19,12 +19,11 @@ define([
             this.strings = options.strings;
             this.successCallback = options.success;
 
-            this.successTemplate = _.template('<div class="alert alert-success"><strong>' + this.strings.success +'</strong> ' + this.strings.successMessage + '</strong></div>');
+            this.successTemplate = _.template('<div class="alert alert-success"><strong><%-strings.success%></strong> <%-strings.successMessage%></strong></div>');
 
             this.errorTemplate = _.template(errorTemplate, undefined, {variable: 'ctx'});
 
-            this.throbberTemplate = _.template('<i class="icon-spinner icon-spin icon-2x" style="vertical-align: middle;"></i> <strong style="vertical-align: middle;">'
-                + this.strings.saving + '</strong>');
+            this.throbberTemplate = _.template('<i class="icon-spinner icon-spin icon-2x" style="vertical-align: middle;"></i> <strong style="vertical-align: middle;"><%-strings.saving%></strong>');
 
             this.render();
         },
@@ -69,7 +68,7 @@ define([
 
         handleOk: function() {
             this.$('button').attr('disabled', 'disabled');
-            this.$body.html(this.throbberTemplate);
+            this.$body.html(this.throbberTemplate({strings: this.strings}));
 
             this.configModel.save({config: this.config}, {
                 error: this.handleError,
@@ -81,7 +80,7 @@ define([
         handleSuccess: function() {
             this.$ok.hide();
             this.$cancel.removeAttr('disabled').html('<i class="icon-remove"></i> ' + this.strings.close);
-            this.$body.html(this.successTemplate);
+            this.$body.html(this.successTemplate({strings: this.strings}));
             this.successCallback();
             this.trigger('validation', 'SUCCESS');
         }

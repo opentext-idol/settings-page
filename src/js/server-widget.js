@@ -47,9 +47,16 @@
             if (isEqual) {
                 this.setValidationFormatting(this.lastValidation ? this.successClass : this.errorClass);
 
-                this.$('.settings-server-validation').text(this.lastValidation
-                        ? this.getValidationSuccessMessage(response)
-                        : this.getValidationFailureMessage(response))
+                var message;
+
+                if (this.lastValidation) {
+                    message = this.getValidationSuccessMessage(response);
+                }
+                else {
+                    message = this.getValidationFailureMessage(response);
+                }
+
+                this.$('.settings-server-validation').text(message)
                     .stop()
                     .animate({opacity: 1});
             } else {
@@ -57,7 +64,7 @@
             }
         },
 
-        getValidationSuccessMessage: function(response) {
+        getValidationSuccessMessage: function(/*response*/) {
             return this.strings.validateSuccess;
         },
 

@@ -28,9 +28,10 @@ define([
             return {historySecs: Number(this.$input.val()) * 86400};
         },
 
+        // TODO: remove this as it internationalises badly
         processPlural: function() {
-            var durationDays = this.$input.val();
-            this.$span.text(durationDays == 1 ? this.strings.day : this.strings.days);
+            var durationDays = Number(this.$input.val());
+            this.$span.text(durationDays === 1 ? this.strings.day : this.strings.days);
         },
 
         updateConfig: function(config) {

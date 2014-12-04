@@ -44,14 +44,14 @@ define([
                         return 'Expected "' + $select.get(0).outerHTML + '" to contain options "' + JSON.stringify(options) + '"';
                     };
 
-                    if ($options.length != options.length) {
+                    if ($options.length !== options.length) {
                         return false;
                     }
 
                     var isMatch = true;
 
                     _.each(options, function(value) {
-                        if (isMatch && $options.filter('[value="' + value + '"]').length != 1) {
+                        if (isMatch && $options.filter('[value="' + value + '"]').length !== 1) {
                             isMatch = false;
                         }
                     });
