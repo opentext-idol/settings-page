@@ -33,12 +33,11 @@ define([
                 expect($database).toHaveValue('myUser');
             });
 
-            //TODO: write test
             it('should fail client side validation on empty database', function() {
                 var $database = this.widget.$('input[name="database"]');
                 $database.val('');
 
-                expect()
+                expect(this.widget.validateInputs()).toBe(false);
             });
         }
 
