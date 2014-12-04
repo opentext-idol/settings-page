@@ -1,6 +1,7 @@
 define([
     'settings/js/widgets/locale-widget',
-    'test/test-utils'
+    'test/test-utils',
+    'jasmine-jquery'
 ], function(LocaleWidget, utils) {
 
     describe('Locale widget', function() {

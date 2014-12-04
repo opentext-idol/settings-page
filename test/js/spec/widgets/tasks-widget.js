@@ -1,6 +1,7 @@
 define([
     'settings/js/widgets/tasks-widget',
-    'test/test-utils'
+    'test/test-utils',
+    'jasmine-jquery'
 ], function(TasksWidget, utils) {
 
     describe('Tasks widget', function() {

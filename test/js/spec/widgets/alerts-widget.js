@@ -1,6 +1,7 @@
 define([
     'settings/js/widgets/alerts-widget',
-    'test/test-utils'
+    'test/test-utils',
+    'jasmine-jquery'
 ], function(AlertsWidget, utils) {
 
     describe('Alerts widget', function() {

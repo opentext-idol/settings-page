@@ -1,6 +1,7 @@
 define([
     'settings/js/widgets/community-widget',
-    'test/test-utils'
+    'test/test-utils',
+    'jasmine-jquery'
 ], function(CommunityWidget, utils) {
 
     describe('Community widget', function() {

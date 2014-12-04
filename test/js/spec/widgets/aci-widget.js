@@ -1,6 +1,7 @@
 define([
     'settings/js/widgets/aci-widget',
-    'test/server-widget-test-utils'
+    'test/server-widget-test-utils',
+    'jasmine-jquery'
 ], function(AciWidget, serverUtils) {
 
     describe('ACI widget', function() {

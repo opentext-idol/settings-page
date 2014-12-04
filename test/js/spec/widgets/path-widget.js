@@ -1,6 +1,7 @@
 define([
     'settings/js/widgets/path-widget',
-    'test/test-utils'
+    'test/test-utils',
+    'jasmine-jquery'
 ], function(PathWidget, utils) {
 
     describe('Path widget', function() {

@@ -1,6 +1,7 @@
 define([
     'settings/js/widgets/database-widget',
-    'test/server-widget-test-utils'
+    'test/server-widget-test-utils',
+    'jasmine-jquery'
 ], function(DatabaseWidget, serverUtils) {
 
     describe('Database widget', function(initialConfig) {

@@ -1,7 +1,8 @@
 define([
     'settings/js/settings-page',
     'backbone',
-    'sinon'
+    'sinon',
+    'jasmine-jquery'
 ], function(SettingsPage, Backbone) {
 
     describe('Settings page', function() {

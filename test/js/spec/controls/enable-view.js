@@ -1,6 +1,7 @@
 define([
     'real/js/controls/enable-view',
-    'test/test-utils'
+    'test/test-utils',
+    'jasmine-jquery'
 ], function(EnableView, utils) {
 
     describe('Enable control', function() {

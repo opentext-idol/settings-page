@@ -1,9 +1,9 @@
 define([
-    'js-utils/js/base-page',
+    'js-whatever/js/base-page',
     'settings/js/validate-on-save-modal',
-    'js-utils/js/confirm',
-    'js-utils/js/ensure-array',
-    'js-utils/js/listenable',
+    'js-whatever/js/confirm',
+    'js-whatever/js/ensure-array',
+    'js-whatever/js/listenable',
     'text!settings/templates/settings-page.html'
 ], function(BasePage, SaveModal, confirm, ensureArray, listenable, template) {
 

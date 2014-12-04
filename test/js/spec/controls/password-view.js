@@ -1,6 +1,7 @@
 define([
     'real/js/controls/password-view',
-    'test/test-utils'
+    'test/test-utils',
+    'jasmine-jquery'
 ], function(PasswordView, utils) {
 
     describe('Password control', function() {

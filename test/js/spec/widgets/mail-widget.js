@@ -1,7 +1,8 @@
 define([
     'settings/js/widgets/mail-widget',
     'test/server-widget-test-utils',
-    'test/test-utils'
+    'test/test-utils',
+    'jasmine-jquery'
 ], function(MailWidget, serverUtils, utils) {
 
     describe('Mail widget', function() {

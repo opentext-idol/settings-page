@@ -33,9 +33,13 @@
     "jquery": "~1.10.0"
   },
   "devDependencies": {
-    "hp-autonomy-js-testing-utils": "~1.0.1"
+    "hp-autonomy-js-testing-utils": "~1.0.1",
+    "sinon": "http://sinonjs.org/releases/sinon-1.9.1.js",
+    "jasmine-jquery": "~1.5.8"
   },
   "resolutions": {
-    "underscore": "~1.5.2"
+    "underscore": "~1.5.2",
+    "jquery": "~1.10.0",
+    "bootstrap": "~2.3"
   }
 }

@@ -1,7 +1,7 @@
 define([
     'settings/js/widget',
     'backbone',
-    'js-utils/js/list-view',
+    'js-whatever/js/list-view',
     'text!settings/templates/widgets/paths-widget.html',
     'text!settings/templates/widgets/paths-widget-row.html'
 ], function(Widget, Backbone, ListView, template, itemTemplate) {

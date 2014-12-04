@@ -1,6 +1,7 @@
 define([
     'settings/js/widgets/port-widget',
-    'test/test-utils'
+    'test/test-utils',
+    'jasmine-jquery'
 ], function(PortWidget, utils) {
 
     describe('Port widget', function() {

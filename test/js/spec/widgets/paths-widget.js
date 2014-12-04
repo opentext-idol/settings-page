@@ -1,7 +1,8 @@
 define([
     'settings/js/widgets/paths-widget',
-    'js-utils/js/list-view',
-    'test/test-utils'
+    'js-whatever/js/list-view',
+    'test/test-utils',
+    'jasmine-jquery'
 ], function(PathsWidget, ListView, utils) {
 
     describe('Paths widget', function() {
