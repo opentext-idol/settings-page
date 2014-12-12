@@ -148,6 +148,8 @@ define([
             this.$syslogHost.val(config.syslog.host);
             this.$syslogPort.val(config.syslog.port);
             this.syslogToggle.updateConfig(config.syslog.enabled);
+
+            this.updateTestSyslogButton();
         },
 
         validateInputs: function() {
