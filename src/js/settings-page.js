@@ -1,3 +1,6 @@
+/**
+ * @module settings/js/settings-page
+ */
 define([
     'js-whatever/js/base-page',
     'settings/js/validate-on-save-modal',
@@ -7,25 +10,151 @@ define([
     'text!settings/templates/settings-page.html'
 ], function(BasePage, SaveModal, confirm, ensureArray, listenable, template) {
 
-    return BasePage.extend({
-        // === Override these === //
+    /**
+     * @name module:settings/js/settings-page.SettingsPage
+     * @desc A page which can be configured with widgets
+     * @constructor
+     * @extends BasePage
+     */
+    return BasePage.extend(/** @lends module:settings/js/settings-page.SettingsPage.prototype */ {
+        /**
+         * @typedef ConfigModel
+         * @desc Model containing configuration. The properties here are Backbone attributes accessed via the get method
+         * @property {object} config The config
+         * @extends Autoload
+         */
+        /**
+         * @desc Model to use for configuration
+         * @default {}
+         * @type ConfigModel
+         */
         configModel: {},
-        groupClass: 'span4',
-        icon: 'icon-cog',
-        initializeWidgets: $.noop,
-        router: {},
-        routeEvent: 'route:settings',
-        routeRoot: '',
-        scrollSelector: {},
-        strings: {},
-        validateUrl: '',
-        vent: {},
-        widgets: [],
-        widgetGroups: [],
-        widgetGroupParent: 'form .row-fluid',
-        SaveModalConstructor: SaveModal,
-        // ====================== //
 
+        /**
+         * @desc CSS class to use for widget groups
+         * @default span4
+         * @type String
+         */
+        groupClass: 'span4',
+
+        /**
+         * @desc Icon for the page
+         * @default icon-cog
+         * @type String
+         */
+        icon: 'icon-cog',
+
+        /**
+         * @desc Method for initializing this.widgetGroups
+         * @abstract
+         * @method
+         */
+        initializeWidgets: $.noop,
+
+        /**
+         * @desc Backbone Router used for navigating to specific widgets
+         * @type Backbone.Router
+         * @default {}
+         */
+        router: {},
+
+        /**
+         * @desc Event name to observe on {@link module:settings/js/settings-page.SettingsPage#router|router}
+         * @type String
+         * @default route:settings
+         */
+        routeEvent: 'route:settings',
+
+        /**
+         * @desc {@link module:settings/js/settings-page.SettingsPage#vent|vent}
+         * @type String
+         * @default ''
+         */
+        routeRoot: '',
+
+        /**
+         * @desc Page element to scroll
+         * @type String
+         * @default ''
+         */
+        scrollSelector: '',
+
+        /**
+         * @callback module:settings/js/settings-page.SettingsPage~DescriptionCallback
+         * @param systemProperty The name of the system property containing the config file
+         * @param path The path to the config file
+         */
+        /**
+         * @typedef SettingsPageStrings
+         * @desc Strings for the settings page. May vary based on template used.
+         * @property {string} cancelCancel Cancel button label for confirmation modal when restore changes is pressed
+         * @property {string} cancelMessage Text for confirmation modal when restore changes is pressed
+         * @property {string} cancelOk OK button label for confirmation modal when restore changes is pressed
+         * @property {string} cancelTitle Title for confirmation modal when restore changes is pressed
+         * @property {string} confirmUnload Message displayed when unloading the page with unsaved changes
+         * @property {module:settings/js/settings-page.SettingsPage~DescriptionCallback} description Function for
+         * generating a description
+         * @property {string} requiredFields Label for asterisk denoting required fields
+         * @property {string} restoreButton Label for restore button
+         * @property {string} saveButton Label for save button
+         * @property {SaveModalStrings} saveModal Strings for the save modal
+         * @property {string} title Title for the page
+         */
+        /**
+         * @desc Strings for the settings page.
+         * @type SettingsPageStrings
+         * @default {}
+         * @abstract
+         */
+        strings: {},
+
+        /**
+         * @desc Url to which config will be posted for validation
+         * @type String
+         * @default ''
+         */
+        validateUrl: '',
+
+        /**
+         * @desc Instance of Vent used for navigation
+         * @type Vent
+         * @abstract
+         */
+        vent: {},
+
+        /**
+         * @desc Array containing all of the widgets.
+         * @type module:settings/js/widget.Widget[]
+         * @default []
+         */
+        widgets: [],
+
+        /**
+         * @desc Array of groups of widgets, where each widget group is itself an array. With the default settings each
+         * group should contain at most three widgets. widgetGroups can also be initialized in initializeWidgets
+         * @type Array<Array<module:settings/js/widget.Widget>>
+         * @default []
+         */
+        widgetGroups: [],
+
+        /**
+         * @desc CSS selector for the DOM element that the widget groups will be attached to
+         * @type String
+         */
+        widgetGroupParent: 'form .row-fluid',
+
+        /**
+         * @desc Constructor function for the save modal
+         * @type Backbone.View
+         * @default ValidateOnSaveModal
+         */
+        SaveModalConstructor: SaveModal,
+
+        /**
+         * @desc Template for the view
+         * @type function
+         * @param {SettingsPageStrings} strings Strings for the template
+         */
         template: _.template(template),
 
         events: {
@@ -50,6 +179,9 @@ define([
             this.router.on(this.routeEvent, this.handleRouting, this);
         },
 
+        /**
+         * @desc Renders the settings page. This will render all the widgets and append them to the page
+         */
         render: function() {
             this.$el.html(this.template({icon: this.icon, strings: this.strings}));
             this.$form = this.$(this.widgetGroupParent);
@@ -72,6 +204,10 @@ define([
             this.hasRendered = true;
         },
 
+        /**
+         * @desc Returns the combined configuration from all of the widgets
+         * @returns {Object}
+         */
         getConfig: function() {
             var config = {};
 
@@ -82,6 +218,9 @@ define([
             return config;
         },
 
+        /**
+         * @returns {boolean} Returns true if the user has unsaved changes, or false otherwise
+         */
         canLeavePage: function() {
             if (this.lastSavedConfig) {
                 return _.isEqual(this.getConfig(), this.lastSavedConfig);
@@ -90,6 +229,11 @@ define([
             return true;
         },
 
+        /**
+         * @desc Event listener for window unload events
+         * @returns {String|undefined} this.strings.confirmUnload if the user has unsaved changes, or undefined
+         * otherwise
+         */
         handleBeforeUnload: function() {
             if (!this.canLeavePage()) {
                 setTimeout(_.bind(function() {
@@ -100,6 +244,11 @@ define([
             }
         },
 
+        /**
+         * @desc Opens a confirm modal which will restore changes to configuration if accepted.
+         * Called when the user presses the restore changes button
+         * @returns {boolean} false
+         */
         handleCancelButton: function() {
             confirm({
                 cancelClass: '',
@@ -119,6 +268,10 @@ define([
             return false;
         },
 
+        /**
+         * @desc called when navigating to the page.
+         * @param configItem The configItem whose widget should be opened and scrolled to
+         */
         handleRouting: function(configItem) {
             if (configItem) {
                 this.hasRendered || this.render();
@@ -132,6 +285,12 @@ define([
             }
         },
 
+        /**
+         * @desc Opens a {@link module:settings/js/validate-on-save-modal.ValidateOnSaveModal|modal} which allows the
+         * user to submit changes to the configuration.
+         * @param {Event} e The jQuery event object
+         * @returns {boolean} false
+         */
         handleSubmit: function(e) {
             e.preventDefault();
 
@@ -196,6 +355,10 @@ define([
             return false;
         },
 
+        /**
+         * @desc Updates each widget with the appropriate config item from the configModel. Called when the config model
+         * loads
+         */
         loadFromConfig: function() {
             var config = this.configModel.get('config');
             var serversToValidate = [];
@@ -213,18 +376,26 @@ define([
             this.lastSavedConfig = this.getConfig();
         },
 
+        /**
+         * @desc Scrolls the given widget into view
+         * @param {module:settings/js/widget.Widget} widget The widget to scroll to
+         */
         scrollToWidget: function(widget) {
             widget.$('.collapse-' + widget.configItem).collapse('show').on('shown', _.bind(function() {
                 this.$scrollElement.scrollTop(this.$scrollElement.scrollTop() + widget.$el.position().top - this.$scrollElement.offset().top);
             }, this));
         },
 
-        validate: function(servers) {
-            servers = ensureArray(servers);
+        /**
+         * @desc Validate the config in the given widgets by posting to validateUrl.
+         * @param {module:settings/js/widget.Widget|module:settings/js/widget.Widget[]} widgets The widgets to validate
+         */
+        validate: function(widgets) {
+            widgets = ensureArray(widgets);
             var config = {};
 
-            _.each(servers, function(server) {
-                server.lastValidationConfig = config[server.configItem] = server.getConfig();
+            _.each(widgets, function(widget) {
+                widget.lastValidationConfig = config[widget.configItem] = widget.getConfig();
             });
 
             $.ajax(this.validateUrl, {
@@ -233,8 +404,8 @@ define([
                 type: 'POST',
                 data: JSON.stringify(config),
                 success: function(response) {
-                    _.each(servers, function(server) {
-                        server.handleValidation(config[server.configItem], response[server.configItem]);
+                    _.each(widgets, function(widget) {
+                        widget.handleValidation(config[widget.configItem], response[widget.configItem]);
                     });
                 }
             });
