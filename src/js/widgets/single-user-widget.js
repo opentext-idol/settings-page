@@ -1,3 +1,6 @@
+/**
+ * @module settings/js/widgets/single-user-widget
+ */
 define([
     'settings/js/widget',
     'settings/js/controls/password-view',
@@ -6,7 +9,33 @@ define([
 
     template = _.template(template);
 
-    return Widget.extend({
+    /**
+     * @typedef SingleUserWidgetStrings
+     * @desc Extends WidgetStrings
+     * @property {string} confirmPassword Label for the confirm password input
+     * @property {string} currentPassword Label for the current password input
+     * @property {string} newPassword Label for the new password input
+     * @property {string} passwordMismatch Message displayed when the new password and the confirm password do not match
+     * @property {string} passwordRedacted Placeholder for redacted passwords
+     * @property {string} username Label for the confirm username input
+     * @property {string} validateConfirmPasswordBlank Message displayed when the confirm password input is empty
+     * @property {string} validateCurrentPasswordBlank Message displayed when the current password input is empty
+     * @property {string} validateNewPasswordBlank Message displayed when the new password input is empty
+     * @property {string} validateUsernameBlank Message displayed when the username input is empty
+     */
+    /**
+     * @typedef SingleUserWidgetOptions
+     * @desc Extends WidgetOptions
+     * @property {SingleUserWidgetStrings} strings Strings for the widget
+     */
+    /**
+     * @name module:settings/js/widgets/single-user-widget.SingleUserWidget
+     * @desc Widget for configuring a single user for an application (typically an Administrator user)
+     * @constructor
+     * @param {SingleUserWidgetOptions} options Options for the widget
+     * @extends module:settings/js/widget.Widget
+     */
+    return Widget.extend(/** @lends module:settings/js/widgets/single-user-widget.SingleUserWidget.prototype */{
 
         className: Widget.prototype.className + ' form-horizontal',
 
@@ -44,6 +73,9 @@ define([
             ];
         },
 
+        /**
+         * @desc Renders the widget
+         */
         render: function() {
             Widget.prototype.render.call(this);
 
@@ -62,11 +94,28 @@ define([
             this.$username = this.$('input[name="username"]');
         },
 
+        /**
+         * @typedef SingleUser
+         * @property {string} currentPassword The single user's current password
+         * @property {string} passwordRedacted True if all the passwords are redacted; false otherwise
+         * @property {string} plaintextPassword The single user's new password
+         * @property {string} username The single user's username
+         */
+        /**
+         * @typedef SingleUserConfig
+         * @property {string} method The method used for authentication. Set to 'singleUser'
+         * @property {SingleUser} singleUser The single user configuration
+         */
+        /**
+         * @desc Returns the configuration associated with the widget
+         * @returns {SingleUserConfig}
+         */
         getConfig: function() {
             var passwordRedacted = _.every(this.passwordViews, function(view) {
                 return view.getConfig().passwordRedacted
             });
 
+            //noinspection JSValidateTypes
             return {
                 method: 'singleUser',
                 singleUser: {
@@ -78,6 +127,10 @@ define([
             }
         },
 
+        /**
+         * @desc Updates the widget with the given configuration
+         * @param {SingleUserConfig} config The new configuration for the widget
+         */
         updateConfig: function(config) {
             Widget.prototype.updateConfig.apply(this, arguments);
 
@@ -88,6 +141,16 @@ define([
             _.invoke(this.passwordViews, 'updateConfig', {password: null, passwordRedacted: singleUser.passwordRedacted});
         },
 
+        /**
+         * @desc Validates the widget and applies formatting accordingly
+         * @returns {boolean} False if any of the following:
+         * <ul>
+         * <li>The username is empty
+         * <li>Any of the password fields is empty and not redacted
+         * <li>Any of the password fields is not redacted and the new password and the confirm password do not match
+         * </ul>
+         * or true otherwise
+         */
         validateInputs: function() {
             var isValid = true;
 

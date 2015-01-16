@@ -1,15 +1,48 @@
+/**
+ * @module settings/js/widgets/aci-widget
+ */
 define([
     'settings/js/server-widget',
     'text!settings/templates/widgets/aci-widget.html'
 ], function(ServerWidget, template) {
 
-    return ServerWidget.extend({
+    /**
+     * @typedef AciWidgetStrings
+     * @desc Extends ServerWidgetStrings
+     * @property {string} validateHostBlank String which indicates that the entered host is blank
+     */
+    /**
+     * @typedef AciWidgetOptions
+     * @desc Extends ServerWidgetOptions
+     * @property strings {AciWidgetStrings} Strings for the widget
+     */
+    /**
+     * @name module:settings/js/widgets/aci-widget.AciWidget
+     * @desc Widget representing the configuration of an ACI server
+     * @constructor
+     * @param {AciWidgetOptions} options Options for the widget
+     * @extends module:settings/js/server-widget.ServerWidget
+     */
+    return ServerWidget.extend(/** @lends module:settings/js/widgets/aci-widget.AciWidget.prototype */{
+
+        /**
+         * @typedef AciWidgetTemplateParameters
+         * @property {AciWidgetStrings} strings Strings for the widget
+         */
+        /**
+         * @callback module:settings/js/widgets/aci-widget.AciWidget~AciTemplate
+         * @param {AciWidgetTemplateParameters} parameters
+         */
+        /**
+         * @desc Base template for the widget. Override if using Bootstrap 3
+         * @type module:settings/js/widgets/aci-widget.AciWidget~AciTemplate
+         */
         aciTemplate: _.template(template),
 
-        initialize: function(options) {
-            ServerWidget.prototype.initialize.call(this, options);
-        },
-
+        /**
+         * @desc Renders the widget by first calling {@link module:settings/js/server-widget.ServerWidget#render|ServerWidget#render}
+         * and then adding the necessary form controls
+         */
         render: function() {
             ServerWidget.prototype.render.call(this);
 
@@ -22,7 +55,21 @@ define([
             this.$protocol = this.$('select[name=protocol]');
         },
 
+        /**
+         * @typedef AciWidgetConfig
+         * @property {string} host The host the server is located on
+         * @property {number} port The ACI port of the server
+         * @property {string} protocol The protocol used to communicate with the server (http or https)
+         * @property {string} productType The expected ProductTypeCSV of the server
+         * @property {string} [indexErrorMessage] The error message to expect when running a test index command. May be
+         * missing if the ACI server type does not have an index port
+         */
+        /**
+         * @desc Returns the configuration associated with this widget
+         * @returns {AciWidgetConfig} The current configuration represented by the widget
+         */
         getConfig: function() {
+            //noinspection JSValidateTypes
             return {
                 host: this.$host.val(),
                 port: Number(this.$port.val()),
@@ -32,6 +79,10 @@ define([
             };
         },
 
+        /**
+         * @desc Populates the widget with the given config
+         * @param {AciWidgetConfig} config The new config for the widget
+         */
         updateConfig: function(config) {
             ServerWidget.prototype.updateConfig.apply(this, arguments);
 
@@ -42,9 +93,13 @@ define([
             this.indexErrorMessage = config.indexErrorMessage;
         },
 
+        /**
+         * @desc Validates the widget and applies formatting if necessary
+         * @returns {boolean} False if the host is blank; true otherwise
+         */
         validateInputs: function() {
             if (this.$host.val() === '') {
-                this.updateInputValidation(this.$host);
+                this.updateInputValidation(this.$host, false);
                 return false;
             }
 

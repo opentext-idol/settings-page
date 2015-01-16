@@ -1,11 +1,49 @@
+/**
+ * @module settings/js/widgets/community-widget
+ */
 define([
     'settings/js/widgets/aci-widget',
     'settings/js/models/security-types',
     'text!settings/templates/widgets/community-widget.html'
 ], function(AciWidget, SecurityTypesModel, template) {
 
-    return AciWidget.extend({
+    /**
+     * @typedef CommunityWidgetStrings
+     * @desc Extends AciWidgetStrings
+     * @property {string} loginTypeLabel Label for the login types dropdown
+     * @property {string} fetchSecurityTypes An instruction saying that the test connection button will retrieve valid
+     * security types
+     * @property {string} invalidSecurityType Message which states a valid security type has not been selected
+     */
+    /**
+     * @typedef CommunityWidgetOptions
+     * @desc Extends AciWidgetOptions
+     * @property {string} securityTypesUrl Url for fetching security types from
+     * @property {CommunityWidgetStrings} strings Strings for the widget
+     */
+    /**
+     * @name module:settings/js/widgets/community-widget.CommunityWidget
+     * @desc Widget for configuring an IDOL Community server. As AciWidget, but allows the configuration of a repository
+     * to use for authentication
+     * @param {CommunityWidgetOptions} options Options for the widget
+     * @constructor
+     * @extends module:settings/js/widgets/aci-widget.AciWidget
+     */
+    return AciWidget.extend(/** @lends settings/js/widgets/community-widget.CommunityWidget.prototype */{
         currentSecurityType: null,
+
+        /**
+         * @typedef CommunityWidgetTemplateParameters
+         * @property {CommunityWidgetStrings} strings Strings for the widget
+         */
+        /**
+         * @callback module:settings/js/widgets/community-widget.CommunityWidget~CommunityWidgetTemplate
+         * @param {CommunityWidgetTemplateParameters} parameters
+         */
+        /**
+         * @desc Base template for the widget. Override if using Bootstrap 3
+         * @type module:settings/js/widgets/community-widget.CommunityWidget~CommunityWidgetTemplate
+         */
         communityTemplate: _.template(template),
 
         initialize: function(options) {
@@ -20,6 +58,10 @@ define([
             this.securityTypesModel.on('change', this.handleNewSecurityTypes);
         },
 
+        /**
+         * @desc Renders the widget by first calling {@link module:settings/js/widgets/aci-widget.AciWidget#render|AciWidget#render}
+         * and then rendering the security types
+         */
         render: function() {
             AciWidget.prototype.render.call(this);
 
@@ -32,10 +74,17 @@ define([
             this.$typesSpan = this.$('.fetch-security-types');
         },
 
+        /**
+         * @returns {boolean} True if the configuration has changed since the widget was last saved; false otherwise
+         */
         communityHasChanged: function() {
             return !_.isEqual(this.getCommunity(), this.lastValidationConfig.community);
         },
 
+        /**
+         * @desc Fetches security types for the given Community server
+         * @param {AciWidgetConfig} community
+         */
         fetchNewSecurityTypes: function(community) {
             this.securityTypesModel.unset('securityTypes', {silent: true});
 
@@ -48,11 +97,25 @@ define([
             });
         },
 
+        /**
+         * @returns {AciWidgetConfig} The configuration of the Community server
+         */
         getCommunity: function() {
             return AciWidget.prototype.getConfig.call(this);
         },
 
+
+        /**
+         * @typedef CommunityWidgetConfiguration
+         * @property {AciWidgetConfig} community configuration of the Community server
+         * @property {string} method The login method to use with the Community server
+         */
+        /**
+         * @desc Returns the configuration of the widget
+         * @returns {CommunityWidgetConfiguration}
+         */
         getConfig: function() {
+            //noinspection JSValidateTypes
             return {
                 community: this.getCommunity(),
                 method: this.$loginType.val() || this.currentSecurityType
@@ -71,11 +134,17 @@ define([
             }
         },
 
+        /**
+         * @desc Handler for changes in the list of available security types
+         */
         handleNewSecurityTypes: function() {
             this.updateSecurityTypes();
             this.toggleSecurityTypesInput(!this.communityHasChanged());
         },
 
+        /**
+         * @desc Handles the results of server side validation. Fetches new security types if the config is valid
+         */
         handleValidation: function(config, response) {
             if (_.isEqual(config.community, this.lastValidationConfig.community)) {
                 this.lastValidation = response.valid;
@@ -86,6 +155,11 @@ define([
             }
         },
 
+        /**
+         * @desc Sets the validation formatting to the given state
+         * @param {string} state If 'clear', removes validation formatting. Otherwise should be one of this.successClass
+         * or this.errorClass, and will set the formatting accordingly
+         */
         setValidationFormatting: function(state) {
             if (state === 'clear') {
                 this.$aciDetails.removeClass(this.successClass + ' ' + this.errorClass);
@@ -97,11 +171,19 @@ define([
             }
         },
 
+        /**
+         * @desc Hides or shows the security types input and corresponding instructions
+         * @param (boolean} isEnabled True if login types should be enabled; false otherwise
+         */
         toggleSecurityTypesInput: function(isEnabled) {
             this.$typesSpan.toggleClass('hide', isEnabled);
             this.$loginType.attr('disabled', !isEnabled);
         },
 
+        /**
+         * @desc Validation button handler. Tests the connection to the ACI server
+         * @fires validate Event indicating that validation has occurred
+         */
         triggerValidation: function() {
             this.setValidationFormatting('clear');
             this.hideValidationInfo();
@@ -111,6 +193,10 @@ define([
             }
         },
 
+        /**
+         * @desc Updates the widget with the given configuration
+         * @param {CommunityWidgetConfiguration} config
+         */
         updateConfig: function(config) {
             AciWidget.prototype.updateConfig.call(this, config.community);
             this.currentSecurityType = config.method;
@@ -119,6 +205,11 @@ define([
             this.updateSecurityTypes();
         },
 
+        /**
+         * @desc Updates the security types select dropdown with the values in the securityTypesModel. Will also add the
+         * 'cas' and 'external' types if either of them is currently in use.
+         * @protected
+         */
         updateSecurityTypes: function() {
             var types = this.securityTypesModel.get('securityTypes');
             var currentType = this.$loginType.val() || this.currentSecurityType;
@@ -146,14 +237,20 @@ define([
             }
         },
 
+        /**
+         * @desc Validates the widget and applies formatting if necessary
+         * @returns {boolean} True if the login type is not 'default' and all the AciWidget requirements are met; false
+         * otherwise
+         */
         validateInputs: function() {
             var isLoginTypeValid = this.getConfig().method !== 'default';
 
             if (!isLoginTypeValid) {
-                this.updateInputValidation(this.$loginType);
+                this.updateInputValidation(this.$loginType, false);
                 this.$('.fetch-security-types').addClass('hide');
             }
 
+            // This is in this order so that formatting from the super method is applied
             return AciWidget.prototype.validateInputs.apply(this, arguments) && isLoginTypeValid;
         }
     });

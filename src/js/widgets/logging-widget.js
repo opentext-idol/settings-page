@@ -1,3 +1,6 @@
+/**
+ * @module settings/js/widgets/logging-widget
+ */
 define([
     'settings/js/widget',
     'settings/js/controls/enable-view',
@@ -6,7 +9,44 @@ define([
 
     var templateFunction = _.template(template);
 
-    return Widget.extend({
+    /**
+     * @typedef LoggingWidgetOptions
+     * @desc Extends WidgetOptions
+     * @property {string} testURL Url called to test configuration
+     *
+     */
+    /**
+     * @typedef LoggingWidgetStrings
+     * @desc Extends WidgetStrings
+     * @property {string} compression Label for the compression dropdown
+     * @property {string} daily Label for daily rollover option
+     * @property {string} gzip Label for the gzip compression option
+     * @property {string} invalidMaxHistory Message displayed when the max history option is invalid
+     * @property {string} invalidMaxSize Message displayed when the maximum file size option is invalid
+     * @property {string} invalidSyslogServer Message displayed when the syslog server configuration is invalid
+     * @property {string} logFile Label for the log file section
+     * @property {string} logFileToggle Label for the button that enables file logging
+     * @property {string} maxHistory Label for the max history option
+     * @property {string} maxSize Label for maximum file size option
+     * @property {string} monthly Label for monthly rollover option
+     * @property {string} none Label for the no compression option
+     * @property {string} rolloverFrequency Label for the rollover frequency options
+     * @property {string} syslog Label for the syslog section
+     * @property {string} syslogHostPlaceholder Placeholder for the syslog server host
+     * @property {string} syslogPortPlaceholder Placeholder for the syslog server port
+     * @property {string} syslogToggle Label for the button that enables syslog logging
+     * @property {string} testButton Label for the test syslog settings button
+     * @property {string} zip Label for the zip compression option
+     *
+     */
+    /**
+     * @name module:settings/js/widgets/logging-widget.LoggingWidget
+     * @desc Widget for configuring logging services
+     * @constructor
+     * @param {LoggingWidgetOptions} options Options for the widget
+     * @extends module:settings/js/widget.Widget
+     */
+    return Widget.extend(/** @lends module:settings/js/widgets/logging-widget.LoggingWidget.prototype */ {
         events: _.extend(Widget.prototype.events, {
             'click [name="test-logging"]': function() {
                 if (!this.testRequest && this.validateSyslogInputs()) {
@@ -48,6 +88,9 @@ define([
             });
         },
 
+        /**
+         * @desc Renders the widget
+         */
         render: function() {
             this.stopListening();
             Widget.prototype.render.apply(this, arguments);
@@ -84,9 +127,34 @@ define([
             this.updateTestSyslogButton();
         },
 
+
+        /**
+         * @typedef LogFileConfiguration
+         * @property {string} compression The compression setting for the log file. Can be either NONE, ZIP or GZIP.
+         * @property {boolean} enabled True if log file logging is enabled; false otherwise
+         * @property {number} maxHistory The maximum number of files that will be kept
+         * @property {number} maxSize The maximum size of a log file
+         * @property {string} rolloverFrequency How often a log file is rotated. Can be DAILY or MONTHLY
+         */
+        /**
+         * @typedef SyslogConfiguration
+         * @property {boolean} enabled True if syslog server logging is enabled; false otherwise
+         * @property {string} host The host of the syslog server
+         * @property {number} port The port of the syslog server
+         */
+        /**
+         * @typedef LoggingConfiguration
+         * @property {LogFileConfiguration} logFile Log file configuration
+         * @property {SyslogConfiguration} syslog Syslog server configuration
+         */
+        /**
+         * @desc Returns the configuration for the wizard
+         * @returns {LoggingConfiguration}
+         */
         getConfig: function() {
             var maxSize = Math.floor(Number(this.$maxSize.val())) * Number(this.$maxSizeUnit.val());
 
+            //noinspection JSValidateTypes
             return {
                 logFile: {
                     compression: this.$compression.val(),
@@ -103,6 +171,10 @@ define([
             };
         },
 
+        /**
+         * @desc Updates the state of the test syslog button
+         * @protected
+         */
         updateTestSyslogButton: function() {
             var $i = this.$testButton.find('i').removeClass();
 
@@ -120,6 +192,10 @@ define([
             }
         },
 
+        /**
+         * @desc Updates the widget with the given configuration
+         * @param {LoggingConfiguration} config The new configuration for the widget
+         */
         updateConfig: function(config) {
             Widget.prototype.updateConfig.apply(this, arguments);
 
@@ -152,6 +228,11 @@ define([
             this.updateTestSyslogButton();
         },
 
+        /**
+         * @desc Validates inputs and applies formatting accordingly
+         * @returns {boolean} False if max history is not an integer in 1-99999 or max file size is not a positive
+         * integer, or the syslog configuration is invalid; true otherwise
+         */
         validateInputs: function() {
             var isValid = true;
 
@@ -159,14 +240,14 @@ define([
                 var maxHistory = Number(this.$maxHistory.val());
 
                 if (_.isNaN(maxHistory) || maxHistory % 1 !== 0 || maxHistory < 0 || maxHistory > 99999) {
-                    this.updateInputValidation(this.$maxHistory);
+                    this.updateInputValidation(this.$maxHistory, false);
                     isValid = false;
                 }
 
                 var maxSize = Number(this.$maxSize.val()) * Number(this.$maxSizeUnit.val());
 
                 if (_.isNaN(maxSize) || maxSize % 1 !== 0 || maxSize < 0) {
-                    this.updateInputValidation(this.$maxSize);
+                    this.updateInputValidation(this.$maxSize, false);
                     isValid = false;
                 }
             }
@@ -175,6 +256,11 @@ define([
             return this.validateSyslogInputs() && isValid;
         },
 
+        /**
+         * @desc Validates the syslog inputs
+         * @returns {boolean} False if the syslog host is empty or the port is not an integer in 1-65535; true otherwise
+         * @protected
+         */
         validateSyslogInputs: function() {
             var isValid = true;
 

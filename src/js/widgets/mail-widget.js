@@ -1,3 +1,6 @@
+/**
+ * @module settings/js/widgets/mail-widget
+ */
 define([
     'settings/js/server-widget',
     'settings/js/controls/password-view',
@@ -13,9 +16,37 @@ define([
 
     template = _.template(template);
 
-    return ServerWidget.extend({
-        className: ServerWidget.prototype.className,
-
+    /**
+     * @typedef MailWidgetStrings
+     * @desc Extends WidgetStrings, EnableViewStrings and PasswordViewStrings
+     * @property {string} hostPlaceholder Placeholder for the mail server host input
+     * @property {string} portPlaceholder Placeholder for the mail server port input
+     * @property {string} validateHostBlank Message displayed when the mail server host is empty
+     * @property {string} connectionSecurity Label for the security method dropdown
+     * @property {string} fromLabel Label for the sender input
+     * @property {string} validateFromBlank Message displayed when the sender input is empty
+     * @property {string} toLabel Label for the recipient input
+     * @property {string} toDescription Instructions for the recipient input
+     * @property {string} validateFromBlank Message displayed when the recipient input is empty
+     * @property {string} mailCheckbox Label for checkbox which enables authentication
+     * @property {string} usernameLabel Label for the username input
+     * @property {string} validateUsernameBlank Message displayed when the username input is empty
+     */
+    /**
+     * @typedef MailWidgetOptions
+     * @desc Extends ServerWidgetOptions
+     * @property {object.<string,string>} securityTypes Security options to use. Keys should be NONE, STARTTLS and TLS.
+     * Values should be display names.
+     * @property {MailWidgetStrings} strings Strings for the widget
+     */
+    /**
+     * @name module:settings/js/widgets/mail-widget.MailWidget
+     * @desc Widget for configuring mail server settings
+     * @constructor
+     * @param {MailWidgetOptions} options Options for the widget
+     * @extends module:settings/js/server-widget.ServerWidget
+     */
+    return ServerWidget.extend(/** @lends module:settings/js/widgets/mail-widget.MailWidget.prototype */{
         events: _.extend({
             'change select[name=connection-security]': 'handleSecurityChange'
         }, ServerWidget.prototype.events),
@@ -37,6 +68,9 @@ define([
             this.securityTypes = options.securityTypes;
         },
 
+        /**
+         * @desc Renders the widget
+         */
         render: function() {
             ServerWidget.prototype.render.call(this);
 
@@ -61,6 +95,23 @@ define([
             $validateButtonParent.before(this.enableView.$el);
         },
 
+        /**
+         * @typedef MailConfiguration
+         * @property {string} connectionSecurity The security method to use. Can be either NONE, TLS, or STARTTLS
+         * @property {boolean} enabled True if the widget is enabled; false otherwise
+         * @property {string} from The email address to be used as the sender
+         * @property {string} host The host of the email server
+         * @property {string} [password] The password to use when authenticating with the mail server. If
+         * passwordRedacted is true then this should be empty
+         * @property {boolean} [passwordRedacted] True if the password exists but is not visible; false otherwise
+         * @property {number} port The port of the email server
+         * @property {string} to Comma separated list of email addresses to be used as the recipient
+         * @property {string} [username] The username to use when authenticating with the mail server
+         */
+        /**
+         * @desc Returns the configuration represented by the widget
+         * @returns {MailConfiguration} The configuration represented by the widget
+         */
         getConfig: function() {
             var authenticationRequired = this.$authCheckbox.prop('checked');
 
@@ -76,9 +127,11 @@ define([
             };
 
             if (authenticationRequired) {
+                //noinspection JSValidateTypes
                 return _.extend(baseConfig, this.passwordView.getConfig(), {username: this.$username.val()});
             }
             else {
+                //noinspection JSValidateTypes
                 return baseConfig;
             }
         },
@@ -93,6 +146,9 @@ define([
             }
         },
 
+        /**
+         * @desc Handler called when the security method is changed. Updates the port to the default for that type
+         */
         handleSecurityChange: function() {
             var newSecurityType = this.$connectionSecurity.val();
 
@@ -103,6 +159,11 @@ define([
             this.lastSecurityType = newSecurityType;
         },
 
+        /**
+         * @desc Enables the username and password inputs if authentication is required, and disables them if not
+         * @param authRequired True if authentication should be used; false otherwise
+         * @protected
+         */
         updateAuthState: function(authRequired) {
             this.$authCheckbox.prop('checked', authRequired);
             this.$username.prop('disabled', !authRequired);
@@ -110,10 +171,18 @@ define([
             this.passwordView.setEnabled(authRequired);
         },
 
+        /**
+         * @desc Determines if the widget should be validated
+         * @returns {boolean} True if the widget is enabled; false otherwise
+         */
         shouldValidate: function() {
             return this.enableView.getConfig();
         },
 
+        /**
+         * @desc Updates the widget with the given config
+         * @param {MailConfiguration} config The new configuration for the widget
+         */
         updateConfig: function(config) {
             ServerWidget.prototype.updateConfig.apply(this, arguments);
 
@@ -130,6 +199,11 @@ define([
             this.updateAuthState(config.username !== '' || this.$authCheckbox.prop('checked'));
         },
 
+        /**
+         * @desc Validates the widget and applies formatting as appropriate
+         * @returns {boolean} False if the host is empty, the from field is empty, the recipient list is empty, or the
+         * username or password fields are blank if authentication is used; true otherwise
+         */
         validateInputs: function() {
             var isValid = true;
 
@@ -138,17 +212,17 @@ define([
 
                 if (config.host === '') {
                     isValid = false;
-                    this.updateInputValidation(this.$host);
+                    this.updateInputValidation(this.$host, false);
                 }
 
                 if (config.from === '') {
                     isValid = false;
-                    this.updateInputValidation(this.$from);
+                    this.updateInputValidation(this.$from, false);
                 }
 
                 if (!config.to.length) {
                     isValid = false;
-                    this.updateInputValidation(this.$to);
+                    this.updateInputValidation(this.$to, false);
                 }
 
                 if (this.$authCheckbox.prop('checked')) {
@@ -158,7 +232,7 @@ define([
 
                     if (config.username === '') {
                         isValid = false;
-                        this.updateInputValidation(this.$username);
+                        this.updateInputValidation(this.$username, false);
                     }
                 }
             }
