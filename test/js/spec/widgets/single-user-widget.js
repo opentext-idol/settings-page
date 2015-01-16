@@ -1,3 +1,8 @@
+/*
+ * Copyright 2013-2015 Hewlett-Packard Development Company, L.P.
+ * Licensed under the MIT License (the "License"); you may not use this file except in compliance with the License.
+ */
+
 define([
     'settings/js/widgets/single-user-widget',
     'test/test-utils',
