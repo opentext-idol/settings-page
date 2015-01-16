@@ -1,7 +1,13 @@
 {
   "name": "hp-autonomy-settings-page",
-  "version": "1.0.0",
   "authors": [
+    "Alessando Galli",
+    "Tung Jin Chew <tung-jin.chew@hp.com>",
+    "Matthew Gordon <matthew.gordon2@hp.com>",
+    "Xiaochen Guo",
+    "Alyona Ivanova <alyona.ivanova@hp.com>",
+    "David Knipe <david.knipe@hp.com>",
+    "Luca Mandrioli",
     "Alex Scown <alex.scown@hp.com>"
   ],
   "description": "An application settings page and a collection of widgets",
