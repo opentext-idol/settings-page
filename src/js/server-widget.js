@@ -123,7 +123,7 @@ define([
          * @param {ValidationResponse} response The response from the server
          * @returns {string} A message indicating validation was successful
          */
-        getValidationSuccessMessage: function(response) {
+        getValidationSuccessMessage: function() {
             return this.strings.validateSuccess;
         },
 
