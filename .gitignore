@@ -1,0 +1,17 @@
+# IntelliJ
+*.ipr
+*.iml
+*.iws
+.idea/
+
+node_modules/
+bower_components/
+
+# Build products
+spec-runner.html
+coverage-runner.html
+.grunt/
+bin
+
+# Documentation
+doc/
