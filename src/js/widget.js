@@ -6,7 +6,6 @@ define([
     'text!settings/templates/widget.html'
 ], function(Backbone, template) {
 
-
     /**
      * @typedef WidgetStrings
      * @property {string} iconClass Icon to use in the title bar for the widget
