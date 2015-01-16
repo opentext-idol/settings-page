@@ -1,0 +1,16 @@
+language: node_js
+node_js:
+- "0.10"
+branches:
+  only:
+  - master
+  - develop
+env:
+  global:
+    - secure: "UfYavLB1FeVZZtJ9w+KwQ/m5JPkBhlcMyOPqILf+I+u08DY5/5nQ2VjvgAK7nakKtXHIrIurxlrd4MZogUICFeS7bu347rT8cHOUBo/R+Q4wYmaAInyek2NXawAdTxwl9hMxOHwAm6pxBGzji4rzuHPIr5ZttKdNHwxXmzfgvc4="
+before_install:
+- npm install -g grunt-cli
+- npm install -g bower
+- bower install
+script: grunt
+after_script: bash travis.sh
