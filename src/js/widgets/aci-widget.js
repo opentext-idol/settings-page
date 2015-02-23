@@ -15,6 +15,8 @@ define([
      * @typedef AciWidgetStrings
      * @desc Extends ServerWidgetStrings
      * @property {string} validateHostBlank String which indicates that the entered host is blank
+     * @property {string} validatePortInvalid String which indicates that the entered port is blank, or is &lt;= 0 or
+     * &gt; 65535
      */
     /**
      * @typedef AciWidgetOptions
@@ -104,11 +106,35 @@ define([
          */
         validateInputs: function() {
             if (this.$host.val() === '') {
-                this.updateInputValidation(this.$host, false);
+                this.updateInputValidation(this.$host, false, this.strings.validateHostBlank);
+                return false;
+            }
+
+            var port = Number(this.$port.val());
+
+            if (port <= 0 || port > 65535) {
+                this.updateInputValidation(this.$port, false, this.strings.validatePortInvalid);
                 return false;
             }
 
             return true;
+        },
+
+        /**
+         * @desc Updates the formatting of the given input
+         * <p> If isValid is true, removes errorClass from the input and hides elements with the class
+         * settings-client-validation
+         * <p> If isValid is false, adds errorClass to the input and shows elements with the class
+         * settings-client-validation
+         * @param {jQuery} $input The input to apply the classes to
+         * @param {boolean} isValid True if the input is valid; false otherwise
+         * @param {string} message Validation message to display
+         * @protected
+         */
+        updateInputValidation: function($input, isValid, message) {
+            this.$('.settings-client-validation').text(message);
+
+            ServerWidget.prototype.updateInputValidation.call(this, $input, isValid)
         }
     });
 
