@@ -1,4 +1,4 @@
-<div class="alert alert-error"><strong><%-ctx.strings.failure%></strong>
+<div class="alert alert-<%-ctx.strings.alertErrorClass || 'error'%>"><strong><%-ctx.strings.failure%></strong>
 <% if(ctx.validation) { %>
     <ul>
         <% _.each(ctx.validation, function(result, component) { %>
