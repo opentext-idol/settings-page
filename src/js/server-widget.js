@@ -133,7 +133,13 @@ define([
          * @returns {string} A message indicating validation was unsuccessful
          */
         getValidationFailureMessage: function(response) {
-            return response.data || this.strings.validateFailed;
+            var data = response.data;
+
+            if (data.validation === 'INCORRECT_SERVER_TYPE') {
+                return this.strings.INCORRECT_SERVER_TYPE(data.friendlyNames.join(', '));
+            } else {
+                return this.strings[data];
+            }
         },
 
         /**
