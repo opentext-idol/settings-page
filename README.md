@@ -1,4 +1,4 @@
-# Login Page
+# Settings Page
 
 [![Build Status](https://travis-ci.org/hpautonomy/settings-page.svg?branch=master)](https://travis-ci.org/hpautonomy/settings-page)
 
