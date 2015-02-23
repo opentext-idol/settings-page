@@ -78,9 +78,9 @@ module.exports = (grunt) ->
 
                       # redirect
                       if instrumented.indexOf(url) > -1
-                        url = './.grunt/grunt-contrib-jasmine/' + url;
+                        url = './.grunt/grunt-contrib-jasmine/' + url
 
-                      return oldLoad.apply(this, [context, moduleName, url]);
+                      return oldLoad.apply(this, [context, moduleName, url])
                     return
                   return
 
