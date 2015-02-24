@@ -135,6 +135,20 @@ define([
             this.$('.settings-client-validation').text(message);
 
             ServerWidget.prototype.updateInputValidation.call(this, $input, isValid)
+        },
+
+        getValidationFailureMessage: function(response) {
+            var data = response.data;
+
+            if(data) {
+                if(data.validation === 'INCORRECT_SERVER_TYPE') {
+                    return this.strings.INCORRECT_SERVER_TYPE(data.friendlyNames.join(', '));
+                } else {
+                    return this.strings[data];
+                }
+            } else {
+                return ServerWidget.prototype.getValidationFailureMessage.call(this, response);
+            }
         }
     });
 

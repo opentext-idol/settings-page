@@ -22,7 +22,7 @@ define([
             serverUtils.standardBeforeEach.call(this, {
                 WidgetConstructor: AciWidget,
                 constructorOptions: _.extend({
-                    strings: serverUtils.strings
+                    strings: _.extend({INCORRECT_SERVER_TYPE: _.identity, CONNECTION_ERROR: 'CONNECTION_ERROR'}, serverUtils.strings)
                 }, serverUtils.defaultOptions),
                 initialConfig: initialConfig
             });
@@ -69,6 +69,28 @@ define([
             expect(this.widget.$el.find('.settings-client-validation')).not.toHaveClass('hide');
         });
 
+        it('should fail if the port is negative', function() {
+            this.$port.val('-1');
+            var isValid = this.widget.validateInputs();
+
+            expect(isValid).toBeFalsy();
+            expect(this.widget.$el).not.toHaveClass('success');
+            expect(this.widget.$el).not.toHaveClass('error');
+            expect(this.widget.$el.find('.control-group')).toHaveClass('error');
+            expect(this.widget.$el.find('.settings-client-validation')).not.toHaveClass('hide');
+        });
+
+        it('should fail if the port is greater than 65535', function() {
+            this.$port.val('65536');
+            var isValid = this.widget.validateInputs();
+
+            expect(isValid).toBeFalsy();
+            expect(this.widget.$el).not.toHaveClass('success');
+            expect(this.widget.$el).not.toHaveClass('error');
+            expect(this.widget.$el.find('.control-group')).toHaveClass('error');
+            expect(this.widget.$el.find('.settings-client-validation')).not.toHaveClass('hide');
+        });
+
         it('should remove previous client side validation on next validation', function() {
             var $hostControlGroup = this.widget.$el.find('.control-group');
             this.widget.lastValidationConfig = initialConfig;
@@ -96,6 +118,24 @@ define([
             expect(this.validationSpy).toHaveBeenCalled();
             expect(this.widget.$('.settings-client-validation')).toHaveClass('hide');
         });
+
+        describe('getValidationFailureMessage', function() {
+            it('should return a failure message for the INCORRECT_SERVER_TYPE error code', function() {
+                var fakeResponse = {data: {validation: 'INCORRECT_SERVER_TYPE', friendlyNames: ['AXE', 'UASERVER']}};
+
+                var failureMessage = this.widget.getValidationFailureMessage(fakeResponse);
+
+                expect(failureMessage).toBe('AXE, UASERVER');
+            });
+
+            it('should return a failure message based on the error code', function() {
+                var fakeResponse = {data: 'CONNECTION_ERROR'};
+
+                var failureMessage = this.widget.getValidationFailureMessage(fakeResponse);
+
+                expect(failureMessage).toBe('CONNECTION_ERROR');
+            });
+        })
     });
 
 });
