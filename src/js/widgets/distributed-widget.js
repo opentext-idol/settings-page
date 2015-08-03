@@ -216,7 +216,7 @@ define([
         },
 
         validateInputs: function() {
-            return this.methods[this.viewState].validateInputs().apply(this, arguments);
+            return this.methods[this.viewState].validateInputs.apply(this, arguments);
         }
     });
 
