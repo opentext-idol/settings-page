@@ -21,6 +21,14 @@ define([
         serverSelectionTemplate: _.template(serverSelectionTemplate),
         distributedTemplate: _.template(template),
 
+        initialize: function() {
+            ServerWidget.prototype.initialize.apply(this, arguments);
+
+            this.dih = {};
+            this.dah = {};
+            this.standard = {};
+        },
+
         render: function() {
             ServerWidget.prototype.render.call(this);
 
@@ -111,22 +119,33 @@ define([
         updateConfig: function(config) {
             ServerWidget.prototype.updateConfig.apply(this, arguments);
 
-            this.productType = config.productType;
-            this.indexErrorMessage = config.indexErrorMessage;
+            if(config.distributed) {
+                var dih = config.dih;
+                var dah = config.dah;
 
-            // Standard
-            this.$host.val(config.host);
-            this.$port.val(config.port);
-            this.$protocol.val(config.protocol);
+                this.$indexingHost.val(dih.host);
+                this.$indexingAciPort.val(dih.port);
+                this.$indexingProtocol.val(dih.protocol);
 
-            // Distributed
-            this.$aciHost.val(config.aciHost);
-            this.$aciPort.val(config.aciPort);
-            this.$aciProtocol.val(config.aciProtocol);
+                this.dih.productType = dih.productType;
+                this.dih.indexErrorMessage = dih.indexErrorMessage;
 
-            this.$indexingHost.val(config.indexingHost);
-            this.$indexingAciPort.val(config.indexingAciPort);
-            this.$indexingProtocol.val(config.indexingProtocol);
+                this.$aciHost.val(dah.host);
+                this.$aciPort.val(dah.port);
+                this.$aciProtocol.val(dah.protocol);
+
+                this.dah.productType = dah.productType;
+                this.dah.indexErrorMessage = dah.indexErrorMessage;
+            } else {
+                var standard = config.standard;
+
+                this.standard.productType = standard.productType;
+                this.standard.indexErrorMessage = standard.indexErrorMessage;
+
+                this.$host.val(standard.host);
+                this.$port.val(standard.port);
+                this.$protocol.val(standard.protocol);
+            }
         },
 
         methods: {
@@ -134,16 +153,24 @@ define([
                 getConfig: function() {
                     //noinspection JSValidateTypes
                     return {
-                        aciHost: this.$aciHost.val(),
-                        aciPort: Number(this.$aciPort.val()),
-                        aciProtocol: this.$aciProtocol.val(),
+                        distributed: true,
+                        dih: {
+                            host: this.$indexingHost.val(),
+                            port: Number(this.$indexingAciPort.val()),
+                            protocol: this.$indexingProtocol.val(),
 
-                        indexingHost: this.$indexingHost.val(),
-                        indexingAciPort: Number(this.$indexingAciPort.val()),
-                        indexingProtocol: this.$indexingProtocol.val(),
+                            productType: this.dih.productType,
+                            indexErrorMessage: this.dih.indexErrorMessage
+                        },
+                        dah: {
+                            host: this.$aciHost.val(),
+                            port: Number(this.$aciPort.val()),
+                            protocol: this.$aciProtocol.val(),
 
-                        productType: this.productType,
-                        indexErrorMessage: this.indexErrorMessage
+                            productType: this.dah.productType,
+                            indexErrorMessage: this.dah.indexErrorMessage
+                        }
+
                     };
                 },
 
@@ -180,12 +207,15 @@ define([
                 getConfig: function() {
                     //noinspection JSValidateTypes
                     return {
-                        host: this.$host.val(),
-                        port: Number(this.$port.val()),
-                        protocol: this.$protocol.val(),
+                        distributed: false,
+                        standard: {
+                            host: this.$host.val(),
+                            port: Number(this.$port.val()),
+                            protocol: this.$protocol.val(),
 
-                        productType: this.productType,
-                        indexErrorMessage: this.indexErrorMessage
+                            productType: this.standard.productType,
+                            indexErrorMessage: this.standard.indexErrorMessage
+                        }
                     };
                 },
 
