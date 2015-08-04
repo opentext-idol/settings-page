@@ -119,33 +119,31 @@ define([
         updateConfig: function(config) {
             ServerWidget.prototype.updateConfig.apply(this, arguments);
 
-            if(config.distributed) {
-                var dih = config.dih;
-                var dah = config.dah;
+            var dih = config.dih;
+            var dah = config.dah;
 
-                this.$indexingHost.val(dih.host);
-                this.$indexingAciPort.val(dih.port);
-                this.$indexingProtocol.val(dih.protocol);
+            this.$indexingHost.val(dih.host);
+            this.$indexingAciPort.val(dih.port);
+            this.$indexingProtocol.val(dih.protocol);
 
-                this.dih.productType = dih.productType;
-                this.dih.indexErrorMessage = dih.indexErrorMessage;
+            this.dih.productType = dih.productType;
+            this.dih.indexErrorMessage = dih.indexErrorMessage;
 
-                this.$aciHost.val(dah.host);
-                this.$aciPort.val(dah.port);
-                this.$aciProtocol.val(dah.protocol);
+            this.$aciHost.val(dah.host);
+            this.$aciPort.val(dah.port);
+            this.$aciProtocol.val(dah.protocol);
 
-                this.dah.productType = dah.productType;
-                this.dah.indexErrorMessage = dah.indexErrorMessage;
-            } else {
-                var standard = config.standard;
+            this.dah.productType = dah.productType;
+            this.dah.indexErrorMessage = dah.indexErrorMessage;
 
-                this.standard.productType = standard.productType;
-                this.standard.indexErrorMessage = standard.indexErrorMessage;
+            var standard = config.standard;
 
-                this.$host.val(standard.host);
-                this.$port.val(standard.port);
-                this.$protocol.val(standard.protocol);
-            }
+            this.standard.productType = standard.productType;
+            this.standard.indexErrorMessage = standard.indexErrorMessage;
+
+            this.$host.val(standard.host);
+            this.$port.val(standard.port);
+            this.$protocol.val(standard.protocol);
         },
 
         methods: {
