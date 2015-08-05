@@ -2,14 +2,22 @@
     <option value="standard" selected><%-strings.standard%></option>
     <option value="distributed"><%-strings.distributed%></option>
 </select>
-<div class="standard-view"></div>
+<div class="standard-view m-t-sm">
+    <div class="standard-group"></div>
+    <span class="settings-client-validation settings-info"></span>
+    <span class="settings-server-validation settings-info standard-error"></span>
+</div>
 <div class="distributed-view">
     <div>
-        <span><%-strings.dih%></span>
+        <span><%-strings.dah%></span>
         <span class="aci-group"></span>
+        <span class="settings-client-validation settings-info"></span>
+        <span class="settings-server-validation settings-info aci-error"></span>
     </div>
     <div>
-        <span><%-strings.dah%></span>
+        <span><%-strings.dih%></span>
         <span class="indexing-group"></span>
+        <span class="settings-client-validation settings-info"></span>
+        <span class="settings-server-validation settings-info indexing-error"></span>
     </div>
 </div>

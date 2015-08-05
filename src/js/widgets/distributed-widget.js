@@ -48,7 +48,7 @@ define([
             this.$standardView = this.$('.standard-view');
             this.update();
 
-            this.$standardView.append(this.serverSelectionTemplate({
+            this.$('.standard-group').append(this.serverSelectionTemplate({
                 strings: this.strings,
                 tag: 'standard'
             }));
@@ -74,12 +74,70 @@ define([
             this.$indexingHost = this.$('input[name=indexing-host]');
             this.$indexingAciPort = this.$('input[name=indexing-port]');
             this.$indexingProtocol = this.$('select[name=indexing-protocol]');
+
+            this.$aciConnectionState = this.$('.aci-error');
+            this.$indexingConnectionState = this.$('.indexing-error');
+            this.$standardConnectionState = this.$('.standard-error');
         },
 
+        // Class specific functions
+
         update: function() {
+            this.removeMainMessage();
             this.$distributedView.toggleClass('hide', this.viewState !== viewState.distributed);
             this.$standardView.toggleClass('hide', this.viewState === viewState.distributed);
         },
+
+        displayDistributedValidationResult: function($target, result) {
+            if(result.validation === 'INCORRECT_SERVER_TYPE') {
+                $target.text(this.strings.INCORRECT_SERVER_TYPE(result.friendlyNames.join(', ')));
+            } else {
+                $target.text(this.strings[result]);
+            }
+
+            $target.removeClass('hide');
+        },
+
+        distributedError: function(result, $target) {
+            if(result) {
+                this.displayDistributedValidationResult($target, result.data);
+            } else {
+                $target.addClass('hide');
+            }
+        },
+
+        removeMainMessage: function() {
+            this.$connectionState.text('').css({opacity: 0}).stop();
+        },
+
+        // Overrides
+
+        /**
+         * @desc Handles the results of server side validation
+         */
+        displayValidationMessage: function(isEqual, response) {
+            ServerWidget.prototype.displayValidationMessage.apply(this, arguments);
+
+            if (isEqual) {
+                this.setValidationFormatting(this.lastValidation ? this.successClass : this.errorClass);
+
+                if(!this.lastValidation) {
+                    var data = response.data;
+
+                    if(data) {
+                        if(this.lastValidationConfig.distributed) {
+                            this.distributedError(data.dihValidationResult, this.$indexingConnectionState);
+                            this.distributedError(data.dahValidationResult, this.$aciConnectionState);
+                            this.removeMainMessage();
+                        } else {
+                            this.displayDistributedValidationResult(this.$standardConnectionState, data);
+                        }
+                    }
+                }
+            }
+        },
+
+        handleInputChange: $.noop,
 
         /**
          * @desc Updates the formatting of the given input
@@ -98,19 +156,7 @@ define([
             ServerWidget.prototype.updateInputValidation.call(this, $input, isValid)
         },
 
-        getValidationFailureMessage: function(response) {
-            var data = response.data;
-
-            if(data) {
-                if(data.validation === 'INCORRECT_SERVER_TYPE') {
-                    return this.strings.INCORRECT_SERVER_TYPE(data.friendlyNames.join(', '));
-                } else {
-                    return this.strings[data];
-                }
-            } else {
-                return ServerWidget.prototype.getValidationFailureMessage.call(this, response);
-            }
-        },
+        getValidationFailureMessage: $.noop,
 
         /**
          * @desc Populates the widget with the given config
