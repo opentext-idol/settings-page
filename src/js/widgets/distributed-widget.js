@@ -168,6 +168,18 @@ define([
             var dih = config.dih;
             var dah = config.dah;
 
+            var distributed = config.distributed;
+
+            if(distributed) {
+                this.$serverConfigurationType.val(viewState.distributed);
+                this.viewState = viewState.distributed;
+            } else {
+                this.$serverConfigurationType.val(viewState.standard);
+                this.viewState = viewState.standard;
+            }
+
+            this.update();
+
             this.$indexingHost.val(dih.host);
             this.$indexingAciPort.val(dih.port);
             this.$indexingProtocol.val(dih.protocol);
