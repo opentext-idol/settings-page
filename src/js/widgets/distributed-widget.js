@@ -21,6 +21,13 @@ define([
         serverSelectionTemplate: _.template(serverSelectionTemplate),
         distributedTemplate: _.template(template),
 
+        events: _.extend({
+            'change select[name="server-configuration-type"]': function() {
+                this.viewState = this.$serverConfigurationType.val();
+                this.update();
+            }
+        }, ServerWidget.prototype.events),
+
         initialize: function() {
             ServerWidget.prototype.initialize.apply(this, arguments);
 
@@ -36,13 +43,7 @@ define([
                 strings: this.strings
             }));
 
-            this.viewState = viewState.standard;
-
             this.$serverConfigurationType = this.$('select[name="server-configuration-type"]');
-            this.$serverConfigurationType.change(_.bind(function() {
-                this.viewState = this.$serverConfigurationType.val();
-                this.update();
-            }, this));
 
             this.$distributedView = this.$('.distributed-view');
             this.$standardView = this.$('.standard-view');
@@ -184,24 +185,19 @@ define([
             this.$indexingAciPort.val(dih.port);
             this.$indexingProtocol.val(dih.protocol);
 
-            this.dih.productType = dih.productType;
-            this.dih.indexErrorMessage = dih.indexErrorMessage;
-
             this.$aciHost.val(dah.host);
             this.$aciPort.val(dah.port);
             this.$aciProtocol.val(dah.protocol);
 
-            this.dah.productType = dah.productType;
-            this.dah.indexErrorMessage = dah.indexErrorMessage;
-
             var standard = config.standard;
-
-            this.standard.productType = standard.productType;
-            this.standard.indexErrorMessage = standard.indexErrorMessage;
 
             this.$host.val(standard.host);
             this.$port.val(standard.port);
             this.$protocol.val(standard.protocol);
+
+            this.dih = _.pick(dih, 'productType', 'indexErrorMessage');
+            this.dah = _.pick(dah, 'productType', 'indexErrorMessage');
+            this.standard = _.pick(standard, 'productType', 'indexErrorMessage');
         },
 
         methods: {
