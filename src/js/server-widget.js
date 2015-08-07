@@ -67,7 +67,7 @@ define([
                 strings: this.strings
             }));
 
-            this.$connectionState = this.$('.settings-server-validation');
+            this.$connectionState = this.$('.connection-state');
         },
 
         handleInputChange: function() {
@@ -110,7 +110,7 @@ define([
                     message = this.getValidationFailureMessage(response);
                 }
 
-                this.$('.settings-server-validation').text(message)
+                this.$connectionState.text(message)
                     .stop()
                     .animate({opacity: 1});
             } else {
