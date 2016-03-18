@@ -99,13 +99,14 @@ define([
 
         it('should only update the server validation formatting if the inputs have not changed since the validation was requested', function() {
             this.widget.lastValidationConfig = initialConfig;
+            var initialHost = this.widget.$('input[name="host"]').val();
             this.widget.$('input[name="host"]').val('yoda').trigger('change');
             this.widget.handleValidation(initialConfig, {valid: false});
 
             expect(this.widget.$el).not.toHaveClass('success');
             expect(this.widget.$el).not.toHaveClass('error');
 
-            this.widget.$('input[name="host"]').val(initialConfig.host).trigger('change');
+            this.widget.$('input[name="host"]').val(initialHost).trigger('change');
 
             expect(this.widget.$el).toHaveClass('error');
             expect(this.widget.$el).not.toHaveClass('success');
