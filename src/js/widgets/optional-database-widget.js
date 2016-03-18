@@ -34,6 +34,17 @@ define([
             if (config.enabled) {
                 DatabaseWidget.prototype.updateConfig.call(this, config.datasource);
             }
+        },
+
+        validateInputs: function () {
+            var isValid = true;
+
+            if (this.shouldValidate()) {
+                var config = this.getConfig();
+                isValid = this.validateDatasourceConfig(config.datasource);
+            }
+
+            return isValid;
         }
     });
 });

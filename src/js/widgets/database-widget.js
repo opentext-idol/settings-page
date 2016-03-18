@@ -245,27 +245,34 @@ define([
 
             if (this.shouldValidate()) {
                 var config = this.getConfig();
+                isValid = this.validateDatasourceConfig(config);
+            }
 
-                if (config.platform && config.platform !== 'h2') {
-                    var serverConfig = this.databaseTypes[config.platform].parseUrl(config.url);
-                    if (!serverConfig.host) {
-                        isValid = false;
-                        this.updateInputValidation(this.$host, false);
-                    }
+            return isValid;
+        },
 
-                    if (!config.username) {
-                        isValid = false;
-                        this.updateInputValidation(this.$username, false);
-                    }
+        validateDatasourceConfig: function (config) {
+            var isValid = true;
 
-                    if (!serverConfig.database) {
-                        isValid = false;
-                        this.updateInputValidation(this.$database, false);
-                    }
-
-                    // needs to be this way round to apply formatting
-                    isValid = this.passwordView.validateInputs() && isValid;
+            if (config.platform && config.platform !== 'h2') {
+                var serverConfig = this.databaseTypes[config.platform].parseUrl(config.url);
+                if (!serverConfig.host) {
+                    isValid = false;
+                    this.updateInputValidation(this.$host, false);
                 }
+
+                if (!config.username) {
+                    isValid = false;
+                    this.updateInputValidation(this.$username, false);
+                }
+
+                if (!serverConfig.database) {
+                    isValid = false;
+                    this.updateInputValidation(this.$database, false);
+                }
+
+                // needs to be this way round to apply formatting
+                isValid = this.passwordView.validateInputs() && isValid;
             }
 
             return isValid;
