@@ -9,8 +9,8 @@ define([
     'jasmine-jquery'
 ], function(DatabaseWidget, serverUtils) {
 
-    describe('Database widget', function(initialConfig) {
-        function testDatabaseCheckbox() {
+    describe('Database widget', function() {
+        function testDatabaseCheckbox(initialConfig) {
             it('should use the username for the database name when the checkbox is checked', function() {
                 var $checkbox = this.widget.$('input[type="checkbox"]');
                 var $username = this.widget.$('input[name="username"]');
@@ -18,7 +18,7 @@ define([
 
                 this.widget.updateConfig(_.defaults({
                     username: 'postgres',
-                    database: 'postgres'
+                    url: 'jdbc:postgresql://myHost:123/postgres'
                 }, initialConfig));
 
                 expect($checkbox).toHaveProp('checked', true);
@@ -46,79 +46,7 @@ define([
             });
         }
 
-        describe('when it has an enabled widget', function() {
-            var initialConfig = {
-                enabled: true,
-                database: 'myDatabase',
-                host: 'myHost',
-                password: '',
-                passwordRedacted: true,
-                port: 123,
-                protocol: 'postgres',
-                username: 'user'
-            };
-
-            beforeEach(function() {
-                serverUtils.standardBeforeEach.call(this, {
-                    WidgetConstructor: DatabaseWidget,
-                    constructorOptions: _.extend({
-                        canDisable: true,
-                        strings: serverUtils.strings
-                    }, serverUtils.defaultOptions),
-                    initialConfig: initialConfig
-                });
-            });
-
-            serverUtils.standardTests.call(this, {initialConfig: initialConfig});
-            serverUtils.testDisablableServerShouldValidateFunction.call(this, {initialConfig: initialConfig});
-
-            it('should display the correct config', function() {
-                expect(this.widget.$('input[name=host]')).toHaveValue('myHost');
-                expect(this.widget.$('input[name=port]')).toHaveValue('123');
-                expect(this.widget.$('input[name=database]')).toHaveValue('myDatabase');
-                expect(this.widget.$('input[name=username]')).toHaveValue('user');
-                expect(this.widget.enableView.enabled).toBeTruthy();
-
-                var passwordViewArgs = this.widget.passwordView.updateConfig.mostRecentCall.args[0];
-                expect(passwordViewArgs.password).toEqual('');
-                expect(passwordViewArgs.passwordRedacted).toBeTruthy();
-            });
-
-            it('should return the correct config', function() {
-                expect(this.widget.getConfig()).toEqual(initialConfig)
-            });
-
-            testDatabaseCheckbox.call(this, initialConfig);
-        });
-
-        describe('without an enabled widget', function() {
-            var initialConfig = {
-                database: 'myDatabase',
-                host: 'myHost',
-                password: '',
-                passwordRedacted: true,
-                port: 123,
-                protocol: 'postgres',
-                username: 'user'
-            };
-
-            beforeEach(function() {
-                serverUtils.standardBeforeEach.call(this, {
-                    WidgetConstructor: DatabaseWidget,
-                    constructorOptions: _.extend({
-                        canDisable: false,
-                        strings: serverUtils.strings
-                    }, serverUtils.defaultOptions),
-                    initialConfig: initialConfig
-                });
-            });
-
-            serverUtils.standardTests.call(this, {initialConfig: initialConfig});
-
-            it('should always validate on load', function() {
-                expect(this.widget.shouldValidate()).toBeTruthy();
-            });
-
+        function testPostgres(initialConfig) {
             it('should display the correct config', function() {
                 expect(this.widget.$('input[name=host]')).toHaveValue('myHost');
                 expect(this.widget.$('input[name=port]')).toHaveValue('123');
@@ -133,8 +61,16 @@ define([
             });
 
             it('should return the correct config', function() {
-                this.widget.$('input[name=databas]').val('new_&&DatAbaSe');
-                expect(this.widget.getConfig()).toEqual(_.extend({database: 'new_&&DatAbaSe'}, initialConfig));
+                this.widget.$('input[name=database]').val('new_&&DatAbaSe');
+                expect(this.widget.getConfig()).toEqual({
+                    platform: 'postgres',
+                    hibernateDialect: 'org.hibernate.dialect.PostgreSQL82Dialect',
+                    driverClassName: 'org.postgresql.Driver',
+                    url: 'jdbc:postgresql://myHost:123/new_&&DatAbaSe',
+                    password: '',
+                    passwordRedacted: true,
+                    username: 'user'
+                });
             });
 
             it('should fail client side validation on empty host, username or password', function() {
@@ -157,6 +93,110 @@ define([
             });
 
             testDatabaseCheckbox.call(this, initialConfig);
+        }
+
+        describe('with a postgres widget', function() {
+            var initialConfig = {
+                platform: 'postgres',
+                hibernateDialect: 'org.hibernate.dialect.PostgreSQL82Dialect',
+                driverClassName: 'org.postgresql.Driver',
+                url: 'jdbc:postgresql://myHost:123/myDatabase',
+                password: '',
+                passwordRedacted: true,
+                username: 'user'
+            };
+
+            beforeEach(function() {
+                serverUtils.standardBeforeEach.call(this, {
+                    WidgetConstructor: DatabaseWidget,
+                    constructorOptions: _.extend({
+                        canDisable: false,
+                        databaseType: 'postgres',
+                        strings: serverUtils.strings
+                    }, serverUtils.defaultOptions),
+                    initialConfig: initialConfig
+                });
+            });
+
+            serverUtils.standardTests.call(this, {initialConfig: initialConfig});
+
+            it('should always validate on load', function() {
+                expect(this.widget.shouldValidate()).toBeTruthy();
+            });
+
+            it('should not display database type dropdown', function() {
+                expect(this.widget.$('.database-type-selection')).toHaveClass('hide');
+            });
+
+            it('should display postgres datasource widget', function() {
+                expect(this.widget.$('.database-config')).not.toHaveClass('hide');
+            });
+
+            testPostgres.call(this, initialConfig);
+        });
+
+        describe('with a selectable widget', function() {
+            var initialConfig = {
+                password: '',
+                passwordRedacted: true,
+                username: 'user'
+            };
+
+            beforeEach(function() {
+                serverUtils.standardBeforeEach.call(this, {
+                    WidgetConstructor: DatabaseWidget,
+                    constructorOptions: _.extend({
+                        canDisable: false,
+                        strings: serverUtils.strings
+                    }, serverUtils.defaultOptions),
+                    initialConfig: initialConfig
+                });
+            });
+
+            it('should always validate on load', function() {
+                expect(this.widget.shouldValidate()).toBeTruthy();
+            });
+
+            it('should display database type dropdown', function() {
+                expect(this.widget.$('.database-type-selection')).not.toHaveClass('hide');
+            });
+
+            it('should not display datasource widget', function() {
+                expect(this.widget.$('.database-config')).toHaveClass('hide');
+            });
+
+            it('should return the correct h2 config', function() {
+                expect(this.widget.getConfig()).toEqual({
+                    platform: 'h2',
+                    hibernateDialect: 'org.hibernate.dialect.H2Dialect',
+                    driverClassName: 'org.h2.Driver',
+                    url: 'jdbc:h2:mem:site-admin',
+                    password: '',
+                    passwordRedacted: true,
+                    username: 'sa'
+                });
+            });
+
+            describe('after selecting postgres', function() {
+                var postgresConfig = {
+                    platform: 'postgres',
+                    hibernateDialect: 'org.hibernate.dialect.PostgreSQL82Dialect',
+                    driverClassName: 'org.postgresql.Driver',
+                    url: 'jdbc:postgresql://myHost:123/myDatabase',
+                    password: '',
+                    passwordRedacted: true,
+                    username: 'user'
+                };
+
+                beforeEach(function() {
+                    this.widget.$('.database-type-input option[value=h2]').removeAttr('selected');
+                    this.widget.$('.database-type-input option[value=postgres]').attr('selected', 'selected');
+                    this.widget.updateConfig(postgresConfig);
+                });
+
+                serverUtils.standardTests.call(this, {initialConfig: postgresConfig});
+                testPostgres.call(this, postgresConfig);
+            });
         });
     });
 

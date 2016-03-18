@@ -22,6 +22,7 @@ define(function() {
             test: 'test/js'
         },
         shim: {
+            bootstrap: ['jquery'],
             sinon: {
                 exports: 'sinon'
             },
