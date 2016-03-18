@@ -193,6 +193,20 @@
 					</ul>
 				</li>
 				
+				<li class="dropdown">
+					<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b
+						class="caret"></b></a>
+
+					<ul class="dropdown-menu ">
+						
+						<li>
+							<a href="global.html#shouldValidate">shouldValidate</a>
+						</li>
+						
+
+					</ul>
+				</li>
+				
 			</ul>
 		</div>
 	</div>
@@ -222,12 +236,12 @@
 define([
     'settings/js/server-widget',
     'settings/js/controls/password-view',
-    'settings/js/controls/enable-view',
-    'text!settings/templates/widgets/database-widget.html'
-], function(ServerWidget, PasswordView, EnableView, template) {
+    'text!settings/templates/widgets/database-widget.html',
+    'text!settings/templates/widgets/databases-widget.html'
+], function (ServerWidget, PasswordView, template, selectionTemplate) {
     /**
      * @typedef DatabaseWidgetStrings
-     * @desc Includes all properties from ServerWidgetStrings, EnableViewStrings, and PasswordViewStrings
+     * @desc Includes all properties from ServerWidgetStrings and PasswordViewStrings
      * @property {string} databaseCheckbox Label for the database checkbox
      * @property {string} databaseLabel Label for the database field
      * @property {string} flywayMigrationFromEmpty String to display if the database will need to be set up for the
@@ -269,10 +283,11 @@ define([
          * @type module:settings/js/widgets/database-widget.DatabaseWidget~DatabaseTemplate
          */
         databaseTemplate: _.template(template),
+        databasesTemplate: _.template(selectionTemplate),
 
         formControlClass: '',
 
-        initialize: function(options) {
+        initialize: function (options) {
             ServerWidget.prototype.initialize.call(this, options);
             this.passwordView = new PasswordView({
                 strings: this.strings,
@@ -280,22 +295,54 @@ define([
                 formControlClass: this.formControlClass
             });
 
-            if (options.canDisable) {
-                this.enableView = new EnableView({enableIcon: 'icon-file', strings: this.strings});
-            }
+            this.databaseTypes = {
+                postgres: {
+                    protocol: 'jdbc:postgresql',
+                    hibernateDialect: 'org.hibernate.dialect.PostgreSQL82Dialect',
+                    driverClassName: 'org.postgresql.Driver',
+                    buildUrl: _.bind(function () {
+                        var database = this.$databaseCheckbox.prop('checked') ? this.$username.val() : this.$database.val();
+                        return 'jdbc:postgresql://' + this.$host.val() + ':' + this.$port.val() + '/' + database;
+                    }, this),
+                    parseUrl: function (url) {
+                        var captureGroups = /^jdbc:postgresql:\/\/([^:]*):(\d*)\/(.*)$/.exec(url);
+                        return captureGroups ? {
+                            protocol: 'jdbc:postgresql',
+                            host: captureGroups[1],
+                            port: captureGroups[2],
+                            database: captureGroups[3]
+                        } : {protocol: 'jdbc:postgresql'}
+                    }
+                },
+                h2: {
+                    hibernateDialect: 'org.hibernate.dialect.H2Dialect',
+                    driverClassName: 'org.h2.Driver',
+                    username: 'sa',
+                    buildUrl: function () {
+                        return 'jdbc:h2:mem:site-admin';
+                    }
+                }
+            };
+
+            this.databaseType = options.databaseType;
         },
 
         /**
          * @desc Renders the widget
          */
-        render: function() {
+        render: function () {
             ServerWidget.prototype.render.call(this);
 
-            var $validateButtonParent = this.$('button[name=validate]').parent();
-            $validateButtonParent.before(this.databaseTemplate({
+            this.$validateButtonParent = this.$('button[name=validate]').parent();
+            this.$validateButtonParent.before(this.databasesTemplate({
                 strings: this.strings
             }));
 
+            this.$('.database-config').append(this.databaseTemplate({
+                strings: this.strings
+            }));
+
+            this.$databaseType = this.$('.database-type-input');
             this.$database = this.$('input[name=database]');
             this.$databaseCheckbox = this.$('input[type="checkbox"]');
             this.$host = this.$('input[name=host]');
@@ -306,44 +353,35 @@ define([
             this.passwordView.render();
             this.$databaseCheckbox.parent().before(this.passwordView.$el);
 
-            if (this.enableView) {
-                this.enableView.render();
-                $validateButtonParent.before(this.enableView.$el);
+            if (this.databaseType) {
+                this.$('.database-type-selection').addClass('hide');
             }
+
+            var toggleInputs = _.bind(function () {
+                var databaseType = this.databaseType || this.$databaseType.val();
+                this.$('.database-config').toggleClass('hide', databaseType === 'h2');
+                this.$protocol.text(this.databaseTypes[databaseType].protocol);
+            }, this);
+
+            this.$databaseType.on('input', toggleInputs);
+
+            toggleInputs();
         },
 
         /**
-         * @typedef DatabaseConfiguration
-         * @property {string} database The name of the database
-         * @property {boolean} [enabled] True if the database is enabled; false otherwise
-         * @property {string} host The host the database is located on
-         * @property {string} password The password. If passwordRedacted is true then this should be empty
-         * @property {boolean} passwordRedacted True if the password exists but is not visible; false otherwise
-         * @property {number} port The port the database uses to communicate
-         * @property {string} protocol The database protocol used to connect to the database (postgresql, mysql etc.)
-         * @property {string} username The user that will connect to database
-         */
-        /**
          * @desc Returns the configuration for the widget
-         * @returns {DatabaseConfiguration} The configuration for the widget
+         * @returns The configuration for the widget
          */
-        getConfig: function() {
-            var config = _.extend({
-                protocol: this.protocol,
-                database: this.$databaseCheckbox.prop('checked') ? this.$username.val() : this.$database.val(),
-                host: this.$host.val(),
-                port: Number(this.$port.val()),
-                username: this.$username.val()
+        getConfig: function () {
+            var databaseType = this.databaseType || this.$databaseType.val();
+            var datasourceInfo = this.databaseTypes[databaseType];
+            return _.extend({
+                platform: databaseType,
+                hibernateDialect: datasourceInfo.hibernateDialect,
+                driverClassName: datasourceInfo.driverClassName,
+                url: datasourceInfo.buildUrl(),
+                username: datasourceInfo.username || this.$username.val()
             }, this.passwordView.getConfig());
-
-            if (this.enableView) {
-                _.extend(config, {
-                    enabled: this.enableView.getConfig()
-                });
-            }
-
-            //noinspection JSValidateTypes
-            return config;
         },
 
         /**
@@ -351,7 +389,7 @@ define([
          * checkbox is checked, sets value of the database input to the value of the username input
          * @param {Event} evt jQuery event
          */
-        handleInputChange: function(evt) {
+        handleInputChange: function (evt) {
             ServerWidget.prototype.handleInputChange.apply(this, arguments);
             var $input = $(evt.target);
 
@@ -391,37 +429,32 @@ define([
         },
 
         /**
-         * @returns {boolean} True if the database is enabled or cannot be disabled; false otherwise
+         * @returns {boolean} True
          */
-        shouldValidate: function() {
-            if (this.enableView) {
-                return this.enableView.getConfig();
-            }
-
+        shouldValidate: function () {
             return true;
         },
 
         /**
          * @desc Updates the widget with new configuration
-         * @param {DatabaseConfiguration} config The new config for the wizard
+         * @param config The new config for the wizard
          */
-        updateConfig: function(config) {
+        updateConfig: function (config) {
             ServerWidget.prototype.updateConfig.apply(this, arguments);
 
-            this.protocol = config.protocol;
-            this.$protocol.text(this.protocol);
-            this.$database.val(config.database);
-            this.$host.val(config.host);
-            this.$port.val(config.port);
-            this.$username.val(config.username);
-            this.passwordView.updateConfig(config);
+            if (config.platform && config.platform !== 'h2') {
+                var serverConfig = this.databaseTypes[config.platform].parseUrl(config.url);
+                this.protocol = serverConfig.protocol;
+                this.$protocol.text(this.protocol);
+                this.$database.val(serverConfig.database);
+                this.$host.val(serverConfig.host);
+                this.$port.val(serverConfig.port);
+                this.$username.val(config.username);
+                this.passwordView.updateConfig(config);
 
-            if (this.enableView) {
-                this.enableView.updateConfig(config.enabled);
-            }
-
-            if (config.database === '' && config.username !== '') {
-                this.$database.val(config.username);
+                if (!serverConfig.database && config.username) {
+                    this.$database.val(config.username);
+                }
             }
 
             var checkboxState = this.$database.val() === this.$username.val();
@@ -434,29 +467,32 @@ define([
          * @returns {boolean} False if any of host, username and database are blank or the password is invalid; true
          * otherwise
          */
-        validateInputs: function() {
+        validateInputs: function () {
             var isValid = true;
 
             if (this.shouldValidate()) {
                 var config = this.getConfig();
 
-                if (config.host === '') {
-                    isValid = false;
-                    this.updateInputValidation(this.$host, false);
-                }
+                if (config.platform && config.platform !== 'h2') {
+                    var serverConfig = this.databaseTypes[config.platform].parseUrl(config.url);
+                    if (!serverConfig.host) {
+                        isValid = false;
+                        this.updateInputValidation(this.$host, false);
+                    }
 
-                if (config.username === '') {
-                    isValid = false;
-                    this.updateInputValidation(this.$username, false);
-                }
+                    if (!config.username) {
+                        isValid = false;
+                        this.updateInputValidation(this.$username, false);
+                    }
 
-                if (config.database === '') {
-                    isValid = false;
-                    this.updateInputValidation(this.$database, false);
-                }
+                    if (!serverConfig.database) {
+                        isValid = false;
+                        this.updateInputValidation(this.$database, false);
+                    }
 
-                // needs to be this way round to apply formatting
-                isValid = this.passwordView.validateInputs() && isValid;
+                    // needs to be this way round to apply formatting
+                    isValid = this.passwordView.validateInputs() && isValid;
+                }
             }
 
             return isValid;
@@ -485,7 +521,7 @@ define([
 					
 		<span class="jsdoc-message">
 		Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.2</a>
-		on Fri Aug 7th 13:39 2015 using the <a
+		on Fri Mar 18th 09:27 2016 using the <a
 			href="https://github.com/terryweiss/docstrap">DocStrap template</a>.
 		</span>
 				</footer>
