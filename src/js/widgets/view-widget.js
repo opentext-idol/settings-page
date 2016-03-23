@@ -5,7 +5,7 @@
 
 define([
     'app/page/settings/aci-widget',
-    'text!find/templates/app/page/settings/view-widget.html'
+    'text!templates/app/page/settings/view-widget.html'
 ], function(AciWidget, template) {
 
     return AciWidget.extend({
