@@ -3,14 +3,52 @@
  * Licensed under the MIT License (the "License"); you may not use this file except in compliance with the License.
  */
 
+/**
+ * @module settings/js/view-widget
+ */
 define([
     'app/page/settings/aci-widget',
     'text!templates/app/page/settings/view-widget.html'
 ], function(AciWidget, template) {
-
+    /**
+     * @typedef ViewWidgetStrings
+     * @desc Extends AciWidgetStrings
+     * @property {string} referenceFieldLabel The label of the reference field dropdown
+     * @property {string} referenceFieldBlank The error message to display when the reference field is blank
+     * @property {string} referenceFieldPlaceholder Placeholder for the reference field input
+     * @property {string} connector Label for the connector section
+     * @property {string} viewingMode Label for the viewing mode dropdown
+     */
+    /**
+     * @typedef ViewWidgetOptions
+     * @desc Extends AciWidgetOptions
+     * @property {ViewWidgetStrings} strings Strings for the widget
+     */
+    /**
+     * @name module:settings/js/widgets/view-widget.ViewWidget
+     * @desc Widget for configuring a View server
+     * @constructor
+     * @extends module:settings/js/aci-widget.AciWidget
+     */
     return AciWidget.extend({
+
+        /**
+         * @typedef ViewWidgetTemplateParameters
+         * @property {ViewWidgetStrings} strings Strings for the template
+         */
+        /**
+         * @callback module:settings/js/widgets/view-widget.ViewWidget~ViewTemplate
+         * @param {ViewWidgetTemplateParameters} parameters
+         */
+        /**
+         * @desc Base template for the widget. Override if using Bootstrap 3
+         * @type module:settings/js/widgets/view-widget.ViewWidget~ViewTemplate
+         */
         viewTemplate: _.template(template),
 
+        /**
+         * @desc Renders the widget
+         */
         render: function() {
             AciWidget.prototype.render.call(this);
 
@@ -45,6 +83,10 @@ define([
             toggleInputs();
         },
 
+        /**
+         * @desc Updates the widget with new configuration
+         * @param config The new config for the wizard
+         */
         updateConfig: function(config) {
             AciWidget.prototype.updateConfig.apply(this, arguments);
 
@@ -58,6 +100,10 @@ define([
             this.productTypeRegex = config.connector.productTypeRegex;
         },
 
+        /**
+         * @desc Returns the configuration for the widget
+         * @returns The configuration for the widget
+         */
         getConfig: function() {
             var config = AciWidget.prototype.getConfig.call(this);
 
@@ -73,6 +119,9 @@ define([
             }, config);
         },
 
+        /**
+         * @desc Handles the results of server side validation
+         */
         handleValidation: function(config, response) {
             if (_.isEqual(config, this.lastValidationConfig)) {
                 if (response.data && response.data.validation === 'CONNECTOR_VALIDATION_ERROR') {
@@ -87,6 +136,15 @@ define([
             }
         },
 
+        /**
+         * @desc Validates the widget and applies formatting appropriately
+         * @returns {boolean} False if
+         * <ul>
+         * <li> Viewing mode is Reference, and the reference field is blank
+         * <li> Viewing mode is connector, and the connector host is blank or the port number is invalid
+         * <li> The view server settings are invalid
+         * </ul>
+         */
         validateInputs: function() {
             var isValid = AciWidget.prototype.validateInputs.apply(this, arguments);
 
