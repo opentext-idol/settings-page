@@ -7,8 +7,8 @@
  * @module settings/js/widgets/view-widget
  */
 define([
-    'app/page/settings/aci-widget',
-    'text!templates/app/page/settings/view-widget.html'
+    'settings/js/widgets/aci-widget',
+    'text!settings/templates/widgets/view-widget.html'
 ], function(AciWidget, template) {
     /**
      * @typedef ViewWidgetStrings
