@@ -5,9 +5,8 @@
 
 define([
     'app/page/settings/aci-widget',
-    'i18n!find/nls/bundle',
     'text!find/templates/app/page/settings/view-widget.html'
-], function(AciWidget, i18n, template) {
+], function(AciWidget, template) {
 
     return AciWidget.extend({
         viewTemplate: _.template(template),
