@@ -4,7 +4,7 @@
  */
 
 /**
- * @module settings/js/view-widget
+ * @module settings/js/widgets/view-widget
  */
 define([
     'app/page/settings/aci-widget',
@@ -28,7 +28,7 @@ define([
      * @name module:settings/js/widgets/view-widget.ViewWidget
      * @desc Widget for configuring a View server
      * @constructor
-     * @extends module:settings/js/aci-widget.AciWidget
+     * @extends module:settings/js/widgets/aci-widget.AciWidget
      */
     return AciWidget.extend({
 
