@@ -73,14 +73,12 @@ define([
             this.$connectorPort = this.$('.connector-container input[name=port]');
             this.$connectorProtocol = this.$('.connector-container select[name=protocol]');
 
-            var toggleInputs = _.bind(function () {
-                this.$('.connector-container').toggle(this.$modeSelect.val() === 'CONNECTOR');
-                this.$('.field-form-group').toggle(this.$modeSelect.val() === 'FIELD');
-            }, this);
+            this.$modeSelect.on('input', _.bind(this.toggleInputs, this));
+        },
 
-            this.$modeSelect.on('input', toggleInputs);
-
-            toggleInputs();
+        toggleInputs: function() {
+            this.$('.connector-container').toggle(this.$modeSelect.val() === 'CONNECTOR');
+            this.$('.field-form-group').toggle(this.$modeSelect.val() === 'FIELD');
         },
 
         /**
@@ -98,6 +96,8 @@ define([
             this.$connectorProtocol.val(config.connector.protocol);
 
             this.productTypeRegex = config.connector.productTypeRegex;
+
+            this.toggleInputs();
         },
 
         /**
