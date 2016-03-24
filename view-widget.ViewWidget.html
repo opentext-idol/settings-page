@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>HP Autonomy Settings Page Class: PathWidget</title>
+	<title>HP Autonomy Settings Page Class: ViewWidget</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -228,14 +228,14 @@
 					
 
 
-	<h1 class="page-title">Class: PathWidget</h1>
+	<h1 class="page-title">Class: ViewWidget</h1>
 <section>
 
 <header>
     <h2>
-        <span class="ancestors"><a href="path-widget.html">settings/js/widgets/path-widget</a>.</span>
+        <span class="ancestors"><a href="view-widget.html">settings/js/widgets/view-widget</a>.</span>
     
-    PathWidget
+    ViewWidget
     </h2>
     
 </header>
@@ -247,7 +247,7 @@
     
         
 <dt>
-    <h4 class="name" id="PathWidget"><span class="type-signature"></span>new PathWidget<span class="signature">(options)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="ViewWidget"><span class="type-signature"></span>new ViewWidget<span class="signature">()</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -255,7 +255,7 @@
     
     
     <div class="description">
-        <p>Widget which allows the configuration of a single file path</p>
+        <p>Widget for configuring a View server</p>
     </div>
     
 
@@ -263,55 +263,6 @@
     
     
     
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-
-		<th>Type</th>
-
-		
-
-		
-
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-
-	<tbody>
-	
-
-        <tr>
-            
-                <td class="name"><code>options</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="global.html#PathWidgetOptions">PathWidgetOptions</a></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Options for the widget</p></td>
-        </tr>
-
-	
-	</tbody>
-</table>
-
     
     
     
@@ -341,8 +292,8 @@
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="path-widget.js.html">widgets/path-widget.js</a>,
-				 <a href="path-widget.js.html#sunlight-1-line-16">line 16</a>
+				<a href="view-widget.js.html">widgets/view-widget.js</a>,
+				 <a href="view-widget.js.html#sunlight-1-line-15">line 15</a>
 			</li>
 		</ul>
 	</dd>
@@ -376,7 +327,7 @@
         <h3 class="subsection-title">Extends</h3>
 
         <ul>
-            <li><a href="widget.Widget.html">module:settings/js/widget.Widget</a></li>
+            <li><a href="aci-widget.AciWidget.html">module:settings/js/widgets/aci-widget.AciWidget</a></li>
         </ul>
     
 
@@ -393,18 +344,28 @@
 
         <dl>
             
-<dt class="name" id="className">
-    <h4><span class="type-signature"></span>className<span class="type-signature"></span></h4>
+<dt class="name" id="aciTemplate">
+    <h4><span class="type-signature"></span>aciTemplate<span class="type-signature"> :<a href="aci-widget.AciWidget.html#AciTemplate">module:settings/js/widgets/aci-widget.AciWidget~AciTemplate</a></span></h4>
 
     
 </dt>
 <dd>
     
     <div class="description">
-        <p>CSS classes for the widget.</p>
+        <p>Base template for the widget. Override if using Bootstrap 3</p>
     </div>
     
 
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type"><a href="aci-widget.AciWidget.html#AciTemplate">module:settings/js/widgets/aci-widget.AciWidget~AciTemplate</a></span>
+
+
+            </li>
+        </ul>
     
 
     
@@ -415,6 +376,95 @@
 
 	
 
+	
+	<dt class="inherited-from">Inherited From:</dt>
+	<dd class="inherited-from">
+		<ul class="dummy">
+			<li>
+				<a href="aci-widget.AciWidget.html#aciTemplate">module:settings/js/widgets/aci-widget.AciWidget#aciTemplate</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="aci-widget.js.html">widgets/aci-widget.js</a>,
+				 <a href="aci-widget.js.html#sunlight-1-line-47">line 47</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+</dd>
+
+        
+            
+<dt class="name" id="className">
+    <h4><span class="type-signature"></span>className<span class="type-signature"> :string</span></h4>
+
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>Classes applied to the widget. Override if using Bootstrap 3</p>
+    </div>
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">string</span>
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+	
+
+	
+
+	
+
+	
+	<dt class="inherited-from">Inherited From:</dt>
+	<dd class="inherited-from">
+		<ul class="dummy">
+			<li>
+				<a href="server-widget.ServerWidget.html#className">module:settings/js/server-widget.ServerWidget#className</a>
+			</li>
+		</ul>
+	</dd>
 	
 
 	
@@ -429,7 +479,7 @@
 	<dt class="tag-default">Default Value:</dt>
 	<dd class="tag-default">
 		<ul class="dummy">
-			<li><a href="widget.Widget.html#className">Widget#className</a> + ' form-horizontal'</li>
+			<li>Widget.prototype.className + ' settings-servergroup control-group form-horizontal'</li>
 		</ul>
 	</dd>
 	
@@ -441,8 +491,8 @@
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="path-widget.js.html">widgets/path-widget.js</a>,
-				 <a href="path-widget.js.html#sunlight-1-line-37">line 37</a>
+				<a href="server-widget.js.html">server-widget.js</a>,
+				 <a href="server-widget.js.html#sunlight-1-line-39">line 39</a>
 			</li>
 		</ul>
 	</dd>
@@ -692,6 +742,86 @@
 
         
             
+<dt class="name" id="serverTemplate">
+    <h4><span class="type-signature"></span>serverTemplate<span class="type-signature"> :<a href="server-widget.ServerWidget.html#ServerWidgetTemplate">module:settings/js/server-widget.ServerWidget~ServerWidgetTemplate</a></span></h4>
+
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>Base template for the widget. Override if using Bootstrap 3</p>
+    </div>
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type"><a href="server-widget.ServerWidget.html#ServerWidgetTemplate">module:settings/js/server-widget.ServerWidget~ServerWidgetTemplate</a></span>
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+	
+
+	
+
+	
+
+	
+	<dt class="inherited-from">Inherited From:</dt>
+	<dd class="inherited-from">
+		<ul class="dummy">
+			<li>
+				<a href="server-widget.ServerWidget.html#serverTemplate">module:settings/js/server-widget.ServerWidget#serverTemplate</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="server-widget.js.html">server-widget.js</a>,
+				 <a href="server-widget.js.html#sunlight-1-line-53">line 53</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+</dd>
+
+        
+            
 <dt class="name" id="successClass">
     <h4><span class="type-signature"></span>successClass<span class="type-signature"></span></h4>
 
@@ -751,77 +881,6 @@
 			<li>
 				<a href="widget.js.html">widget.js</a>,
 				 <a href="widget.js.html#sunlight-1-line-66">line 66</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-</dd>
-
-        
-            
-<dt class="name" id="template">
-    <h4><span class="type-signature"></span>template<span class="type-signature"> :<a href="path-widget.PathWidget.html#PathTemplate">module:settings/js/widgets/path-widget.PathWidget~PathTemplate</a></span></h4>
-
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        <p>Base template for the widget. Override if using Bootstrap 3</p>
-    </div>
-    
-
-    
-        <h5>Type:</h5>
-        <ul>
-            <li>
-                
-<span class="param-type"><a href="path-widget.PathWidget.html#PathTemplate">module:settings/js/widgets/path-widget.PathWidget~PathTemplate</a></span>
-
-
-            </li>
-        </ul>
-    
-
-    
-<dl class="details">
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="path-widget.js.html">widgets/path-widget.js</a>,
-				 <a href="path-widget.js.html#sunlight-1-line-51">line 51</a>
 			</li>
 		</ul>
 	</dd>
@@ -927,7 +986,7 @@
         <dl>
             
 <dt>
-    <h4 class="name" id="getConfig"><span class="type-signature"></span>getConfig<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="global.html#PathConfig">PathConfig</a>}</span></h4>
+    <h4 class="name" id="displayValidationMessage"><span class="type-signature">&lt;protected> </span>displayValidationMessage<span class="signature">(isEqual, response)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -935,7 +994,8 @@
     
     
     <div class="description">
-        <p>Gets the config represented by the widget</p>
+        <p>If isEqual is true displays a message showing the result of a validation. Otherwise clears the
+validation state</p>
     </div>
     
 
@@ -943,6 +1003,78 @@
     
     
     
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>isEqual</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>True if the config is equal to the config received from the server; false otherwise</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>response</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#ValidationResponse">ValidationResponse</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The repsonse from the server</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+
     
     
     
@@ -953,6 +1085,15 @@
 
 	
 
+	
+	<dt class="inherited-from">Inherited From:</dt>
+	<dd class="inherited-from">
+		<ul class="dummy">
+			<li>
+				<a href="server-widget.ServerWidget.html#displayValidationMessage">module:settings/js/server-widget.ServerWidget#displayValidationMessage</a>
+			</li>
+		</ul>
+	</dd>
 	
 
 	
@@ -972,8 +1113,93 @@
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="path-widget.js.html">widgets/path-widget.js</a>,
-				 <a href="path-widget.js.html#sunlight-1-line-70">line 70</a>
+				<a href="server-widget.js.html">server-widget.js</a>,
+				 <a href="server-widget.js.html#sunlight-1-line-100">line 100</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="getConfig"><span class="type-signature"></span>getConfig<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="global.html#AciWidgetConfig">AciWidgetConfig</a>}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Returns the configuration associated with this widget</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+	
+
+	
+
+	
+
+	
+	<dt class="inherited-from">Inherited From:</dt>
+	<dd class="inherited-from">
+		<ul class="dummy">
+			<li>
+				<a href="aci-widget.AciWidget.html#getConfig">module:settings/js/widgets/aci-widget.AciWidget#getConfig</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="aci-widget.js.html">widgets/aci-widget.js</a>,
+				 <a href="aci-widget.js.html#sunlight-1-line-78">line 78</a>
 			</li>
 		</ul>
 	</dd>
@@ -1000,7 +1226,7 @@
     
             
 <div class="param-desc">
-    <p>The config represented by the widget</p>
+    <p>The current configuration represented by the widget</p>
 </div>
 
 
@@ -1011,7 +1237,7 @@
 	</dt>
 	<dd>
 		
-<span class="param-type"><a href="global.html#PathConfig">PathConfig</a></span>
+<span class="param-type"><a href="global.html#AciWidgetConfig">AciWidgetConfig</a></span>
 
 
 	</dd>
@@ -1143,6 +1369,320 @@
         
             
 <dt>
+    <h4 class="name" id="getValidationFailureMessage"><span class="type-signature"></span>getValidationFailureMessage<span class="signature">(response)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Generates a message indicating that validation was unsuccessful</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>response</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#ValidationResponse">ValidationResponse</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The response from the server</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+
+    
+    
+    
+<dl class="details">
+	
+
+	
+
+	
+
+	
+	<dt class="inherited-from">Inherited From:</dt>
+	<dd class="inherited-from">
+		<ul class="dummy">
+			<li>
+				<a href="server-widget.ServerWidget.html#getValidationFailureMessage">module:settings/js/server-widget.ServerWidget#getValidationFailureMessage</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="server-widget.js.html">server-widget.js</a>,
+				 <a href="server-widget.js.html#sunlight-1-line-135">line 135</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>A message indicating validation was unsuccessful</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">string</span>
+
+
+	</dd>
+</dl>
+
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="getValidationSuccessMessage"><span class="type-signature"></span>getValidationSuccessMessage<span class="signature">(response)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Generates a message indicating that validation was successful</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>response</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#ValidationResponse">ValidationResponse</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The response from the server</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+
+    
+    
+    
+<dl class="details">
+	
+
+	
+
+	
+
+	
+	<dt class="inherited-from">Inherited From:</dt>
+	<dd class="inherited-from">
+		<ul class="dummy">
+			<li>
+				<a href="server-widget.ServerWidget.html#getValidationSuccessMessage">module:settings/js/server-widget.ServerWidget#getValidationSuccessMessage</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="server-widget.js.html">server-widget.js</a>,
+				 <a href="server-widget.js.html#sunlight-1-line-126">line 126</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>A message indicating validation was successful</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">string</span>
+
+
+	</dd>
+</dl>
+
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
     <h4 class="name" id="handleInputChange"><span class="type-signature"></span>handleInputChange<span class="signature">()</span><span class="type-signature"></span></h4>
     
     
@@ -1229,7 +1769,7 @@ setValidationFormatting</p>
         
             
 <dt>
-    <h4 class="name" id="handleValidation"><span class="type-signature">&lt;virtual> </span>handleValidation<span class="signature">(config, response)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
+    <h4 class="name" id="handleValidation"><span class="type-signature"></span>handleValidation<span class="signature">()</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -1237,8 +1777,7 @@ setValidationFormatting</p>
     
     
     <div class="description">
-        <p>Handles the results of server side validation (several widgets have a Test Connection button to do
-this). Override this method if your widget needs server side validation</p>
+        <p>Handles the results of server side validation</p>
     </div>
     
 
@@ -1246,78 +1785,6 @@ this). Override this method if your widget needs server side validation</p>
     
     
     
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-
-		<th>Type</th>
-
-		
-
-		
-
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-
-	<tbody>
-	
-
-        <tr>
-            
-                <td class="name"><code>config</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>The configuration object for the widget</p></td>
-        </tr>
-
-	
-
-        <tr>
-            
-                <td class="name"><code>response</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="global.html#ValidationResponse">ValidationResponse</a></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>The validation response from the server</p></td>
-        </tr>
-
-	
-	</tbody>
-</table>
-
     
     
     
@@ -1333,7 +1800,7 @@ this). Override this method if your widget needs server side validation</p>
 	<dd class="inherited-from">
 		<ul class="dummy">
 			<li>
-				<a href="widget.Widget.html#handleValidation">module:settings/js/widget.Widget#handleValidation</a>
+				<a href="server-widget.ServerWidget.html#handleValidation">module:settings/js/server-widget.ServerWidget#handleValidation</a>
 			</li>
 		</ul>
 	</dd>
@@ -1356,8 +1823,8 @@ this). Override this method if your widget needs server side validation</p>
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="widget.js.html">widget.js</a>,
-				 <a href="widget.js.html#sunlight-1-line-158">line 158</a>
+				<a href="server-widget.js.html">server-widget.js</a>,
+				 <a href="server-widget.js.html#sunlight-1-line-84">line 84</a>
 			</li>
 		</ul>
 	</dd>
@@ -1380,29 +1847,6 @@ this). Override this method if your widget needs server side validation</p>
     
     
     
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    <p>True if the widget is valid; false otherwise</p>
-</div>
-
-
-
-<dl>
-	<dt>
-		Type
-	</dt>
-	<dd>
-		
-<span class="param-type">boolean</span>
-
-
-	</dd>
-</dl>
-
-
-        
     
     
 </dd>
@@ -1418,7 +1862,7 @@ this). Override this method if your widget needs server side validation</p>
     
     
     <div class="description">
-        <p>Hides any validation information (elements with the settings-client-validation class)</p>
+        <p>Removes validation information as defined in Widget and also hides the connection state</p>
     </div>
     
 
@@ -1441,7 +1885,7 @@ this). Override this method if your widget needs server side validation</p>
 	<dd class="inherited-from">
 		<ul class="dummy">
 			<li>
-				<a href="widget.Widget.html#hideValidationInfo">module:settings/js/widget.Widget#hideValidationInfo</a>
+				<a href="server-widget.ServerWidget.html#hideValidationInfo">module:settings/js/server-widget.ServerWidget#hideValidationInfo</a>
 			</li>
 		</ul>
 	</dd>
@@ -1464,8 +1908,8 @@ this). Override this method if your widget needs server side validation</p>
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="widget.js.html">widget.js</a>,
-				 <a href="widget.js.html#sunlight-1-line-163">line 163</a>
+				<a href="server-widget.js.html">server-widget.js</a>,
+				 <a href="server-widget.js.html#sunlight-1-line-142">line 142</a>
 			</li>
 		</ul>
 	</dd>
@@ -1503,7 +1947,8 @@ this). Override this method if your widget needs server side validation</p>
     
     
     <div class="description">
-        <p>Renders the widget</p>
+        <p>Renders the widget by first calling <a href="server-widget.ServerWidget.html#render">ServerWidget#render</a>
+and then adding the necessary form controls</p>
     </div>
     
 
@@ -1521,6 +1966,15 @@ this). Override this method if your widget needs server side validation</p>
 
 	
 
+	
+	<dt class="inherited-from">Inherited From:</dt>
+	<dd class="inherited-from">
+		<ul class="dummy">
+			<li>
+				<a href="aci-widget.AciWidget.html#render">module:settings/js/widgets/aci-widget.AciWidget#render</a>
+			</li>
+		</ul>
+	</dd>
 	
 
 	
@@ -1540,8 +1994,8 @@ this). Override this method if your widget needs server side validation</p>
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="path-widget.js.html">widgets/path-widget.js</a>,
-				 <a href="path-widget.js.html#sunlight-1-line-56">line 56</a>
+				<a href="aci-widget.js.html">widgets/aci-widget.js</a>,
+				 <a href="aci-widget.js.html#sunlight-1-line-53">line 53</a>
 			</li>
 		</ul>
 	</dd>
@@ -1708,7 +2162,7 @@ class and remove the other class</p></td>
         
             
 <dt>
-    <h4 class="name" id="shouldValidate"><span class="type-signature">&lt;virtual> </span>shouldValidate<span class="signature">()</span><span class="type-signature"> &rarr; {boolean}</span></h4>
+    <h4 class="name" id="shouldValidate"><span class="type-signature"></span>shouldValidate<span class="signature">()</span><span class="type-signature"> &rarr; {boolean}</span></h4>
     
     
 </dt>
@@ -1716,7 +2170,7 @@ class and remove the other class</p></td>
     
     
     <div class="description">
-        <p>Returns false by default; override it to return true if your widget needs client side validation</p>
+        <p>Returns true as all ServerWidgets should validate</p>
     </div>
     
 
@@ -1739,7 +2193,7 @@ class and remove the other class</p></td>
 	<dd class="inherited-from">
 		<ul class="dummy">
 			<li>
-				<a href="widget.Widget.html#shouldValidate">module:settings/js/widget.Widget#shouldValidate</a>
+				<a href="server-widget.ServerWidget.html#shouldValidate">module:settings/js/server-widget.ServerWidget#shouldValidate</a>
 			</li>
 		</ul>
 	</dd>
@@ -1762,8 +2216,8 @@ class and remove the other class</p></td>
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="widget.js.html">widget.js</a>,
-				 <a href="widget.js.html#sunlight-1-line-190">line 190</a>
+				<a href="server-widget.js.html">server-widget.js</a>,
+				 <a href="server-widget.js.html#sunlight-1-line-151">line 151</a>
 			</li>
 		</ul>
 	</dd>
@@ -1790,7 +2244,7 @@ class and remove the other class</p></td>
     
             
 <div class="param-desc">
-    <p>True if the widget should validate; false otherwise</p>
+    <p>true</p>
 </div>
 
 
@@ -1816,6 +2270,96 @@ class and remove the other class</p></td>
         
             
 <dt>
+    <h4 class="name" id="triggerValidation"><span class="type-signature"></span>triggerValidation<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Triggers validation when the test connection button is pressed</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+	
+
+	
+
+	
+
+	
+	<dt class="inherited-from">Inherited From:</dt>
+	<dd class="inherited-from">
+		<ul class="dummy">
+			<li>
+				<a href="server-widget.ServerWidget.html#triggerValidation">module:settings/js/server-widget.ServerWidget#triggerValidation</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="server-widget.js.html">server-widget.js</a>,
+				 <a href="server-widget.js.html#sunlight-1-line-159">line 159</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+    
+    
+    <h5>Fires:</h5>
+    <ul>
+        <li>event:validate Event indicating that validation should take place</li>
+    </ul>
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
     <h4 class="name" id="updateConfig"><span class="type-signature"></span>updateConfig<span class="signature">(config)</span><span class="type-signature"></span></h4>
     
     
@@ -1824,7 +2368,7 @@ class and remove the other class</p></td>
     
     
     <div class="description">
-        <p>Updates the widget with the given config</p>
+        <p>Populates the widget with the given config</p>
     </div>
     
 
@@ -1864,7 +2408,7 @@ class and remove the other class</p></td>
             <td class="type">
             
                 
-<span class="param-type"><a href="global.html#PathConfig">PathConfig</a></span>
+<span class="param-type"><a href="global.html#AciWidgetConfig">AciWidgetConfig</a></span>
 
 
             
@@ -1874,7 +2418,7 @@ class and remove the other class</p></td>
 
             
 
-            <td class="description last"></td>
+            <td class="description last"><p>The new config for the widget</p></td>
         </tr>
 
 	
@@ -1891,6 +2435,15 @@ class and remove the other class</p></td>
 
 	
 
+	
+	<dt class="inherited-from">Inherited From:</dt>
+	<dd class="inherited-from">
+		<ul class="dummy">
+			<li>
+				<a href="aci-widget.AciWidget.html#updateConfig">module:settings/js/widgets/aci-widget.AciWidget#updateConfig</a>
+			</li>
+		</ul>
+	</dd>
 	
 
 	
@@ -1910,8 +2463,8 @@ class and remove the other class</p></td>
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="path-widget.js.html">widgets/path-widget.js</a>,
-				 <a href="path-widget.js.html#sunlight-1-line-79">line 79</a>
+				<a href="aci-widget.js.html">widgets/aci-widget.js</a>,
+				 <a href="aci-widget.js.html#sunlight-1-line-93">line 93</a>
 			</li>
 		</ul>
 	</dd>
@@ -1941,7 +2494,7 @@ class and remove the other class</p></td>
         
             
 <dt>
-    <h4 class="name" id="updateInputValidation"><span class="type-signature">&lt;protected> </span>updateInputValidation<span class="signature">($input, isValid)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="updateInputValidation"><span class="type-signature">&lt;protected> </span>updateInputValidation<span class="signature">($input, isValid, message)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -2030,6 +2583,29 @@ settings-client-validation</p>
         </tr>
 
 	
+
+        <tr>
+            
+                <td class="name"><code>message</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Validation message to display</p></td>
+        </tr>
+
+	
 	</tbody>
 </table>
 
@@ -2048,7 +2624,7 @@ settings-client-validation</p>
 	<dd class="inherited-from">
 		<ul class="dummy">
 			<li>
-				<a href="widget.Widget.html#updateInputValidation">module:settings/js/widget.Widget#updateInputValidation</a>
+				<a href="aci-widget.AciWidget.html#updateInputValidation">module:settings/js/widgets/aci-widget.AciWidget#updateInputValidation</a>
 			</li>
 		</ul>
 	</dd>
@@ -2071,8 +2647,8 @@ settings-client-validation</p>
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="widget.js.html">widget.js</a>,
-				 <a href="widget.js.html#sunlight-1-line-214">line 214</a>
+				<a href="aci-widget.js.html">widgets/aci-widget.js</a>,
+				 <a href="aci-widget.js.html#sunlight-1-line-134">line 134</a>
 			</li>
 		</ul>
 	</dd>
@@ -2110,7 +2686,7 @@ settings-client-validation</p>
     
     
     <div class="description">
-        <p>Validates the widget and applies formatting accordingly</p>
+        <p>Validates the widget and applies formatting if necessary</p>
     </div>
     
 
@@ -2128,6 +2704,15 @@ settings-client-validation</p>
 
 	
 
+	
+	<dt class="inherited-from">Inherited From:</dt>
+	<dd class="inherited-from">
+		<ul class="dummy">
+			<li>
+				<a href="aci-widget.AciWidget.html#validateInputs">module:settings/js/widgets/aci-widget.AciWidget#validateInputs</a>
+			</li>
+		</ul>
+	</dd>
 	
 
 	
@@ -2147,8 +2732,8 @@ settings-client-validation</p>
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="path-widget.js.html">widgets/path-widget.js</a>,
-				 <a href="path-widget.js.html#sunlight-1-line-88">line 88</a>
+				<a href="aci-widget.js.html">widgets/aci-widget.js</a>,
+				 <a href="aci-widget.js.html#sunlight-1-line-107">line 107</a>
 			</li>
 		</ul>
 	</dd>
@@ -2175,7 +2760,7 @@ settings-client-validation</p>
     
             
 <div class="param-desc">
-    <p>False if the path is empty; true otherwise</p>
+    <p>False if the host is blank; true otherwise</p>
 </div>
 
 
@@ -2207,7 +2792,7 @@ settings-client-validation</p>
         <dl>
                 
 <dt>
-    <h4 class="name" id="PathTemplate"><span class="type-signature"></span>PathTemplate<span class="signature">(parameters)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="ViewTemplate"><span class="type-signature"></span>ViewTemplate<span class="signature">(parameters)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -2251,7 +2836,7 @@ settings-client-validation</p>
             <td class="type">
             
                 
-<span class="param-type"><a href="global.html#PathWidgetTemplateParameters">PathWidgetTemplateParameters</a></span>
+<span class="param-type"><a href="global.html#ViewWidgetTemplateParameters">ViewWidgetTemplateParameters</a></span>
 
 
             
@@ -2297,8 +2882,8 @@ settings-client-validation</p>
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="path-widget.js.html">widgets/path-widget.js</a>,
-				 <a href="path-widget.js.html#sunlight-1-line-40">line 40</a>
+				<a href="view-widget.js.html">widgets/view-widget.js</a>,
+				 <a href="view-widget.js.html#sunlight-1-line-36">line 36</a>
 			</li>
 		</ul>
 	</dd>
