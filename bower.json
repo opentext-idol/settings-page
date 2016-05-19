@@ -8,7 +8,8 @@
     "Alyona Ivanova <alyona.ivanova@hp.com>",
     "David Knipe <david.knipe@hp.com>",
     "Luca Mandrioli",
-    "Alex Scown <alex.scown@hp.com>"
+    "Alex Scown <alex.scown@hp.com>",
+    "Daniel Grayling <daniel.grayling@hpe.com"
   ],
   "description": "An application settings page and a collection of widgets",
   "moduleType": [
@@ -30,22 +31,23 @@
     "travis.sh"
   ],
   "dependencies": {
-    "underscore": "~1.5.2",
-    "backbone": "~1.1.0",
-    "hp-autonomy-js-whatever": "~1.0.14",
-    "requirejs": "~2.1.15",
-    "bootstrap": "components/bootstrap#~2.3",
-    "requirejs-text": "~2.0.12",
-    "jquery": "~1.10.0"
+    "underscore": "1.5.2",
+    "backbone": "1.1.2",
+    "hp-autonomy-js-whatever": "1.1.0",
+    "requirejs": "2.1.15",
+    "bootstrap": "components/bootstrap#2.3",
+    "requirejs-text": "2.0.12",
+    "jquery": "1.10.0"
   },
   "devDependencies": {
-    "hp-autonomy-js-testing-utils": "~1.0.1",
+    "hp-autonomy-js-testing-utils": "1.0.1",
     "sinon": "http://sinonjs.org/releases/sinon-1.9.1.js",
-    "jasmine-jquery": "~1.5.8"
+    "jasmine-jquery": "1.5.8"
   },
   "resolutions": {
-    "underscore": "~1.5.2",
-    "jquery": "~1.10.0",
-    "bootstrap": "~2.3"
+    "underscore": "1.5.2",
+    "jquery": "1.10.0",
+    "bootstrap": "2.3",
+    "backbone": "1.1.2"
   }
 }
