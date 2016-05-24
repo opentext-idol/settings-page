@@ -27,21 +27,22 @@ define([
                         compare: function(actual, config) {
                             var $el = actual;
 
-                            var actualConfig = _.extend({
-                                community: {
+                            var actualConfig = {
+                                // need to account for things like productType which don't go in the DOM
+                                community: _.defaults({
                                     host: $el.find('input[name="host"]').val(),
                                     port: Number($el.find('input[name="port"]').val()),
                                     protocol: $el.find('select[name="protocol"]').val()
-                                },
+                                }, config.community),
                                 method: $el.find('select[name="login-type"]').val()
-                            }, config);
+                            };
 
                             var pass = _.isEqual(config, actualConfig);
 
                             return {
                                 pass: pass,
                                 message: function() {
-                                    return 'Expected "' + $el.get(0).outerHTML + '"' +
+                                    return 'Expected "' + JSON.stringify(actualConfig) + '"' +
                                         (pass ? ' not ' : '') +
                                         ' to display config "' + JSON.stringify(config) + '"';
                                 }
@@ -81,8 +82,8 @@ define([
 
             this.widget = new CommunityWidget({
                 configItem: 'login',
-                description: 'This widget controls Site Admin\'s connection to your Community server.',
-                indexErrorMessage: 'What\'s an index?',
+                description: "This widget controls Site Admin's connection to your Community server.",
+                indexErrorMessage: "What's an index?",
                 productType: 'UASERVER',
                 securityTypesUrl: '/securitytypes',
                 strings: strings,
