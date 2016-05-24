@@ -11,13 +11,13 @@ define([
 ], function(SettingsPage, Backbone) {
 
     describe('Settings page', function() {
-        var waitTime = 1000;
+        var waitTime = 300;
 
-        function modalToOpen() {
+        function modalIsOpen() {
             return $('.modal').length === 1;
         }
 
-        function modalToClose() {
+        function modalIsClosed() {
             return $('.modal').length === 0;
         }
 
@@ -155,13 +155,16 @@ define([
                 ];
 
                 _.chain(this.widgetGroups).flatten().each(function(widget) {
-                    spyOn(widget, 'getConfig').andCallThrough();
-                    spyOn(widget, 'render').andCallThrough();
+                    spyOn(widget, 'getConfig').and.callThrough();
+                    spyOn(widget, 'render').and.callThrough();
                 });
             }
         });
 
         beforeEach(function() {
+            this.originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
+            jasmine.DEFAULT_TIMEOUT_INTERVAL = 1600;
+
             this.server = sinon.fakeServer.create();
             this.configLoadCallback = null;
             this.saveErrorCallback = null;
@@ -193,12 +196,13 @@ define([
                 }
             }))();
 
-            spyOn(this.settingsPage.configModel, 'get').andCallThrough();
-            spyOn(this.settingsPage.configModel, 'save').andCallThrough();
+            spyOn(this.settingsPage.configModel, 'get').and.callThrough();
+            spyOn(this.settingsPage.configModel, 'save').and.callThrough();
             this.settingsPage.render();
         });
 
         afterEach(function() {
+            jasmine.DEFAULT_TIMEOUT_INTERVAL = this.originalTimeout;
             this.server.restore();
             this.settingsPage.remove();
             this.settingsPage.stopListening();
@@ -313,114 +317,142 @@ define([
                 this.configLoadCallback();
             });
 
-            afterEach(function() {
-                runs(function() {
-                    $('.modal-backdrop').click();
-                });
+            afterEach(function(done) {
+                $('.modal-backdrop').click();
 
-                waitsFor(modalToClose, 'cancel modal to close', waitTime);
+                setTimeout(function() {
+                    expect(modalIsClosed()).toBe(true);
+
+                    if(modalIsClosed()) {
+                        done();
+                    }
+                }, waitTime);
             });
 
-            it('should display a modal', function() {
-                runs(function() {
-                    this.settingsPage.$('.settings-restore').click();
-                });
+            it('should display a modal', function(done) {
+                this.settingsPage.$('.settings-restore').click();
 
-                waitsFor(modalToOpen, 'cancel modal to open', waitTime);
+                setTimeout(function() {
+                    expect(modalIsOpen()).toBe(true);
+
+                    if(modalIsOpen()) {
+                        done();
+                    }
+                }, waitTime);
             });
 
-            it('should be possible to cancel the modal', function() {
-                runs(function() {
-                    this.settingsPage.$('.settings-restore').click();
-                });
+            it('should be possible to cancel the modal', function(done) {
+                this.settingsPage.$('.settings-restore').click();
 
-                waitsFor(modalToOpen, 'cancel modal to open', waitTime);
+                setTimeout(function() {
+                    expect(modalIsOpen()).toBe(true);
 
-                runs(function() {
-                    $('.modal').find('.cancelButton').click();
-                });
+                    if(modalIsOpen()) {
+                        $('.modal').find('.cancelButton').click();
 
-                waitsFor(modalToClose, 'cancel modal to close', waitTime);
+                        setTimeout(function() {
+                            expect(modalIsClosed()).toBe(true);
+
+                            if(modalIsClosed()) {
+                                done();
+                            }
+                        }, waitTime);
+                    }
+                }, waitTime);
             });
 
-            it('should reset the inputs to the current config on confirm', function() {
-                runs(function() {
-                    this.settingsPage.$('.settings-restore').click();
-                });
+            it('should reset the inputs to the current config on confirm', function(done) {
+                this.settingsPage.$('.settings-restore').click();
 
-                waitsFor(modalToOpen, 'cancel modal to open', waitTime);
+                setTimeout(_.bind(function() {
+                    expect(modalIsOpen()).toBe(true);
 
-                runs(function() {
-                    $('.modal').find('.okButton').click();
-                });
+                    if(modalIsOpen()) {
+                        $('.modal').find('.okButton').click();
 
-                waitsFor(modalToClose, 'cancel modal to close', waitTime);
+                        setTimeout(_.bind(function() {
+                            expect(modalIsClosed()).toBe(true);
 
-                runs(function() {
-                    _.each(this.settingsPage.widgets, function(widget) {
-                        expect(widget.updateConfig).toHaveBeenCalledWith(initialConfig[widget.configItem]);
-                    });
-                });
+                            if(modalIsClosed()) {
+                                _.each(this.settingsPage.widgets, function(widget) {
+                                    expect(widget.updateConfig).toHaveBeenCalledWith(initialConfig[widget.configItem]);
+                                });
+
+                                done();
+                            }
+                        }, this), waitTime);
+                    }
+                }, this), waitTime);
             });
         });
 
         describe('Save Changes button', function() {
-            it('should not open the modal if client side validation fails', function() {
-                runs(function() {
-                    this.configLoadCallback();
+            it('should not open the modal if client side validation fails', function(done) {
+                this.configLoadCallback();
 
-                    var loginWidget = _.find(this.settingsPage.widgets, function(widget) {
-                        return widget.configItem === 'login';
-                    });
-
-                    spyOn(loginWidget, 'validateInputs').andReturn(false);
-                    this.settingsPage.$('button[type="submit"]').click();
-
-                    expect(loginWidget.validateInputs).toHaveBeenCalled();
+                var loginWidget = _.find(this.settingsPage.widgets, function(widget) {
+                    return widget.configItem === 'login';
                 });
 
-                waits(200);
+                spyOn(loginWidget, 'validateInputs').and.returnValue(false);
+                this.settingsPage.$('button[type="submit"]').click();
 
-                runs(function() {
-                    expect(modalToClose()).toBeTruthy();
-                });
+                expect(loginWidget.validateInputs).toHaveBeenCalled();
+
+                setTimeout(function() {
+                    var modalClosed = modalIsClosed();
+
+                    expect(modalClosed).toBeTruthy();
+
+                    if(modalClosed) {
+                        done();
+                    }
+                }, 200)
             });
 
             describe('on successful client side validation', function() {
-                beforeEach(function() {
-                    runs(function() {
-                        this.configLoadCallback();
-                        this.settingsPage.$('button[type="submit"]').click();
-                    });
+                beforeEach(function(done) {
+                    this.configLoadCallback();
+                    this.settingsPage.$('button[type="submit"]').click();
 
-                    waitsFor(modalToOpen, 'save changes modal to open', waitTime);
+                    setTimeout(_.bind(function() {
+                        if(modalIsOpen()) {
+                            this.$save = $('#settings-save-ok');
+                            done();
+                        }
+                    }, this), waitTime);
 
-                    runs(function() {
-                        this.$save = $('#settings-save-ok');
-                    });
                 });
 
-                afterEach(function() {
-                    runs(function() {
-                        $('.modal').modal('hide');
-                    });
+                afterEach(function(done) {
+                    $('.modal').modal('hide');
 
-                    waitsFor(modalToClose, 'save changes modal to close', waitTime);
+                    setTimeout(function() {
+                        if(modalIsClosed()) {
+                            done();
+                        }
+                    }, waitTime);
                 });
 
-                it('should be possible to cancel the modal', function() {
-                    runs(function() {
-                        $('.modal button:not(#settings-save-ok)').click();
-                    });
+                it('should be possible to cancel the modal', function(done) {
+                    $('.modal button:not(#settings-save-ok)').click();
 
-                    waitsFor(modalToClose, 'save changes modal to close', waitTime);
+                    setTimeout(function() {
+                        var modalClosed = modalIsClosed();
+
+                        expect(modalClosed).toBeTruthy();
+
+                        if(modalClosed) {
+                            done();
+                        }
+                    }, waitTime);
                 });
 
                 it('should attempt save the config on clicking save', function() {
                     expect(this.settingsPage.configModel.save).not.toHaveBeenCalled();
                     this.$save.click();
                     expect(this.settingsPage.configModel.save).toHaveBeenCalled();
-                    expect(this.settingsPage.configModel.save.mostRecentCall.args[0]).toEqual({config: newConfig});
+                    expect(this.settingsPage.configModel.save.calls.mostRecent().args[0]).toEqual({config: newConfig});
                 });
 
                 it('should not be possible to close the modal after clicking save', function() {
@@ -439,12 +471,18 @@ define([
                         expect(this.settingsPage.lastSavedConfig).toEqual(newConfig);
                     });
 
-                    it('should be possible to close the modal', function() {
-                        runs(function() {
-                            $('button[data-dismiss="modal"]').click();
-                        });
+                    it('should be possible to close the modal', function(done) {
+                        $('button[data-dismiss="modal"]').click();
 
-                        waitsFor('save modal to close', modalToClose, waitTime);
+                        setTimeout(function() {
+                            var modalClosed = modalIsClosed();
+
+                            expect(modalClosed).toBeTruthy();
+
+                            if(modalClosed) {
+                                done();
+                            }
+                        }, waitTime);
                     });
 
                     it('should hide the save button', function() {
@@ -514,25 +552,21 @@ define([
                 expect(this.settingsPage.handleBeforeUnload()).toBeUndefined();
             });
 
-            it('should trigger an alert if the settings have not been saved, then navigate back to the settings page', function() {
-                runs(function() {
-                    _.each(this.settingsPage.widgets, function(widget) {
-                        widget.getConfig = function() {
-                            return initialConfig[widget.configItem];
-                        }
-                    });
-
-                    expect(this.settingsPage.vent.navigate).not.toHaveBeenCalled();
-                    expect(this.settingsPage.handleBeforeUnload()).toBeDefined();
+            it('should trigger an alert if the settings have not been saved, then navigate back to the settings page', function(done) {
+                _.each(this.settingsPage.widgets, function(widget) {
+                    widget.getConfig = function() {
+                        return initialConfig[widget.configItem];
+                    }
                 });
 
-                waitsFor('vent.navigate to be called', function() {
-                    return this.settingsPage.vent.navigate.callCount === 1;
-                }, 200);
+                expect(this.settingsPage.vent.navigate).not.toHaveBeenCalled();
+                expect(this.settingsPage.handleBeforeUnload()).toBeDefined();
 
-                runs(function() {
+                setTimeout(_.bind(function() {
+                    expect(this.settingsPage.vent.navigate).toHaveCallCount(1);
                     expect(this.settingsPage.vent.navigate).toHaveBeenCalledWith('/mysettings', {trigger: true});
-                });
+                    done();
+                }, this), 200);
             });
         });
     });

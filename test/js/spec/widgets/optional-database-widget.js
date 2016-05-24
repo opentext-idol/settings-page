@@ -83,7 +83,7 @@ define([
                 expect(this.widget.$('input[name=username]')).toHaveValue('user');
                 expect(this.widget.enableView.enabled).toBeTruthy();
 
-                var passwordViewArgs = this.widget.passwordView.updateConfig.mostRecentCall.args[0];
+                var passwordViewArgs = this.widget.passwordView.updateConfig.calls.mostRecent().args[0];
                 expect(passwordViewArgs.password).toEqual('');
                 expect(passwordViewArgs.passwordRedacted).toBeTruthy();
             });

@@ -55,7 +55,7 @@ define([
 
                 expect(this.widget.enableView).toBeUndefined();
 
-                var passwordViewArgs = this.widget.passwordView.updateConfig.mostRecentCall.args[0];
+                var passwordViewArgs = this.widget.passwordView.updateConfig.calls.mostRecent().args[0];
                 expect(passwordViewArgs.password).toEqual('');
                 expect(passwordViewArgs.passwordRedacted).toBeTruthy();
             });

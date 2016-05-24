@@ -13,12 +13,22 @@ define([
         var stringObject = utils.createStringMap('passwordRedacted', 'passwordLabel', 'passwordDescription');
 
         beforeEach(function() {
-            this.addMatchers({
+            jasmine.addMatchers({
                 toBeRedacted: function() {
-                    if ('placeholder' in this.actual[0]) {
-                        return this.actual.attr('placeholder') === 'passwordRedacted';
-                    } else {
-                        return this.actual.val() === 'passwordRedacted' && this.actual.hasClass('placeholder');
+                    return {
+                        compare: function (actual) {
+                            var result = {};
+
+                            if ('placeholder' in actual[0]) {
+                                result.pass = actual.attr('placeholder') === 'passwordRedacted';
+                            } else {
+                                result.pass = actual.val() === 'passwordRedacted' && actual.hasClass('placeholder');
+                            }
+
+                            result.message = 'Expected ' + actual + (result.pass ? ' not ' : '') + ' to be redacted';
+
+                            return result;
+                        }
                     }
                 }
             });
