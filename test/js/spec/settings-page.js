@@ -13,12 +13,22 @@ define([
     describe('Settings page', function() {
         var waitTime = 300;
 
-        function modalIsOpen() {
+        function modalToOpen() {
             return $('.modal').length === 1;
         }
 
-        function modalIsClosed() {
+        function modalToClose() {
             return $('.modal').length === 0;
+        }
+
+        function waitFor(condition, callback, context) {
+            setTimeout(_.bind(function() {
+                expect(condition()).toBeTruthy();
+
+                if (condition) {
+                    callback.call(context);
+                }
+            }, context), waitTime);
         }
 
         var initialConfig = {
@@ -320,69 +330,39 @@ define([
             afterEach(function(done) {
                 $('.modal-backdrop').click();
 
-                setTimeout(function() {
-                    expect(modalIsClosed()).toBe(true);
-
-                    if(modalIsClosed()) {
-                        done();
-                    }
-                }, waitTime);
+                waitFor(modalToClose, done);
             });
 
             it('should display a modal', function(done) {
                 this.settingsPage.$('.settings-restore').click();
 
-                setTimeout(function() {
-                    expect(modalIsOpen()).toBe(true);
-
-                    if(modalIsOpen()) {
-                        done();
-                    }
-                }, waitTime);
+                waitFor(modalToOpen, done);
             });
 
             it('should be possible to cancel the modal', function(done) {
                 this.settingsPage.$('.settings-restore').click();
 
-                setTimeout(function() {
-                    expect(modalIsOpen()).toBe(true);
+                waitFor(modalToOpen, function() {
+                    $('.modal').find('.cancelButton').click();
 
-                    if(modalIsOpen()) {
-                        $('.modal').find('.cancelButton').click();
-
-                        setTimeout(function() {
-                            expect(modalIsClosed()).toBe(true);
-
-                            if(modalIsClosed()) {
-                                done();
-                            }
-                        }, waitTime);
-                    }
-                }, waitTime);
+                    waitFor(modalToClose, done);
+                })
             });
 
             it('should reset the inputs to the current config on confirm', function(done) {
                 this.settingsPage.$('.settings-restore').click();
 
-                setTimeout(_.bind(function() {
-                    expect(modalIsOpen()).toBe(true);
+                waitFor(modalToOpen, function() {
+                    $('.modal').find('.okButton').click();
 
-                    if(modalIsOpen()) {
-                        $('.modal').find('.okButton').click();
+                    waitFor(modalToClose, function() {
+                        _.each(this.settingsPage.widgets, function(widget) {
+                            expect(widget.updateConfig).toHaveBeenCalledWith(initialConfig[widget.configItem]);
+                        });
 
-                        setTimeout(_.bind(function() {
-                            expect(modalIsClosed()).toBe(true);
-
-                            if(modalIsClosed()) {
-                                _.each(this.settingsPage.widgets, function(widget) {
-                                    expect(widget.updateConfig).toHaveBeenCalledWith(initialConfig[widget.configItem]);
-                                });
-
-                                done();
-                            }
-                        }, this), waitTime);
-                    }
-                }, this), waitTime);
+                        done();
+                    }, this)
+                }, this);
             });
         });
 
@@ -399,15 +379,7 @@ define([
 
                 expect(loginWidget.validateInputs).toHaveBeenCalled();
 
-                setTimeout(function() {
-                    var modalClosed = modalIsClosed();
-
-                    expect(modalClosed).toBeTruthy();
-
-                    if(modalClosed) {
-                        done();
-                    }
-                }, 200)
+                waitFor(modalToClose, done);
             });
 
             describe('on successful client side validation', function() {
@@ -415,37 +387,22 @@ define([
                     this.configLoadCallback();
                     this.settingsPage.$('button[type="submit"]').click();
 
-                    setTimeout(_.bind(function() {
-                        if(modalIsOpen()) {
-                            this.$save = $('#settings-save-ok');
-                            done();
-                        }
-                    }, this), waitTime);
-
+                    waitFor(modalToOpen, function() {
+                        this.$save = $('#settings-save-ok');
+                        done();
+                    }, this);
                 });
 
                 afterEach(function(done) {
                     $('.modal').modal('hide');
 
-                    setTimeout(function() {
-                        if(modalIsClosed()) {
-                            done();
-                        }
-                    }, waitTime);
+                    waitFor(modalToClose, done);
                 });
 
                 it('should be possible to cancel the modal', function(done) {
                     $('.modal button:not(#settings-save-ok)').click();
 
-                    setTimeout(function() {
-                        var modalClosed = modalIsClosed();
-
-                        expect(modalClosed).toBeTruthy();
-
-                        if(modalClosed) {
-                            done();
-                        }
-                    }, waitTime);
+                    waitFor(modalToClose, done);
                 });
 
                 it('should attempt save the config on clicking save', function() {
@@ -474,15 +431,7 @@ define([
                     it('should be possible to close the modal', function(done) {
                         $('button[data-dismiss="modal"]').click();
 
-                        setTimeout(function() {
-                            var modalClosed = modalIsClosed();
-
-                            expect(modalClosed).toBeTruthy();
-
-                            if(modalClosed) {
-                                done();
-                            }
-                        }, waitTime);
+                        waitFor(modalToClose, done);
                     });
 
                     it('should hide the save button', function() {
