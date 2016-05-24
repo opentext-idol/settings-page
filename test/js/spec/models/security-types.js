@@ -10,13 +10,21 @@ define([
 
     describe('Security types model', function() {
         beforeEach(function() {
-            this.addMatchers({
-                toContainString: function(target) {
-                    this.message = function() {
-                        return 'Expected "' + JSON.stringify(this.actual) + '" to contain "' + target + '"';
-                    };
+            jasmine.addMatchers({
+                toContainString: function() {
+                    return {
+                        compare: function(actual, target) {
+                            var result = {};
 
-                    return _.contains(this.actual, target);
+                            result.pass = _.contains(actual, target);
+
+                            result.message = 'Expected "' + JSON.stringify(actual) +
+                                    result.pass ? '' : ' not ' +
+                                    '" to contain "' + target + '"';
+
+                            return result;
+                        }
+                    }
                 }
             });
 

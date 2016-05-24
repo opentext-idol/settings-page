@@ -50,9 +50,9 @@ define([
         });
 
         it('should return config in the correct format', function() {
-            spyOn(this.widget.currentPassword, 'getConfig').andReturn({password: 'bar', passwordRedacted: false});
-            spyOn(this.widget.newPassword, 'getConfig').andReturn({password: 'foo', passwordRedacted: false});
-            spyOn(this.widget.confirmPassword, 'getConfig').andReturn({password: 'foo', passwordRedacted: false});
+            spyOn(this.widget.currentPassword, 'getConfig').and.returnValue({password: 'bar', passwordRedacted: false});
+            spyOn(this.widget.newPassword, 'getConfig').and.returnValue({password: 'foo', passwordRedacted: false});
+            spyOn(this.widget.confirmPassword, 'getConfig').and.returnValue({password: 'foo', passwordRedacted: false});
 
             expect(this.widget.getConfig()).toEqual({
                 method: 'singleUser',
@@ -75,53 +75,53 @@ define([
 
         describe('validation', function() {
             it('should be valid in its initial state', function() {
-                spyOn(this.widget.newPassword, 'getConfig').andReturn({passwordRedacted: true});
-                spyOn(this.widget.confirmPassword, 'getConfig').andReturn({passwordRedacted: true});
-                spyOn(this.widget.currentPassword, 'getConfig').andReturn({passwordRedacted: true});
+                spyOn(this.widget.newPassword, 'getConfig').and.returnValue({passwordRedacted: true});
+                spyOn(this.widget.confirmPassword, 'getConfig').and.returnValue({passwordRedacted: true});
+                spyOn(this.widget.currentPassword, 'getConfig').and.returnValue({passwordRedacted: true});
 
                 expect(this.widget.validateInputs()).toBe(true);
             });
 
             it('should be invalid if the username input is blank', function() {
-                spyOn(this.widget.currentPassword, 'getConfig').andReturn({passwordRedacted: true});
-                spyOn(this.widget.newPassword, 'getConfig').andReturn({passwordRedacted: true});
-                spyOn(this.widget.confirmPassword, 'getConfig').andReturn({passwordRedacted: true});
+                spyOn(this.widget.currentPassword, 'getConfig').and.returnValue({passwordRedacted: true});
+                spyOn(this.widget.newPassword, 'getConfig').and.returnValue({passwordRedacted: true});
+                spyOn(this.widget.confirmPassword, 'getConfig').and.returnValue({passwordRedacted: true});
                 this.widget.$username.val('');
 
                 expect(this.widget.validateInputs()).toBe(false);
             });
 
             it('should be invalid if the current password view is invalid', function() {
-                spyOn(this.widget.currentPassword, 'getConfig').andReturn({passwordRedacted: true});
-                spyOn(this.widget.newPassword, 'getConfig').andReturn({passwordRedacted: true});
-                spyOn(this.widget.confirmPassword, 'getConfig').andReturn({passwordRedacted: true});
-                spyOn(this.widget.currentPassword, 'validateInputs').andReturn(false);
+                spyOn(this.widget.currentPassword, 'getConfig').and.returnValue({passwordRedacted: true});
+                spyOn(this.widget.newPassword, 'getConfig').and.returnValue({passwordRedacted: true});
+                spyOn(this.widget.confirmPassword, 'getConfig').and.returnValue({passwordRedacted: true});
+                spyOn(this.widget.currentPassword, 'validateInputs').and.returnValue(false);
 
                 expect(this.widget.validateInputs()).toBe(false);
             });
 
             it('should be invalid if the new password view is invalid', function() {
-                spyOn(this.widget.currentPassword, 'getConfig').andReturn({passwordRedacted: true});
-                spyOn(this.widget.newPassword, 'getConfig').andReturn({passwordRedacted: true});
-                spyOn(this.widget.confirmPassword, 'getConfig').andReturn({passwordRedacted: true});
-                spyOn(this.widget.newPassword, 'validateInputs').andReturn(false);
+                spyOn(this.widget.currentPassword, 'getConfig').and.returnValue({passwordRedacted: true});
+                spyOn(this.widget.newPassword, 'getConfig').and.returnValue({passwordRedacted: true});
+                spyOn(this.widget.confirmPassword, 'getConfig').and.returnValue({passwordRedacted: true});
+                spyOn(this.widget.newPassword, 'validateInputs').and.returnValue(false);
 
                 expect(this.widget.validateInputs()).toBe(false);
             });
 
             it('should be invalid if the confirm password view is invalid', function() {
-                spyOn(this.widget.currentPassword, 'getConfig').andReturn({passwordRedacted: true});
-                spyOn(this.widget.newPassword, 'getConfig').andReturn({passwordRedacted: true});
-                spyOn(this.widget.confirmPassword, 'getConfig').andReturn({passwordRedacted: true});
-                spyOn(this.widget.confirmPassword, 'validateInputs').andReturn(false);
+                spyOn(this.widget.currentPassword, 'getConfig').and.returnValue({passwordRedacted: true});
+                spyOn(this.widget.newPassword, 'getConfig').and.returnValue({passwordRedacted: true});
+                spyOn(this.widget.confirmPassword, 'getConfig').and.returnValue({passwordRedacted: true});
+                spyOn(this.widget.confirmPassword, 'validateInputs').and.returnValue(false);
 
                 expect(this.widget.validateInputs()).toBe(false);
             });
 
             it('should be invalid if any password view is not redacted and new password and confirm password do not match', function() {
-                spyOn(this.widget.currentPassword, 'getConfig').andReturn({password: 'foo', passwordRedacted: false});
-                spyOn(this.widget.newPassword, 'getConfig').andReturn({password: 'bar', passwordRedacted: false});
-                spyOn(this.widget.confirmPassword, 'getConfig').andReturn({password: 'baz', passwordRedacted: false});
+                spyOn(this.widget.currentPassword, 'getConfig').and.returnValue({password: 'foo', passwordRedacted: false});
+                spyOn(this.widget.newPassword, 'getConfig').and.returnValue({password: 'bar', passwordRedacted: false});
+                spyOn(this.widget.confirmPassword, 'getConfig').and.returnValue({password: 'baz', passwordRedacted: false});
 
                 expect(this.widget.validateInputs()).toBe(false);
             });

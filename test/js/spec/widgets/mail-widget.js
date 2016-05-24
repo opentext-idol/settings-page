@@ -14,7 +14,7 @@ define([
         var initialConfig = {
             enabled: true,
             connectionSecurity: 'STARTTLS',
-            from: 'meg@hp.com',
+            from: 'meg@hpe.com',
             host: 'myHost',
             password: '',
             passwordRedacted: true,
@@ -71,11 +71,11 @@ define([
             expect(this.$port).toHaveValue('587');
             expect(this.$security).toHaveValue('STARTTLS');
             expect(this.$username).toHaveValue('user');
-            expect(this.$from).toHaveValue('meg@hp.com');
+            expect(this.$from).toHaveValue('meg@hpe.com');
             expect(this.$to).toHaveValue('jeff@example.com,bobby@example2.com');
             expect(this.widget.enableView.enabled).toBeTruthy();
 
-            var passwordViewArgs = this.widget.passwordView.updateConfig.mostRecentCall.args[0];
+            var passwordViewArgs = this.widget.passwordView.updateConfig.calls.mostRecent().args[0];
             expect(passwordViewArgs.password).toEqual('');
             expect(passwordViewArgs.passwordRedacted).toBeTruthy();
         });
@@ -167,7 +167,7 @@ define([
         });
 
         it('should fail client side validation on empty username and password when the checkbox is checked', function() {
-            spyOn(this.widget.passwordView, 'validateInputs').andCallThrough();
+            spyOn(this.widget.passwordView, 'validateInputs').and.callThrough();
             this.$username.val('').trigger('change');
             var $usernameInfo = this.$username.siblings('.settings-client-validation');
             var isValid = this.widget.validateInputs();
@@ -181,7 +181,7 @@ define([
             isValid = this.widget.validateInputs();
             expect(isValid).toBeTruthy();
             expect($usernameInfo).toHaveClass('hide');
-            expect(this.widget.passwordView.validateInputs.calls.length).toBe(1);
+            expect(this.widget.passwordView.validateInputs).toHaveCallCount(1);
         });
     });
 
