@@ -10,7 +10,7 @@ define(function() {
             // lib
             backbone: 'bower_components/backbone/backbone',
             bootstrap: 'bower_components/bootstrap/js/bootstrap',
-            jquery: 'bower_components/jquery/dist/jquery',
+            jquery: 'bower_components/jquery/jquery',
             'jasmine-jquery': 'bower_components/jasmine-jquery/lib/jasmine-jquery',
             'js-whatever': 'bower_components/hp-autonomy-js-whatever/src',
             'js-testing': 'bower_components/hp-autonomy-js-testing-utils/src',
