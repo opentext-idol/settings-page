@@ -21,54 +21,69 @@ define([
         };
 
         beforeEach(function() {
-            this.addMatchers({
-                toDisplayConfig: function(config) {
-                    var $el = this.actual;
+            jasmine.addMatchers({
+                toDisplayConfig: function() {
+                    return {
+                        compare: function(actual, config) {
+                            var $el = actual;
 
-                    var actualConfig = _.extend({
-                        community: {
-                            host: $el.find('input[name="host"]').val(),
-                            port: Number($el.find('input[name="port"]').val()),
-                            protocol: $el.find('select[name="protocol"]').val()
-                        },
-                        method: $el.find('select[name="login-type"]').val()
-                    }, config);
+                            var actualConfig = {
+                                // need to account for things like productType which don't go in the DOM
+                                community: _.defaults({
+                                    host: $el.find('input[name="host"]').val(),
+                                    port: Number($el.find('input[name="port"]').val()),
+                                    protocol: $el.find('select[name="protocol"]').val()
+                                }, config.community),
+                                method: $el.find('select[name="login-type"]').val()
+                            };
 
-                    this.message = function() {
-                        return 'Expected "' + $el.get(0).outerHTML + '" to display config "' + JSON.stringify(config) + '"';
-                    };
+                            var pass = _.isEqual(config, actualConfig);
 
-                    return _.isEqual(config, actualConfig);
-                },
-                toContainOptions: function(options) {
-                    // Doesn't account for duplicates.
-                    var $select = this.actual;
-                    var $options = $select.find('option');
-
-                    this.message = function() {
-                        return 'Expected "' + $select.get(0).outerHTML + '" to contain options "' + JSON.stringify(options) + '"';
-                    };
-
-                    if ($options.length !== options.length) {
-                        return false;
-                    }
-
-                    var isMatch = true;
-
-                    _.each(options, function(value) {
-                        if (isMatch && $options.filter('[value="' + value + '"]').length !== 1) {
-                            isMatch = false;
+                            return {
+                                pass: pass,
+                                message: function() {
+                                    return 'Expected "' + JSON.stringify(actualConfig) + '"' +
+                                        (pass ? ' not ' : '') +
+                                        ' to display config "' + JSON.stringify(config) + '"';
+                                }
+                            };
                         }
-                    });
+                    }
+                },
+                toContainOptions: function() {
+                    return {
+                        compare: function(actual, options) {
+                            // Doesn't account for duplicates.
+                            var $select = actual;
+                            var $options = $select.find('option');
 
-                    return isMatch;
+                            if ($options.length !== options.length) {
+                                return false;
+                            }
+
+                            var isMatch = true;
+
+                            _.each(options, function(value) {
+                                if (isMatch && $options.filter('[value="' + value + '"]').length !== 1) {
+                                    isMatch = false;
+                                }
+                            });
+
+                            return {
+                                pass: isMatch,
+                                message: function() {
+                                    return 'Expected "' + $select.get(0).outerHTML + '"' + (isMatch ? ' not ' : '') + ' to contain options "' + JSON.stringify(options) + '"';
+                                }
+                            };
+                        }
+                    };
                 }
             });
 
             this.widget = new CommunityWidget({
                 configItem: 'login',
-                description: 'This widget controls Site Admin\'s connection to your Community server.',
-                indexErrorMessage: 'What\'s an index?',
+                description: "This widget controls Site Admin's connection to your Community server.",
+                indexErrorMessage: "What's an index?",
                 productType: 'UASERVER',
                 securityTypesUrl: '/securitytypes',
                 strings: strings,
@@ -210,7 +225,7 @@ define([
                 it('should keep the login types input disabled and fetch new security types', function() {
                     expect(this.$loginType).toHaveAttr('disabled');
                     expect(this.typesModel.fetch).toHaveBeenCalled();
-                    expect(this.typesModel.fetch.calls.length).toEqual(1);
+                    expect(this.typesModel.fetch).toHaveCallCount(1);
 
                     expect(this.typesModel.fetch).toHaveBeenCalledWith({data: {
                         host: initialConfig.community.host,

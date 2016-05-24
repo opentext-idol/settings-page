@@ -29,13 +29,13 @@ define([
         this.widget = new options.WidgetConstructor(options.constructorOptions);
 
         if (this.widget.passwordView) {
-            spyOn(this.widget.passwordView, 'getConfig').andReturn({password: '', passwordRedacted: true});
+            spyOn(this.widget.passwordView, 'getConfig').and.returnValue({password: '', passwordRedacted: true});
             spyOn(this.widget.passwordView, 'updateConfig');
         }
 
         if (this.widget.enableView) {
-            spyOn(this.widget.enableView, 'getConfig').andCallThrough();
-            spyOn(this.widget.enableView, 'updateConfig').andCallThrough();
+            spyOn(this.widget.enableView, 'getConfig').and.callThrough();
+            spyOn(this.widget.enableView, 'updateConfig').and.callThrough();
         }
 
         this.widget.render();
@@ -119,7 +119,7 @@ define([
         });
 
         it('should trigger validation on clicking the test button if client side validation passes', function() {
-            spyOn(this.widget, 'validateInputs').andReturn(true);
+            spyOn(this.widget, 'validateInputs').and.returnValue(true);
             this.widget.$('button[name=validate]').click();
 
             expect(this.validationSpy).toHaveBeenCalled();
