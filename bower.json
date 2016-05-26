@@ -34,13 +34,13 @@
     "underscore": "1.5.2",
     "backbone": "1.1.2",
     "hp-autonomy-js-whatever": "1.1.0",
-    "requirejs": "2.1.15",
+    "requirejs": "2.1.22",
     "bootstrap": "components/bootstrap#2.3",
-    "requirejs-text": "2.0.12",
-    "jquery": "1.10.2"
+    "requirejs-text": "2.0.15",
+    "jquery": "components/jquery#1.10.2"
   },
   "devDependencies": {
-    "hp-autonomy-js-testing-utils": "2.1.0",
+    "hp-autonomy-js-testing-utils": "2.2.0",
     "sinon": "http://sinonjs.org/releases/sinon-1.9.1.js",
     "jasmine-jquery": "2.1.1"
   },
@@ -49,6 +49,8 @@
     "jquery": "1.10.2",
     "bootstrap": "2.3",
     "backbone": "1.1.2",
-    "jasmine": "2.4"
+    "jasmine": "2.4",
+    "requirejs-text": "2.0.15",
+    "requirejs": "2.1.22"
   }
 }
