@@ -147,6 +147,7 @@ define([
                     WidgetConstructor: DatabaseWidget,
                     constructorOptions: _.extend({
                         canDisable: false,
+                        databaseName: 'an-application',
                         strings: serverUtils.strings
                     }, serverUtils.defaultOptions),
                     initialConfig: initialConfig
@@ -170,7 +171,7 @@ define([
                     platform: 'h2',
                     hibernateDialect: 'org.hibernate.dialect.H2Dialect',
                     driverClassName: 'org.h2.Driver',
-                    url: 'jdbc:h2:mem:site-admin',
+                    url: 'jdbc:h2:mem:an-application',
                     password: '',
                     passwordRedacted: true,
                     username: 'sa'
