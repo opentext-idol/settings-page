@@ -92,7 +92,7 @@ define([
                     driverClassName: 'org.h2.Driver',
                     username: 'sa',
                     buildUrl: function () {
-                        return 'jdbc:h2:mem:site-admin';
+                        return 'jdbc:h2:' + (options.databaseDir ? 'file:' + options.databaseDir + '/data/' : 'mem:') + options.databaseName  + ';DB_CLOSE_ON_EXIT=FALSE';
                     }
                 }
             };
