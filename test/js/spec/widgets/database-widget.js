@@ -171,7 +171,7 @@ define([
                     platform: 'h2',
                     hibernateDialect: 'org.hibernate.dialect.H2Dialect',
                     driverClassName: 'org.h2.Driver',
-                    url: 'jdbc:h2:mem:an-application',
+                    url: 'jdbc:h2:mem:an-application;DB_CLOSE_ON_EXIT=FALSE',
                     password: '',
                     passwordRedacted: true,
                     username: 'sa'
