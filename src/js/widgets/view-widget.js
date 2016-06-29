@@ -73,7 +73,7 @@ define([
             this.$connectorPort = this.$('.connector-container input[name=port]');
             this.$connectorProtocol = this.$('.connector-container select[name=protocol]');
 
-            this.$modeSelect.on('input', _.bind(this.toggleInputs, this));
+            this.$modeSelect.on('change', _.bind(this.toggleInputs, this));
         },
 
         toggleInputs: function() {
