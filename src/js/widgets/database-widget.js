@@ -130,15 +130,15 @@ define([
                 this.$('.database-type-selection').addClass('hide');
             }
 
-            var toggleInputs = _.bind(function () {
+            this.toggleInputs = _.bind(function () {
                 var databaseType = this.databaseType || this.$databaseType.val();
                 this.$('.database-config').toggleClass('hide', databaseType === 'h2');
                 this.$protocol.text(this.databaseTypes[databaseType].protocol);
             }, this);
 
-            this.$databaseType.on('input', toggleInputs);
+            this.$databaseType.on('input', this.toggleInputs);
 
-            toggleInputs();
+            this.toggleInputs();
         },
 
         /**
@@ -228,6 +228,10 @@ define([
                 if (!serverConfig.database && config.username) {
                     this.$database.val(config.username);
                 }
+
+                this.$databaseType.val(config.platform);
+                this.toggleInputs();
+
             }
 
             var checkboxState = this.$database.val() === this.$username.val();
