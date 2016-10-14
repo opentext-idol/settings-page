@@ -173,7 +173,7 @@ define([
                     driverClassName: 'org.h2.Driver',
                     url: 'jdbc:h2:mem:an-application;DB_CLOSE_ON_EXIT=FALSE',
                     password: '',
-                    passwordRedacted: true,
+                    passwordRedacted: false,
                     username: 'sa'
                 });
             });
