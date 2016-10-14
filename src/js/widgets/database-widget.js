@@ -92,7 +92,7 @@ define([
                     driverClassName: 'org.h2.Driver',
                     username: 'sa',
                     buildUrl: function () {
-                        return 'jdbc:h2:' + (options.databaseDir ? 'file:' + options.databaseDir + '/data/' : 'mem:') + options.databaseName  + ';DB_CLOSE_ON_EXIT=FALSE';
+                        return 'jdbc:h2:' + (options.databaseDir ? 'file:' + options.databaseDir + '/data/' : 'mem:') + options.databaseName + ';DB_CLOSE_ON_EXIT=FALSE';
                     }
                 }
             };
@@ -148,13 +148,18 @@ define([
         getConfig: function () {
             var databaseType = this.databaseType || this.$databaseType.val();
             var datasourceInfo = this.databaseTypes[databaseType];
-            return _.extend({
+            var dataBaseOptions = {
                 platform: databaseType,
                 hibernateDialect: datasourceInfo.hibernateDialect,
                 driverClassName: datasourceInfo.driverClassName,
                 url: datasourceInfo.buildUrl(),
-                username: datasourceInfo.username || this.$username.val()
-            }, this.passwordView.getConfig());
+                username: datasourceInfo.username || this.$username.val(),
+                password: '',
+                isRedacted: false
+            };
+
+            // user cant set embedded password.
+            return databaseType === 'h2' ? dataBaseOptions : _.extend(dataBaseOptions, this.passwordView.getConfig());
         },
 
         /**
@@ -186,10 +191,10 @@ define([
          * @param {DatabaseValidationResponse} response
          * @returns {string}
          */
-        getValidationSuccessMessage: function(response) {
+        getValidationSuccessMessage: function (response) {
             // if we get back flyway migration data, use that in the message
             if (response.data) {
-                if(response.data.sourceVersion === '0') {
+                if (response.data.sourceVersion === '0') {
                     return this.strings.flywayMigrationFromEmpty;
                 }
                 else {
