@@ -155,7 +155,7 @@ define([
                 url: datasourceInfo.buildUrl(),
                 username: datasourceInfo.username || this.$username.val(),
                 password: '',
-                isRedacted: false
+                passwordRedacted: false
             };
 
             // user cant set embedded password.
