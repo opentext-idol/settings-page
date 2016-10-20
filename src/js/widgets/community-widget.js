@@ -8,7 +8,7 @@
  */
 define([
     'settings/js/widgets/aci-widget',
-    'settings/js/models/security-types',
+    'settings/js/models/dropdown-property-model',
     'text!settings/templates/widgets/community-widget.html'
 ], function(AciWidget, SecurityTypesModel, template) {
 
@@ -57,7 +57,8 @@ define([
             _.bindAll(this, 'fetchNewSecurityTypes', 'getCommunity', 'handleNewSecurityTypes', 'toggleSecurityTypesInput', 'updateSecurityTypes');
 
             this.securityTypesModel = new SecurityTypesModel({}, {
-                url: options.securityTypesUrl
+                url: options.securityTypesUrl,
+                property: 'securityTypes'
             });
 
             this.securityTypesModel.on('change', this.handleNewSecurityTypes);

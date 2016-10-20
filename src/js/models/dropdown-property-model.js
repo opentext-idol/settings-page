@@ -7,24 +7,26 @@
  * @module settings/js/models/security-types
  */
 define([
-    'backbone'
-], function(Backbone) {
+    'backbone',
+    'underscore'
+], function(Backbone, _) {
 
     /**
-     * @typedef SecurityTypesOptions
+     * @typedef DropdownPropertyOptions
      * @property {string} url The url to fetch the security types from
      */
     /**
-     * @name module:settings/js/models/security-types.SecurityTypes
+     * @name module:settings/js/models/dropdown-property-model.DropdownPropertyValues
      * @desc Model for fetching security types
-     * @param {SecurityTypesAttributes} attributes Initial attributes
-     * @param {SecurityTypesOptions} options Options for the model
+     * @param {DropdownPropertyAttributes} attributes Initial attributes
+     * @param {DropdownPropertyOptions} options Options for the model
      * @constructor
      * @extends Backbone.Model
      */
-    return Backbone.Model.extend(/** @lends module:settings/js/models/security-types.SecurityTypes.prototype */ {
+    return Backbone.Model.extend(/** @lends module:settings/js/models/dropdown-property-model.DropdownPropertyValues.prototype */ {
         initialize: function(attributes, options) {
             this.url = options.url;
+            this.property = options.property;
         },
 
         /**
@@ -45,16 +47,16 @@ define([
         },
 
         /**
-         * @typedef SecurityTypesAttributes
-         * @property {Array<String>} securityTypes An array of strings representing security types
+         * @typedef DropdownPropertyAttributes
+         * @property {Array<String>} dropdownPropertyValues An array of strings representing the dropdown property values
          */
         /**
          * Parse the list of security types to remove any type named "default"
-         * @param {SecurityTypesAttributes} response
-         * @returns {SecurityTypesAttributes} response
+         * @param {DropdownPropertyAttributes} response
+         * @returns {DropdownPropertyAttributes} response
          */
         parse: function(response) {
-            response.securityTypes = response.securityTypes && _.without(response.securityTypes, 'default');
+            response[this.property] = response[this.property] && _.without(response[this.property], 'default');
             return response;
         }
     });
