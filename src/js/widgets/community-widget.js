@@ -50,7 +50,7 @@ define([
                 template: options.template,
                 exceptionalValues: ['cas', 'external'],
                 hasChanged: this.communityHasChanged,
-                modelConstructor: SecurityTypesModel
+                ModelConstructor: SecurityTypesModel
             });
         },
 

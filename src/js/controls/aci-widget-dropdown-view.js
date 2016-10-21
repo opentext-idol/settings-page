@@ -16,7 +16,8 @@ define([
         currentDropdownValue: null,
 
         initialize: function (options) {
-            this.model = new (options.modelConstructor || DropdownPropertyModel)({}, {
+            var Constructor = options.ModelConstructor || DropdownPropertyModel;
+            this.model = new Constructor({}, {
                 url: options.url
             });
 
