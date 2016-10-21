@@ -41,7 +41,7 @@ define(function() {
                 // mock
                 'settings/js/controls/enable-view': 'test/mock/enable-view',
                 'settings/js/controls/password-view': 'test/mock/password-view',
-                'settings/js/models/security-types': 'test/mock/security-types',
+                'settings/js/models/security-types-model': 'test/mock/security-types',
                 'js-whatever/js/list-view': 'test/mock/js-whatever/js/list-view'
             }
         }

@@ -4,7 +4,7 @@
  */
 
 define([
-    'real/js/models/security-types',
+    'real/js/models/security-types-model',
     'sinon'
 ], function(SecurityTypesModel) {
 
