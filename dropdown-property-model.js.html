@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>HP Autonomy Settings Page Source: widgets/locale-widget.js</title>
+	<title>HP Autonomy Settings Page Source: models/dropdown-property-model.js</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -228,7 +228,7 @@
 					
 
 
-		<h1 class="page-title">Source: widgets/locale-widget.js</h1>
+		<h1 class="page-title">Source: models/dropdown-property-model.js</h1>
     
 <section>
 	<article>
@@ -239,81 +239,49 @@
  */
 
 /**
- * @module settings/js/widgets/locale-widget
+ * @module settings/js/models/security-types
  */
 define([
-    'settings/js/widget',
-    'text!settings/templates/widgets/locale-widget.html'
-], function(Widget, template) {
+    'backbone',
+    'underscore'
+], function(Backbone, _) {
 
     /**
-     * @typedef LocaleWidgetStrings
-     * @property {string} prefix Label for the dropdown
+     * @typedef DropdownPropertyOptions
+     * @property {string} url The url to fetch the dropdown values from
      */
     /**
-     * @typedef LocaleWidgetOptions
-     * @desc Extends WidgetOptions
-     * @property {object.&lt;string,string>} locales Available locales. Keys should be ISO codes while values should be
-     * display names
-     * @property {LocaleWidgetStrings} strings Strings for the widget
-     */
-    /**
-     * @name module:settings/js/widgets/locale-widget.LocaleWidget
-     * @desc Widget for setting a global or default locale
+     * @name module:settings/js/models/dropdown-property-model.DropdownPropertyValues
+     * @desc Model for fetching security types
+     * @param {DropdownPropertyAttributes} attributes Initial attributes
+     * @param {DropdownPropertyOptions} options Options for the model
      * @constructor
-     * @param {LocaleWidgetOptions} options Options for the widget
-     * @extends module:settings/js/widget.Widget
+     * @extends Backbone.Model
      */
-    return Widget.extend(/**@lends module:settings/js/widgets/locale-widget.LocaleWidget.prototype */{
-        /**
-         * @callback module:settings/js/widgets/locale-widget.LocaleWidget~LocaleWidgetTemplate
-         * @param {LocaleWidgetOptions} parameters Parameters for the widget
-         */
-        /**
-         * @desc Template for the widget. Override if using Bootstrap 3
-         * @type module:settings/js/widgets/locale-widget.LocaleWidget~LocaleWidgetTemplate
-         */
-        localeTemplate: _.template(template),
-
-        /**
-         * @desc CSS classes for the widget.
-         * @default {@link module:settings/js/widget.Widget#className|Widget#className} + ' form-horizontal'
-         */
-        className: Widget.prototype.className + ' form-horizontal',
-
-        initialize: function(options) {
-            Widget.prototype.initialize.call(this, options);
-            this.locales = options.locales;
+    return Backbone.Model.extend(/** @lends module:settings/js/models/dropdown-property-model.DropdownPropertyValues.prototype */ {
+        initialize: function(attributes, options) {
+            this.url = options.url;
         },
 
         /**
-         * @desc Renders the widget
+         * @desc Fetches the dropdown property values. If already fetching, the previous request is aborted
+         * @param {object} options Backbone fetch options
          */
-        render: function() {
-            Widget.prototype.render.call(this);
-            this.$content.append(this.localeTemplate({locales: this.locales, strings: this.strings}));
-            this.$select = this.$('select[name=locale]');
-        },
+        fetch: function(options) {
+            this.xhr && this.xhr.abort();
+            options = options || {};
+            var originalComplete = options.complete;
 
-        /**
-         * @desc Returns the current config for the widget
-         * @returns {string} The ISO code of the currently selected locale
-         */
-        getConfig: function() {
-            return this.$select.val();
-        },
+            options.complete = _.bind(function() {
+                delete this.xhr;
+                originalComplete && originalComplete();
+            }, this);
 
-        /**
-         * @desc Updates the widget with the given config
-         * @param {string} config The new ISO code for the locale
-         */
-        updateConfig: function(config) {
-            this.$select.val(config);
+            this.xhr = Backbone.Model.prototype.fetch.call(this, options);
         }
     });
 
-});
-</pre>
+});</pre>
 	</article>
 </section>
 
