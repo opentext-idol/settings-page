@@ -9,8 +9,9 @@
 define([
     'underscore',
     'settings/js/widgets/aci-widget',
-    'settings/js/controls/aci-widget-dropdown-view'
-], function(_, AciWidget, DropdownView) {
+    'settings/js/controls/aci-widget-dropdown-view',
+    'settings/js/models/security-types-model'
+], function(_, AciWidget, DropdownView, SecurityTypesModel) {
 
     /**
      * @typedef CommunityWidgetStrings
@@ -48,7 +49,8 @@ define([
                 invalidMessage: this.strings.invalidSecurityType,
                 template: options.template,
                 exceptionalValues: ['cas', 'external'],
-                hasChanged: this.communityHasChanged
+                hasChanged: this.communityHasChanged,
+                modelConstructor: SecurityTypesModel
             });
         },
 

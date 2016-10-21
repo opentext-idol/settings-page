@@ -16,9 +16,8 @@ define([
         currentDropdownValue: null,
 
         initialize: function (options) {
-            this.model = new DropdownPropertyModel({}, {
-                url: options.url,
-                property: options.property
+            this.model = new (options.modelConstructor || DropdownPropertyModel)({}, {
+                url: options.url
             });
 
             _.bindAll(this, 'fetchNewValues', 'handleNewValues', 'toggleInput', 'updateDropdown');

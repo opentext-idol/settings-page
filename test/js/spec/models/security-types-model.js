@@ -4,9 +4,9 @@
  */
 
 define([
-    'real/js/models/dropdown-property-model',
+    'real/js/models/security-types-model',
     'sinon'
-], function(DropdownPropertyModel) {
+], function(SecurityTypesModel) {
 
     describe('Security types model', function() {
         beforeEach(function() {
@@ -30,9 +30,8 @@ define([
 
             this.server = sinon.fakeServer.create();
 
-            this.model = new DropdownPropertyModel({}, {
-                url: '/securitytypes',
-                property: 'securityTypes'
+            this.model = new SecurityTypesModel({}, {
+                url: '/securitytypes'
             });
         });
 

@@ -13,7 +13,7 @@ define([
 
     /**
      * @typedef DropdownPropertyOptions
-     * @property {string} url The url to fetch the security types from
+     * @property {string} url The url to fetch the dropdown values from
      */
     /**
      * @name module:settings/js/models/dropdown-property-model.DropdownPropertyValues
@@ -26,11 +26,10 @@ define([
     return Backbone.Model.extend(/** @lends module:settings/js/models/dropdown-property-model.DropdownPropertyValues.prototype */ {
         initialize: function(attributes, options) {
             this.url = options.url;
-            this.property = options.property;
         },
 
         /**
-         * @desc Fetches the security types. If already fetching, the previous request is aborted
+         * @desc Fetches the dropdown property values. If already fetching, the previous request is aborted
          * @param {object} options Backbone fetch options
          */
         fetch: function(options) {
@@ -44,20 +43,6 @@ define([
             }, this);
 
             this.xhr = Backbone.Model.prototype.fetch.call(this, options);
-        },
-
-        /**
-         * @typedef DropdownPropertyAttributes
-         * @property {Array<String>} dropdownPropertyValues An array of strings representing the dropdown property values
-         */
-        /**
-         * Parse the list of security types to remove any type named "default"
-         * @param {DropdownPropertyAttributes} response
-         * @returns {DropdownPropertyAttributes} response
-         */
-        parse: function(response) {
-            response[this.property] = response[this.property] && _.without(response[this.property], 'default');
-            return response;
         }
     });
 
