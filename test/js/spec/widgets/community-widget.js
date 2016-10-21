@@ -34,7 +34,7 @@ define([
                                     port: Number($el.find('input[name="port"]').val()),
                                     protocol: $el.find('select[name="protocol"]').val()
                                 }, config.community),
-                                method: $el.find('select[name="login-type"]').val()
+                                method: $el.find('select[name="aci-widget-dropdown"]').val()
                             };
 
                             var pass = _.isEqual(config, actualConfig);
@@ -90,10 +90,10 @@ define([
                 title: 'Community'
             });
 
-            this.typesModel = this.widget.securityTypesModel;
+            this.typesModel = this.widget.dropdownView.model;
             spyOn(this.typesModel, 'fetch');
             this.widget.render();
-            this.$loginType = this.widget.$('select[name="login-type"]');
+            this.$loginType = this.widget.$('select[name="aci-widget-dropdown"]');
             this.$aciDetails = this.widget.$('div.control-group').eq(0);
         });
 
