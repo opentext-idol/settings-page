@@ -11,6 +11,9 @@ define([
 ], function (Backbone, _, AciWidget, EnableView, DropdownView) {
 
     return AciWidget.extend({
+        DropdownView: DropdownView,
+        EnableView: EnableView,
+        
         initialize: function (options) {
             //noinspection JSUnresolvedVariable
             AciWidget.prototype.initialize.apply(this, arguments);
@@ -18,7 +21,7 @@ define([
             //noinspection JSUnresolvedFunction
             _.bindAll(this, 'answerServerHasChanged', 'getAnswerServer');
 
-            this.enableView = new EnableView({
+            this.enableView = new this.EnableView({
                 enableIcon: 'fa fa-file',
                 strings: this.strings
             });
@@ -29,7 +32,7 @@ define([
                 this.$('.settings-required-flag').toggleClass('hide', !this.enableView.getConfig());
             });
 
-            this.dropdownView = new DropdownView({
+            this.dropdownView = new this.DropdownView({
                 url: options.systemNamesUrl,
                 property: 'systemNames',
                 label: this.strings.systemNameLabel,
