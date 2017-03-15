@@ -9,6 +9,7 @@
     "David Knipe <david.knipe@hp.com>",
     "Luca Mandrioli",
     "Alex Scown <alex.scown@hp.com>",
+    "Wojciech Kaluza <wojciech.kaluza@hpe.com>",
     "Daniel Grayling <daniel.grayling@hpe.com"
   ],
   "description": "An application settings page and a collection of widgets",
@@ -33,7 +34,7 @@
   "dependencies": {
     "underscore": "1.5.2",
     "backbone": "1.1.2",
-    "hp-autonomy-js-whatever": "1.1.0",
+    "hp-autonomy-js-whatever": "2.12.1",
     "requirejs": "2.1.22",
     "bootstrap": "components/bootstrap#2.3",
     "requirejs-text": "2.0.15",
