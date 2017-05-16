@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>HP Autonomy Settings Page Source: widget.js</title>
+	<title>HP Autonomy Settings Page Source: widgets/distributed-widget.js</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -248,7 +248,7 @@
 					
 
 
-		<h1 class="page-title">Source: widget.js</h1>
+		<h1 class="page-title">Source: widgets/distributed-widget.js</h1>
     
 <section>
 	<article>
@@ -259,202 +259,141 @@
  */
 
 /**
- * @module settings/js/widget
+ * @module settings/js/widgets/aci-widget
  */
 define([
-    'backbone',
-    'text!settings/templates/widget.html'
-], function(Backbone, template) {
+    'settings/js/server-widget',
+    'text!settings/templates/widgets/server-selection-template.html',
+    'text!settings/templates/widgets/distributed-widget.html'
+], function(ServerWidget, serverSelectionTemplate, template) {
 
-    /**
-     * @typedef WidgetStrings
-     * @property {string} iconClass Icon to use in the title bar for the widget
-     */
-    /**
-     * @typedef WidgetOptions
-     * @property {string} configItem The section of the configuration represented by this widget
-     * @property {string} description A description for the widget
-     * @property {string} serverName (deprecated) Name of the server
-     * @property {WidgetStrings} strings Internationalisation strings for the widget
-     * @property {string} title Title for the widget
-     * @property {boolean} isOpened True if the widget should start opened; false otherwise
-     */
-    /**
-     * @name module:settings/js/widget.Widget
-     * @desc Base class for widgets. Extend this to add your own functionality
-     * @constructor
-     * @param {WidgetOptions} options Options for the widget
-     * @abstract
-     * @extends Backbone.View
-     */
-    return Backbone.View.extend(/**@lends module:settings/js/widget.Widget.prototype */ {
-        /**
-         * @desc Classes applied to the widget. Override if using Bootstrap 3
-         * @type string
-         * @default row-fluid accordion-group
-         */
-        className: 'row-fluid accordion-group',
+    var viewState = {
+        standard: 'standard',
+        distributed: 'distributed'
+    };
 
-        /**
-         * @desc Returns the config associated with the widget
-         * @abstract
-         * @method
-         */
-        getConfig: $.noop,
+    return ServerWidget.extend({
+        serverSelectionTemplate: _.template(serverSelectionTemplate),
+        distributedTemplate: _.template(template),
 
-        /**
-         * @desc Class applied to control groups. Set to 'form-group' if using Bootstrap 3
-         * @default control-group
-         */
-        controlGroupClass: 'control-group',
-
-        /**
-         * @desc Class applied to form controls. Set to 'form-control' if using Bootstrap 3
-         * @default ''
-         */
-        formControlClass: '',
-
-        /**
-         * @desc Class used to indicate successful validation. Set to 'has-success' if using Bootstrap 3
-         * @default success
-         */
-        successClass: 'success',
-
-        /**
-         * @desc Class used to indicate failed validation. Set to 'has-error' if using Bootstrap 3
-         * @default error
-         */
-        errorClass: 'error',
-
-        /**
-         * @typedef WidgetTemplateParameters
-         * @property {string} description this.description
-         * @property {string} title this.title
-         * @property {string} configItem this.configItem
-         * @property {boolean} isOpened this.isOpened
-         * @property {string} iconClass this.strings.iconClass
-         */
-        /**
-         * @callback module:settings/js/widget.Widget~WidgetTemplate
-         * @param {WidgetTemplateParameters} parameters
-         */
-        /**
-         * @desc Base template for the widget. Override if using Bootstrap 3
-         * @type module:settings/js/widget.Widget~WidgetTemplate
-         */
-        widgetTemplate: _.template(template),
-
-        events: {
-            'change input,select': 'handleInputChange'
-        },
-
-        initialize: function(options) {
-            _.bindAll(this, 'getConfig', 'getName', 'handleValidation', 'shouldValidate', 'updateConfig', 'validateInputs');
-
-            if (!options.configItem) {
-                throw 'Settings Widget Exception: A config item must be provided.';
+        events: _.extend({
+            'change select[name="server-configuration-type"]': function() {
+                this.viewState = this.$serverConfigurationType.val();
+                this.update();
             }
+        }, ServerWidget.prototype.events),
 
-            this.configItem = options.configItem;
-            this.description = options.description;
-            this.serverName = options.serverName;
-            this.strings = options.strings;
-            this.title = options.title;
-            this.isOpened = options.isOpened;
+        initialize: function() {
+            ServerWidget.prototype.initialize.apply(this, arguments);
+
+            this.dih = {};
+            this.dah = {};
+            this.standard = {};
         },
 
-        /**
-         * @desc Renders the widget
-         */
         render: function() {
-            this.$el.html(this.widgetTemplate({
-                description: this.description,
-                title: this.title,
-                configItem: this.configItem,
-                isOpened: this.isOpened,
-                iconClass: this.strings.iconClass
+            ServerWidget.prototype.render.call(this);
+
+            this.$('button[name=validate]').parent().before(this.distributedTemplate({
+                strings: this.strings
             }));
 
-            this.$content = this.$('.widget-content');
+            this.$serverConfigurationType = this.$('select[name="server-configuration-type"]');
+
+            this.$distributedView = this.$('.distributed-view');
+            this.$standardView = this.$('.standard-view');
+            this.update();
+
+            this.$('.standard-group').append(this.serverSelectionTemplate({
+                strings: this.strings,
+                tag: 'standard'
+            }));
+
+            this.$distributedView.find('.aci-group').append(this.serverSelectionTemplate({
+                strings: this.strings,
+                tag: 'aci'
+            }));
+
+            this.$distributedView.find('.indexing-group').append(this.serverSelectionTemplate({
+                strings: this.strings,
+                tag: 'indexing'
+            }));
+
+            this.$host = this.$('input[name=standard-host]');
+            this.$port = this.$('input[name=standard-port]');
+            this.$protocol = this.$('select[name=standard-protocol]');
+
+            this.$aciHost = this.$('input[name=aci-host]');
+            this.$aciPort = this.$('input[name=aci-port]');
+            this.$aciProtocol = this.$('select[name=aci-protocol]');
+
+            this.$indexingHost = this.$('input[name=indexing-host]');
+            this.$indexingAciPort = this.$('input[name=indexing-port]');
+            this.$indexingProtocol = this.$('select[name=indexing-protocol]');
+
+            this.$aciConnectionState = this.$('.aci-error');
+            this.$indexingConnectionState = this.$('.indexing-error');
+            this.$standardConnectionState = this.$('.standard-error');
         },
 
-        /**
-         * @desc Gets the name for the widget
-         * @returns {string} this.serverName, or this.configItem if serverName is undefined
-         * @deprecated Users of this class do not need to call this
-         */
-        getName: function() {
-            return this.serverName || this.configItem;
+        // Class specific functions
+
+        update: function() {
+            this.removeMainMessage();
+            this.$distributedView.toggleClass('hide', this.viewState !== viewState.distributed);
+            this.$standardView.toggleClass('hide', this.viewState === viewState.distributed);
         },
 
-        /**
-         * @desc Handler for change events on any inputs in the widget. Calls hideValidationInfo and
-         * setValidationFormatting
-         */
-        handleInputChange: function() {
-            this.hideValidationInfo();
-            this.setValidationFormatting('clear');
-        },
-
-        /**
-         * @typedef ValidationResponse
-         * @property {boolean} valid True if the configuration is valid; false otherwise
-         * @property {*} [data] An object with additional detail about the validation
-         */
-        /**
-         * @desc Handles the results of server side validation (several widgets have a Test Connection button to do
-         * this). Override this method if your widget needs server side validation
-         * @param {object} config The configuration object for the widget
-         * @param {ValidationResponse} response The validation response from the server
-         * @returns {boolean} True if the widget is valid; false otherwise
-         * @abstract
-         * @method
-         */
-        handleValidation: $.noop,
-
-        /**
-         * @desc Hides any validation information (elements with the settings-client-validation class)
-         */
-        hideValidationInfo: function() {
-            this.$('.settings-client-validation').addClass('hide');
-        },
-
-        /**
-         * @desc Removes this.successClass and this.errorClass from elements in the widget with this.controlGroupClass.
-         * &lt;p> If state === 'clear', remove successClass and errorClass from this.$el. Otherwise adds the given class
-         * and removes the other class
-         * @param {string} state clear to remove classes, otherwise this.successClass or this.errorClass to add that
-         * class and remove the other class
-         */
-        setValidationFormatting: function(state) {
-            this.$el.find('.' + this.controlGroupClass).removeClass(this.successClass + ' ' + this.errorClass);
-
-            if (state === 'clear') {
-                this.$el.removeClass(this.successClass + ' ' + this.errorClass);
+        displayDistributedValidationResult: function($target, result) {
+            if(result.validation === 'INCORRECT_SERVER_TYPE') {
+                $target.text(this.strings.INCORRECT_SERVER_TYPE(result.friendlyNames.join(', ')));
             } else {
-                this.$el.addClass(state)
-                    .removeClass(state === this.successClass ? this.errorClass : this.successClass);
+                $target.text(this.strings[result]);
+            }
+
+            $target.removeClass('hide');
+        },
+
+        distributedError: function(result, $target) {
+            if(result) {
+                this.displayDistributedValidationResult($target, result.data);
+            } else {
+                $target.addClass('hide');
             }
         },
 
-        /**
-         * @desc Returns false by default; override it to return true if your widget needs client side validation
-         * @returns {boolean} True if the widget should validate; false otherwise
-         * @abstract
-         */
-        shouldValidate: function() {
-            return false;
+        removeMainMessage: function() {
+            this.$connectionState.text('').css({opacity: 0}).stop();
         },
 
+        // Overrides
+
         /**
-         * @desc Updates the state of the widget. Subclasses should override this method, call this method and then
-         * perform additional operations
-         * @abstract
+         * @desc Handles the results of server side validation
          */
-        updateConfig: function() {
-            this.setValidationFormatting('clear');
-            this.hideValidationInfo();
+        displayValidationMessage: function(isEqual, response) {
+            ServerWidget.prototype.displayValidationMessage.apply(this, arguments);
+
+            if (isEqual) {
+                this.setValidationFormatting(this.lastValidation ? this.successClass : this.errorClass);
+
+                if(!this.lastValidation) {
+                    var data = response.data;
+
+                    if(data) {
+                        if(this.lastValidationConfig.distributed) {
+                            this.distributedError(data.dihValidationResult, this.$indexingConnectionState);
+                            this.distributedError(data.dahValidationResult, this.$aciConnectionState);
+                            this.removeMainMessage();
+                        } else {
+                            this.displayDistributedValidationResult(this.$standardConnectionState, data);
+                        }
+                    }
+                }
+            }
         },
+
+        handleInputChange: $.noop,
 
         /**
          * @desc Updates the formatting of the given input
@@ -464,34 +403,161 @@ define([
          * settings-client-validation
          * @param {jQuery} $input The input to apply the classes to
          * @param {boolean} isValid True if the input is valid; false otherwise
+         * @param {string} message Validation message to display
          * @protected
          */
-        updateInputValidation: function($input, isValid) {
-            var $controlGroup = $input.closest('.' + this.controlGroupClass);
-            var $span = $controlGroup.find('.settings-client-validation');
+        updateInputValidation: function($input, isValid, message) {
+            this.$('.settings-client-validation').text(message);
 
-            if (isValid) {
-                $controlGroup.removeClass(this.errorClass);
-                $span.addClass('hide');
+            ServerWidget.prototype.updateInputValidation.call(this, $input, isValid)
+        },
+
+        getValidationFailureMessage: $.noop,
+
+        /**
+         * @desc Populates the widget with the given config
+         * @param {AciWidgetConfig} config The new config for the widget
+         */
+        updateConfig: function(config) {
+            ServerWidget.prototype.updateConfig.apply(this, arguments);
+
+            var dih = config.dih;
+            var dah = config.dah;
+
+            var distributed = config.distributed;
+
+            if(distributed) {
+                this.$serverConfigurationType.val(viewState.distributed);
+                this.viewState = viewState.distributed;
             } else {
-                $controlGroup.addClass(this.errorClass);
-                $span.removeClass('hide');
+                this.$serverConfigurationType.val(viewState.standard);
+                this.viewState = viewState.standard;
+            }
+
+            this.update();
+
+            this.$indexingHost.val(dih.host);
+            this.$indexingAciPort.val(dih.port);
+            this.$indexingProtocol.val(dih.protocol);
+
+            this.$aciHost.val(dah.host);
+            this.$aciPort.val(dah.port);
+            this.$aciProtocol.val(dah.protocol);
+
+            var standard = config.standard;
+
+            this.$host.val(standard.host);
+            this.$port.val(standard.port);
+            this.$protocol.val(standard.protocol);
+
+            this.dih = _.pick(dih, 'productType', 'indexErrorMessage');
+            this.dah = _.pick(dah, 'productType', 'indexErrorMessage');
+            this.standard = _.pick(standard, 'productType', 'indexErrorMessage');
+        },
+
+        methods: {
+            distributed: {
+                getConfig: function() {
+                    //noinspection JSValidateTypes
+                    return {
+                        distributed: true,
+                        dih: {
+                            host: this.$indexingHost.val(),
+                            port: Number(this.$indexingAciPort.val()),
+                            protocol: this.$indexingProtocol.val(),
+
+                            productType: this.dih.productType,
+                            indexErrorMessage: this.dih.indexErrorMessage
+                        },
+                        dah: {
+                            host: this.$aciHost.val(),
+                            port: Number(this.$aciPort.val()),
+                            protocol: this.$aciProtocol.val(),
+
+                            productType: this.dah.productType,
+                            indexErrorMessage: this.dah.indexErrorMessage
+                        }
+
+                    };
+                },
+
+                validateInputs: function() {
+                    if (this.$aciHost.val() === '') {
+                        this.updateInputValidation(this.$aciHost, false, this.strings.validateAciHostBlank);
+                        return false;
+                    }
+
+                    var aciPort = Number(this.$aciPort.val());
+
+                    if (aciPort &lt;= 0 || aciPort > 65535) {
+                        this.updateInputValidation(this.$aciPort, false, this.strings.validateAciPortInvalid);
+                        return false;
+                    }
+
+                    if (this.$indexingHost.val() === '') {
+                        this.updateInputValidation(this.$indexingHost, false, this.strings.validateIndexHostBlank);
+                        return false;
+                    }
+
+                    var indexPort = Number(this.$indexingAciPort.val());
+
+                    if (indexPort &lt;= 0 || indexPort > 65535) {
+                        this.updateInputValidation(this.$indexingAciPort, false, this.strings.validateIndexPortInvalid);
+                        return false;
+                    }
+
+                    return true;
+                }
+            },
+
+            standard: {
+                getConfig: function() {
+                    //noinspection JSValidateTypes
+                    return {
+                        distributed: false,
+                        standard: {
+                            host: this.$host.val(),
+                            port: Number(this.$port.val()),
+                            protocol: this.$protocol.val(),
+
+                            productType: this.standard.productType,
+                            indexErrorMessage: this.standard.indexErrorMessage
+                        }
+                    };
+                },
+
+                /**
+                 * @desc Validates the widget and applies formatting if necessary
+                 * @returns {boolean} False if the host is blank; true otherwise
+                 */
+                validateInputs: function() {
+                    if (this.$host.val() === '') {
+                        this.updateInputValidation(this.$host, false, this.strings.validateHostBlank);
+                        return false;
+                    }
+
+                    var port = Number(this.$port.val());
+
+                    if (port &lt;= 0 || port > 65535) {
+                        this.updateInputValidation(this.$port, false, this.strings.validatePortInvalid);
+                        return false;
+                    }
+
+                    return true;
+                }
             }
         },
 
-        /**
-         * @desc Validates the inputs in the widget. Default implementation just returns true - override if you need
-         * validation. This method should perform any formatting required to display the validation failure.
-         * @returns {boolean} True if the widget is valid; false otherwise
-         * @abstract
-         */
+        getConfig: function() {
+            return this.methods[this.viewState].getConfig.apply(this, arguments);
+        },
+
         validateInputs: function() {
-            return true;
+            return this.methods[this.viewState].validateInputs.apply(this, arguments);
         }
     });
 
-});
-</pre>
+});</pre>
 	</article>
 </section>
 

@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>HP Autonomy Settings Page Source: server-widget.js</title>
+	<title>HP Autonomy Settings Page Source: widgets/mail-widget.js</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -248,7 +248,7 @@
 					
 
 
-		<h1 class="page-title">Source: server-widget.js</h1>
+		<h1 class="page-title">Source: widgets/mail-widget.js</h1>
     
 <section>
 	<article>
@@ -259,171 +259,245 @@
  */
 
 /**
- * @module settings/js/server-widget
+ * @module settings/js/widgets/mail-widget
  */
 define([
-    'settings/js/widget',
-    'text!settings/templates/server-widget.html'
-], function(Widget, template) {
+    'settings/js/server-widget',
+    'settings/js/controls/password-view',
+    'settings/js/controls/enable-view',
+    'text!settings/templates/widgets/mail-widget.html'
+], function(ServerWidget, PasswordView, EnableView, template) {
+
+    var defaultPorts = {
+        NONE: 25,
+        STARTTLS: 587,
+        TLS: 465
+    };
+
+    template = _.template(template);
 
     /**
-     * @typedef ServerWidgetStrings
-     * @desc Extends WidgetStrings
-     * @property {string} validateButton String for the validate button
+     * @typedef MailWidgetStrings
+     * @desc Extends WidgetStrings, EnableViewStrings and PasswordViewStrings
+     * @property {string} hostPlaceholder Placeholder for the mail server host input
+     * @property {string} portPlaceholder Placeholder for the mail server port input
+     * @property {string} validateHostBlank Message displayed when the mail server host is empty
+     * @property {string} connectionSecurity Label for the security method dropdown
+     * @property {string} fromLabel Label for the sender input
+     * @property {string} validateFromBlank Message displayed when the sender input is empty
+     * @property {string} toLabel Label for the recipient input
+     * @property {string} toDescription Instructions for the recipient input
+     * @property {string} validateFromBlank Message displayed when the recipient input is empty
+     * @property {string} mailCheckbox Label for checkbox which enables authentication
+     * @property {string} usernameLabel Label for the username input
+     * @property {string} validateUsernameBlank Message displayed when the username input is empty
      */
     /**
-     * @typedef ServerWidgetOptions
-     * @desc Extends WidgetOptions
-     * @property {ServerWidgetStrings} strings Internationalisation strings for the widget
+     * @typedef MailWidgetOptions
+     * @desc Extends ServerWidgetOptions
+     * @property {object.&lt;string,string>} securityTypes Security options to use. Keys should be NONE, STARTTLS and TLS.
+     * Values should be display names.
+     * @property {MailWidgetStrings} strings Strings for the widget
      */
     /**
-     * @name module:settings/js/server-widget.ServerWidget
-     * @desc Widget for backend servers which require server side validation to check they are alive and are appropriate
-     * targets. Provides a test connection button to facilitate this.
-     * @param {ServerWidgetOptions} options Options for the Widget
+     * @name module:settings/js/widgets/mail-widget.MailWidget
+     * @desc Widget for configuring mail server settings
      * @constructor
-     * @abstract
-     * @extends module:settings/js/widget.Widget
+     * @param {MailWidgetOptions} options Options for the widget
+     * @extends module:settings/js/server-widget.ServerWidget
      */
-    return Widget.extend(/** @lends module:settings/js/server-widget.ServerWidget.prototype */{
-        /**
-         * @desc Classes applied to the widget. Override if using Bootstrap 3
-         * @type string
-         * @default Widget.prototype.className + ' settings-servergroup control-group form-horizontal'
-         */
-        className: Widget.prototype.className + ' settings-servergroup control-group form-horizontal',
-
-        /**
-         * @typedef ServerWidgetTemplateParameters
-         * @property {ServerWidgetStrings} strings Strings for the widget
-         */
-        /**
-         * @callback module:settings/js/server-widget.ServerWidget~ServerWidgetTemplate
-         * @param {ServerWidgetTemplateParameters} parameters
-         */
-        /**
-         * @desc Base template for the widget. Override if using Bootstrap 3
-         * @type module:settings/js/server-widget.ServerWidget~ServerWidgetTemplate
-         */
-        serverTemplate: _.template(template),
-
+    return ServerWidget.extend(/** @lends module:settings/js/widgets/mail-widget.MailWidget.prototype */{
         events: _.extend({
-            'click button[name=validate]': 'triggerValidation'
-        }, Widget.prototype.events),
+            'change select[name=connection-security]': 'handleSecurityChange'
+        }, ServerWidget.prototype.events),
+
+        initialize: function(options) {
+            ServerWidget.prototype.initialize.call(this, options);
+            _.bindAll(this, 'handleSecurityChange', 'updateAuthState');
+
+            this.passwordView = new PasswordView({
+                enabled: false,
+                strings: this.strings
+            });
+
+            this.enableView = new EnableView({
+                enableIcon: 'icon-envelope',
+                strings: this.strings
+            });
+
+            this.securityTypes = options.securityTypes;
+        },
 
         /**
-         * @desc Renders the widget by first calling {@link module:settings/js/widget.Widget#render|Widget.render} and
-         * then rendering the test connection button
+         * @desc Renders the widget
          */
         render: function() {
-            Widget.prototype.render.call(this);
+            ServerWidget.prototype.render.call(this);
 
-            this.$content.append(this.serverTemplate({
+            var $validateButtonParent = this.$('button[name=validate]').parent();
+
+            $validateButtonParent.before(template({
+                securityTypes: this.securityTypes,
                 strings: this.strings
             }));
 
-            this.$connectionState = this.$('.connection-state');
-        },
+            this.$authCheckbox = this.$('input[type="checkbox"]');
+            this.$from = this.$('input[name=from]');
+            this.$connectionSecurity = this.$('select[name=connection-security]');
+            this.$host = this.$('input[name=host]');
+            this.$port = this.$('input[name=port]');
+            this.$to = this.$('input[name=to]');
+            this.$username = this.$('input[name=username]');
 
-        handleInputChange: function() {
-            Widget.prototype.handleInputChange.apply(this, arguments);
-
-            if (!_.isUndefined(this.lastValidation) &amp;&amp; _.isEqual(this.lastValidationConfig, this.getConfig())) {
-                this.setValidationFormatting(this.lastValidation ? this.successClass : this.errorClass);
-            }
+            this.passwordView.render();
+            $validateButtonParent.before(this.passwordView.$el);
+            this.enableView.render();
+            $validateButtonParent.before(this.enableView.$el);
         },
 
         /**
-         * @desc Handles the results of server side validation
+         * @typedef MailConfiguration
+         * @property {string} connectionSecurity The security method to use. Can be either NONE, TLS, or STARTTLS
+         * @property {boolean} enabled True if the widget is enabled; false otherwise
+         * @property {string} from The email address to be used as the sender
+         * @property {string} host The host of the email server
+         * @property {string} [password] The password to use when authenticating with the mail server. If
+         * passwordRedacted is true then this should be empty
+         * @property {boolean} [passwordRedacted] True if the password exists but is not visible; false otherwise
+         * @property {number} port The port of the email server
+         * @property {string} to Comma separated list of email addresses to be used as the recipient
+         * @property {string} [username] The username to use when authenticating with the mail server
          */
-        handleValidation: function(config, response) {
-            if (_.isEqual(config, this.lastValidationConfig)) {
-                this.lastValidation = response.valid;
-                this.hideValidationInfo();
+        /**
+         * @desc Returns the configuration represented by the widget
+         * @returns {MailConfiguration} The configuration represented by the widget
+         */
+        getConfig: function() {
+            var authenticationRequired = this.$authCheckbox.prop('checked');
 
-                this.displayValidationMessage(_.isEqual(this.getConfig(), config), response);
+            var baseConfig = {
+                connectionSecurity: this.$connectionSecurity.val(),
+                enabled: this.enableView.getConfig(),
+                from: this.$from.val(),
+                host: this.$host.val(),
+                port: Number(this.$port.val()),
+                to: _.compact(_.map(this.$to.val().split(','), function(val) {
+                    return $.trim(val);
+                }))
+            };
+
+            if (authenticationRequired) {
+                //noinspection JSValidateTypes
+                return _.extend(baseConfig, this.passwordView.getConfig(), {username: this.$username.val()});
+            }
+            else {
+                //noinspection JSValidateTypes
+                return baseConfig;
+            }
+        },
+
+        handleInputChange: function(evt) {
+            ServerWidget.prototype.handleInputChange.apply(this, arguments);
+            var $input = $(evt.target);
+            var authRequired = this.$authCheckbox.prop('checked');
+
+            if ($input.is(this.$authCheckbox)) {
+                this.updateAuthState(authRequired);
             }
         },
 
         /**
-         * @desc If isEqual is true displays a message showing the result of a validation. Otherwise clears the
-         * validation state
-         * @param {boolean} isEqual True if the config is equal to the config received from the server; false otherwise
-         * @param {ValidationResponse} response The repsonse from the server
+         * @desc Handler called when the security method is changed. Updates the port to the default for that type
+         */
+        handleSecurityChange: function() {
+            var newSecurityType = this.$connectionSecurity.val();
+
+            if (Number(this.$port.val()) === defaultPorts[this.lastSecurityType]) {
+                this.$port.val(defaultPorts[newSecurityType]);
+            }
+
+            this.lastSecurityType = newSecurityType;
+        },
+
+        /**
+         * @desc Enables the username and password inputs if authentication is required, and disables them if not
+         * @param authRequired True if authentication should be used; false otherwise
          * @protected
          */
-        displayValidationMessage: function(isEqual, response) {
-            if (isEqual) {
-                this.setValidationFormatting(this.lastValidation ? this.successClass : this.errorClass);
-
-                var message;
-
-                if (this.lastValidation) {
-                    message = this.getValidationSuccessMessage(response);
-                }
-                else {
-                    message = this.getValidationFailureMessage(response);
-                }
-
-                this.$connectionState.text(message)
-                    .stop()
-                    .animate({opacity: 1});
-            } else {
-                this.setValidationFormatting('clear');
-            }
+        updateAuthState: function(authRequired) {
+            this.$authCheckbox.prop('checked', authRequired);
+            this.$username.prop('disabled', !authRequired);
+            this.$username.siblings('.settings-required-flag').toggleClass('hide', !authRequired);
+            this.passwordView.setEnabled(authRequired);
         },
 
         /**
-         * @desc Generates a message indicating that validation was successful
-         * @param {ValidationResponse} response The response from the server
-         * @returns {string} A message indicating validation was successful
-         */
-        getValidationSuccessMessage: function() {
-            return this.strings.validateSuccess;
-        },
-
-        /**
-         * @desc Generates a message indicating that validation was unsuccessful
-         * @param {ValidationResponse} response The response from the server
-         * @returns {string} A message indicating validation was unsuccessful
-         */
-        getValidationFailureMessage: function(response) {
-            return response.data || this.strings.validateFailed;
-        },
-
-        /**
-         * @desc Removes validation information as defined in Widget and also hides the connection state
-         */
-        hideValidationInfo: function() {
-            Widget.prototype.hideValidationInfo.apply(this, arguments);
-            this.$connectionState.text('').css({opacity: 0}).stop();
-        },
-
-        /**
-         * @desc Returns true as all ServerWidgets should validate
-         * @returns {boolean} true
+         * @desc Determines if the widget should be validated
+         * @returns {boolean} True if the widget is enabled; false otherwise
          */
         shouldValidate: function() {
-            return true;
+            return this.enableView.getConfig();
         },
 
         /**
-         * @desc Triggers validation when the test connection button is pressed
-         * @fires validate Event indicating that validation should take place
+         * @desc Updates the widget with the given config
+         * @param {MailConfiguration} config The new configuration for the widget
          */
-        triggerValidation: function() {
-            this.setValidationFormatting('clear');
-            this.hideValidationInfo();
+        updateConfig: function(config) {
+            ServerWidget.prototype.updateConfig.apply(this, arguments);
 
-            if (this.validateInputs()) {
-                this.trigger('validate');
-            }
+            this.$connectionSecurity.val(config.connectionSecurity);
+            this.$from.val(config.from);
+            this.$host.val(config.host);
+            this.$port.val(config.port);
+            this.$to.val(config.to ? config.to.join(',') : '');
+            this.$username.val(config.username);
+
+            this.enableView.updateConfig(config.enabled);
+            this.passwordView.updateConfig(config);
+            this.lastSecurityType = config.connectionSecurity;
+            this.updateAuthState(config.username !== '' || this.$authCheckbox.prop('checked'));
         },
 
-        updateConfig: function() {
-            Widget.prototype.updateConfig.apply(this, arguments);
-            delete this.lastValidation;
-            delete this.lastValidationConfig;
+        /**
+         * @desc Validates the widget and applies formatting as appropriate
+         * @returns {boolean} False if the host is empty, the from field is empty, the recipient list is empty, or the
+         * username or password fields are blank if authentication is used; true otherwise
+         */
+        validateInputs: function() {
+            var isValid = true;
+
+            if (this.shouldValidate()) {
+                var config = this.getConfig();
+
+                if (config.host === '') {
+                    isValid = false;
+                    this.updateInputValidation(this.$host, false);
+                }
+
+                if (config.from === '') {
+                    isValid = false;
+                    this.updateInputValidation(this.$from, false);
+                }
+
+                if (!config.to.length) {
+                    isValid = false;
+                    this.updateInputValidation(this.$to, false);
+                }
+
+                if (this.$authCheckbox.prop('checked')) {
+                    if (!this.passwordView.validateInputs()) {
+                        isValid = false;
+                    }
+
+                    if (config.username === '') {
+                        isValid = false;
+                        this.updateInputValidation(this.$username, false);
+                    }
+                }
+            }
+
+            return isValid;
         }
     });
 

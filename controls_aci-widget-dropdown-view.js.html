@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>HP Autonomy Settings Page Index</title>
+	<title>HP Autonomy Settings Page Source: controls/aci-widget-dropdown-view.js</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -242,55 +242,171 @@
 	<div class="row-fluid">
 
 		
-		<div class="span8">
-			
+			<div class="span12">
+				
 				<div id="main">
 					
 
 
-	
-	<span class="page-title">Index</span>
-	
-	
+		<h1 class="page-title">Source: controls/aci-widget-dropdown-view.js</h1>
+    
+<section>
+	<article>
+		<pre
+			class="sunlight-highlight-javascript linenums">/*
+ * Copyright 2013-2015 Hewlett-Packard Development Company, L.P.
+ * Licensed under the MIT License (the "License"); you may not use this file except in compliance with the License.
+ */
 
+/**
+ * @module settings/js/controls/enable-view
+ */
+define([
+    'backbone',
+    'underscore',
+    'settings/js/models/dropdown-property-model',
+    'text!settings/templates/controls/aci-widget-dropdown-view.html'
+], function (Backbone, _, DropdownPropertyModel, dropdownTemplate) {
+    return Backbone.View.extend({
+        currentDropdownValue: null,
 
+        initialize: function (options) {
+            var Constructor = options.ModelConstructor || DropdownPropertyModel;
+            this.model = new Constructor({}, {
+                url: options.url
+            });
 
+            _.bindAll(this, 'fetchNewValues', 'handleNewValues', 'toggleInput', 'updateDropdown');
 
+            this.property = options.property;
 
+            this.label = options.label;
+            this.fetchMessage = options.fetchMessage;
+            this.invalidMessage = options.invalidMessage;
 
+            this.exceptionalValues = options.exceptionalValues || [];
+            this.hasChanged = options.hasChanged;
 
+            this.template = _.template(options.template || dropdownTemplate);
 
+            this.model.on('change', this.handleNewValues);
+        },
 
+        /**
+         * @desc Renders the view
+         */
+        render: function () {
+            //noinspection JSUnresolvedVariable
+            this.$el.html(this.template({
+                label: this.label,
+                fetchMessage: this.fetchMessage,
+                invalidMessage: this.invalidMessage
+            }));
+            //noinspection JSUnresolvedFunction
+            this.$dropdown = this.$('select[name="aci-widget-dropdown"]');
+            //noinspection JSUnresolvedFunction
+            this.$valuesSpan = this.$('.fetch-dropdown-values');
+        },
 
+        /**
+         * @desc Fetches values for the dropdown for the given server
+         * @param server
+         */
+        fetchNewValues: function (server) {
+            this.model.unset(this.property, {silent: true});
 
+            this.model.fetch({
+                data: {
+                    protocol: server.protocol,
+                    host: server.host,
+                    port: server.port
+                }
+            });
+        },
 
-	
-	
+        hasValues: function () {
+            return this.model.get(this.property);
+        },
 
+        /**
+         * @desc Returns the current state of the view
+         * @returns {String} The current value for the dropdown setting
+         */
+        getConfig: function () {
+            return this.$dropdown.val() || this.currentDropdownValue;
+        },
 
+        /**
+         * @desc Handler for changes in the list of available values
+         */
+        handleNewValues: function () {
+            this.updateDropdown();
+            this.toggleInput(!this.hasChanged());
+        },
 
+        clearValidationFormatting: function (errorClass) {
+            this.$dropdown.parent().removeClass(errorClass);
+            this.$valuesSpan.removeClass('hide');
+        },
 
+        /**
+         * @desc Hides or shows the security types input and corresponding instructions
+         * @param {boolean} isEnabled True if dropdown values should be enabled; false otherwise
+         */
+        toggleInput: function (isEnabled) {
+            this.$valuesSpan.toggleClass('hide', isEnabled);
+            this.$dropdown.attr('disabled', !isEnabled);
+        },
 
-    <section class="readme-section">
-        <article><h1>Settings Page</h1><p><a href="https://travis-ci.org/hpe-idol/settings-page"><img src="https://travis-ci.org/hpe-idol/settings-page.svg?branch=master" alt="Build Status"></a></p>
-<p>A Backbone and Bootstrap settings page, allowing users to configure a web application through a simple, easy to use UI.</p>
-<p>This project exposes AMD modules. The path to the project root directory must be aliased as settings. The module names<br>in the documentation reflect this.</p>
-<p>Documentation can be found <a href="http://hpe-idol.github.io/settings-page">here</a>.</p>
-<p>This repo uses git-flow. develop is the development branch. master is the last known good branch.</p>
-<h2>Installation</h2><pre class="prettyprint source"><code>bower install hp-autonomy-settings-page</code></pre><h2>Grunt tasks</h2><ul>
-<li>grunt : runs the lint, test, and coverage tasks</li>
-<li>grunt test : Runs the Jasmine tests in Phantom JS</li>
-<li>grunt browser-test : Starts a server on localhost:8000, which can be used to run the Jasmine tests in the browser</li>
-<li>grunt coverage : Generates code coverage statistics</li>
-<li>grunt lint : Runs js-lint and coffeelint</li>
-<li>grunt doc : Generates project documentation</li>
-</ul>
-<h2>Is it any good?</h2><p>Yes.</p>
-<h2>License</h2><p>Copyright 2013-2015 Hewlett-Packard Development Company, L.P.<br>Copyright 2015-2016 Hewlett Packard Enterprise Development LP.</p>
-<p>Licensed under the MIT License (the &quot;License&quot;); you may not use this project except in compliance with the License.</p></article>
-    </section>
+        updateConfig: function (config) {
+            this.currentDropdownValue = config;
+            this.model.unset(this.property, {silent: true});
+            this.toggleInput(false);
+            this.updateDropdown();
+        },
 
+        /**
+         * @desc Updates the dropdown with the values in the model.
+         * @protected
+         */
+        updateDropdown: function () {
+            var values = this.model.get(this.property);
+            var currentValue = this.$dropdown.val() || this.currentDropdownValue;
+            this.$dropdown.empty();
 
+            if (values) {
+                if (this.exceptionalValues.some(function (exceptionalValue) {
+                        return exceptionalValue === currentValue;
+                    })) {
+                    // If we are using an exceptional value, append it to the dropdown (e.g. cas/external login type for community)
+                    this.$dropdown.append(new Option(currentValue, currentValue, true, true));
+                }
+
+                _.each(values, function (value) {
+                    this.$dropdown.append(new Option(value, value, false, value === currentValue));
+                }, this);
+
+                var currentOption = this.$dropdown.find('[value="' + currentValue + '"]');
+
+                if (currentOption.length) {
+                    this.$dropdown.val(currentValue);
+                } else {
+                    this.$dropdown.val(_.first(values));
+                }
+            } else if (currentValue) {
+                this.$dropdown.append(new Option(currentValue, currentValue, true, true));
+            }
+        },
+        
+        getDropdownElement: function () {
+            return this.$dropdown;
+        }
+    });
+
+});
+</pre>
+	</article>
+</section>
 
 
 
@@ -315,10 +431,6 @@
 				</footer>
 			</div>
 
-			
-			<div class="span3">
-				<div id="toc"></div>
-			</div>
 			
 			<br clear="both">
 		</div>

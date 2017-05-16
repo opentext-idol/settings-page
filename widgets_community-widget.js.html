@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>HP Autonomy Settings Page Index</title>
+	<title>HP Autonomy Settings Page Source: widgets/community-widget.js</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -242,55 +242,203 @@
 	<div class="row-fluid">
 
 		
-		<div class="span8">
-			
+			<div class="span12">
+				
 				<div id="main">
 					
 
 
-	
-	<span class="page-title">Index</span>
-	
-	
+		<h1 class="page-title">Source: widgets/community-widget.js</h1>
+    
+<section>
+	<article>
+		<pre
+			class="sunlight-highlight-javascript linenums">/*
+ * Copyright 2013-2015 Hewlett-Packard Development Company, L.P.
+ * Licensed under the MIT License (the "License"); you may not use this file except in compliance with the License.
+ */
 
+/**
+ * @module settings/js/widgets/community-widget
+ */
+define([
+    'underscore',
+    'settings/js/widgets/aci-widget',
+    'settings/js/controls/aci-widget-dropdown-view',
+    'settings/js/models/security-types-model'
+], function(_, AciWidget, DropdownView, SecurityTypesModel) {
 
+    /**
+     * @typedef CommunityWidgetStrings
+     * @desc Extends AciWidgetStrings
+     * @property {string} loginTypeLabel Label for the login types dropdown
+     * @property {string} fetchSecurityTypes An instruction saying that the test connection button will retrieve valid
+     * security types
+     * @property {string} invalidSecurityType Message which states a valid security type has not been selected
+     */
+    /**
+     * @typedef CommunityWidgetOptions
+     * @desc Extends AciWidgetOptions
+     * @property {string} securityTypesUrl Url for fetching security types from
+     * @property {CommunityWidgetStrings} strings Strings for the widget
+     */
+    /**
+     * @name module:settings/js/widgets/community-widget.CommunityWidget
+     * @desc Widget for configuring an IDOL Community server. As AciWidget, but allows the configuration of a repository
+     * to use for authentication
+     * @param {CommunityWidgetOptions} options Options for the widget
+     * @constructor
+     * @extends module:settings/js/widgets/aci-widget.AciWidget
+     */
+    return AciWidget.extend(/** @lends settings/js/widgets/community-widget.CommunityWidget.prototype */{
+        initialize: function(options) {
+            AciWidget.prototype.initialize.call(this, options);
 
+            _.bindAll(this, 'communityHasChanged', 'getCommunity');
 
+            this.dropdownView = new DropdownView({
+                url: options.securityTypesUrl,
+                property: 'securityTypes',
+                label: this.strings.loginTypeLabel,
+                fetchMessage: this.strings.fetchSecurityTypes,
+                invalidMessage: this.strings.invalidSecurityType,
+                template: options.template,
+                exceptionalValues: ['cas', 'external'],
+                hasChanged: this.communityHasChanged,
+                ModelConstructor: SecurityTypesModel
+            });
+        },
 
+        /**
+         * @desc Renders the widget by first calling {@link module:settings/js/widgets/aci-widget.AciWidget#render|AciWidget#render}
+         * and then rendering the security types
+         */
+        render: function() {
+            AciWidget.prototype.render.call(this);
 
+            //noinspection JSUnresolvedFunction
+            this.$aciDetails = this.$('div.' + this.controlGroupClass).eq(0);
 
+            this.$('button[name="validate"]').parent().after(this.dropdownView.$el);
+            this.dropdownView.render();
+        },
 
+        /**
+         * @returns {boolean} True if the configuration has changed since the widget was last saved; false otherwise
+         */
+        communityHasChanged: function() {
+            return !_.isEqual(this.getCommunity(), this.lastValidationConfig.community);
+        },
 
+        /**
+         * @returns {AciWidgetConfig} The configuration of the Community server
+         */
+        getCommunity: function() {
+            return AciWidget.prototype.getConfig.call(this);
+        },
 
+        /**
+         * @typedef CommunityWidgetConfiguration
+         * @property {AciWidgetConfig} community configuration of the Community server
+         * @property {string} method The login method to use with the Community server
+         */
+        /**
+         * @desc Returns the configuration of the widget
+         * @returns {CommunityWidgetConfiguration}
+         */
+        getConfig: function() {
+            //noinspection JSValidateTypes
+            return {
+                community: this.getCommunity(),
+                method: this.dropdownView.getConfig()
+            };
+        },
 
+        handleInputChange: function() {
+            this.hideValidationInfo();
 
-	
-	
+            if (!_.isUndefined(this.lastValidation) &amp;&amp; !this.communityHasChanged()) {
+                this.setValidationFormatting(this.lastValidation ? this.successClass : this.errorClass);
+                this.dropdownView.toggleInput(this.lastValidation &amp;&amp; this.dropdownView.hasValues());
+            } else {
+                this.setValidationFormatting('clear');
+                this.dropdownView.toggleInput(false);
+            }
+        },
 
+        /**
+         * @desc Handles the results of server side validation. Fetches new security types if the config is valid
+         */
+        handleValidation: function(config, response) {
+            if (_.isEqual(config.community, this.lastValidationConfig.community)) {
+                this.lastValidation = response.valid;
+                this.lastValidation &amp;&amp; this.dropdownView.fetchNewValues(config.community);
+                this.hideValidationInfo();
 
+                this.displayValidationMessage(!this.communityHasChanged(), response);
+            }
+        },
 
+        /**
+         * @desc Sets the validation formatting to the given state
+         * @param {string} state If 'clear', removes validation formatting. Otherwise should be one of this.successClass
+         * or this.errorClass, and will set the formatting accordingly
+         */
+        setValidationFormatting: function(state) {
+            if (state === 'clear') {
+                this.$aciDetails.removeClass(this.successClass + ' ' + this.errorClass);
+                this.dropdownView.clearValidationFormatting(this.errorClass);
+            } else {
+                this.$aciDetails.addClass(state)
+                    .removeClass(state === this.successClass ? this.errorClass : this.successClass);
+            }
+        },
 
+        /**
+         * @desc Validation button handler. Tests the connection to the ACI server
+         * @fires validate Event indicating that validation has occurred
+         */
+        triggerValidation: function() {
+            this.setValidationFormatting('clear');
+            this.hideValidationInfo();
 
-    <section class="readme-section">
-        <article><h1>Settings Page</h1><p><a href="https://travis-ci.org/hpe-idol/settings-page"><img src="https://travis-ci.org/hpe-idol/settings-page.svg?branch=master" alt="Build Status"></a></p>
-<p>A Backbone and Bootstrap settings page, allowing users to configure a web application through a simple, easy to use UI.</p>
-<p>This project exposes AMD modules. The path to the project root directory must be aliased as settings. The module names<br>in the documentation reflect this.</p>
-<p>Documentation can be found <a href="http://hpe-idol.github.io/settings-page">here</a>.</p>
-<p>This repo uses git-flow. develop is the development branch. master is the last known good branch.</p>
-<h2>Installation</h2><pre class="prettyprint source"><code>bower install hp-autonomy-settings-page</code></pre><h2>Grunt tasks</h2><ul>
-<li>grunt : runs the lint, test, and coverage tasks</li>
-<li>grunt test : Runs the Jasmine tests in Phantom JS</li>
-<li>grunt browser-test : Starts a server on localhost:8000, which can be used to run the Jasmine tests in the browser</li>
-<li>grunt coverage : Generates code coverage statistics</li>
-<li>grunt lint : Runs js-lint and coffeelint</li>
-<li>grunt doc : Generates project documentation</li>
-</ul>
-<h2>Is it any good?</h2><p>Yes.</p>
-<h2>License</h2><p>Copyright 2013-2015 Hewlett-Packard Development Company, L.P.<br>Copyright 2015-2016 Hewlett Packard Enterprise Development LP.</p>
-<p>Licensed under the MIT License (the &quot;License&quot;); you may not use this project except in compliance with the License.</p></article>
-    </section>
+            if (AciWidget.prototype.validateInputs.apply(this, arguments)) {
+                //noinspection JSUnresolvedFunction
+                this.trigger('validate');
+            }
+        },
 
+        /**
+         * @desc Updates the widget with the given configuration
+         * @param {CommunityWidgetConfiguration} config
+         */
+        updateConfig: function(config) {
+            AciWidget.prototype.updateConfig.call(this, config.community);
+            this.dropdownView.updateConfig(config.method);
+        },
 
+        /**
+         * @desc Validates the widget and applies formatting if necessary
+         * @returns {boolean} True if the login type is not 'default' and all the AciWidget requirements are met; false
+         * otherwise
+         */
+        validateInputs: function() {
+            var isLoginTypeValid = this.getConfig() !== 'default';
+
+            if (!isLoginTypeValid) {
+                this.updateInputValidation(this.dropdownView.getDropdownElement(), false);
+                this.dropdownView.toggleInput(false);
+            }
+
+            // This is in this order so that formatting from the super method is applied
+            return AciWidget.prototype.validateInputs.apply(this, arguments) &amp;&amp; isLoginTypeValid;
+        }
+    });
+
+});
+</pre>
+	</article>
+</section>
 
 
 
@@ -315,10 +463,6 @@
 				</footer>
 			</div>
 
-			
-			<div class="span3">
-				<div id="toc"></div>
-			</div>
 			
 			<br clear="both">
 		</div>

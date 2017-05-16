@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>HP Autonomy Settings Page Index</title>
+	<title>HP Autonomy Settings Page Source: widgets/path-widget.js</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -242,55 +242,118 @@
 	<div class="row-fluid">
 
 		
-		<div class="span8">
-			
+			<div class="span12">
+				
 				<div id="main">
 					
 
 
-	
-	<span class="page-title">Index</span>
-	
-	
+		<h1 class="page-title">Source: widgets/path-widget.js</h1>
+    
+<section>
+	<article>
+		<pre
+			class="sunlight-highlight-javascript linenums">/*
+ * Copyright 2013-2015 Hewlett-Packard Development Company, L.P.
+ * Licensed under the MIT License (the "License"); you may not use this file except in compliance with the License.
+ */
 
+/**
+ * @module settings/js/widgets/path-widget
+ */
+define([
+    'settings/js/widget',
+    'text!settings/templates/widgets/path-widget.html'
+], function(Widget, template) {
 
+    /**
+     * @typedef PathWidgetStrings
+     * @desc Extends WidgetStrings
+     * @property {string} label Label for the input
+     * @property {string} validatePathBlank Message displayed if the input is empty
+     */
+    /**
+     * @typedef PathWidgetOptions
+     * @desc Extends WidgetOptions
+     * @property {PathWidgetStrings} strings Strings for the widget
+     */
+    /**
+     * @name module:settings/js/widgets/path-widget.PathWidget
+     * @desc Widget which allows the configuration of a single file path
+     * @constructor
+     * @param {PathWidgetOptions} options Options for the widget
+     * @extends module:settings/js/widget.Widget
+     */
+    return Widget.extend(/**@lends module:settings/js/widgets/path-widget.PathWidget.prototype */{
+        /**
+         * @desc CSS classes for the widget.
+         * @default {@link module:settings/js/widget.Widget#className|Widget#className} + ' form-horizontal'
+         */
+        className: Widget.prototype.className + ' form-horizontal',
 
+        /**
+         * @typedef PathWidgetTemplateParameters
+         * @property {PathWidgetStrings} strings Strings for the template
+         */
+        /**
+         * @callback module:settings/js/widgets/path-widget.PathWidget~PathTemplate
+         * @param {PathWidgetTemplateParameters} parameters
+         */
+        /**
+         * @desc Base template for the widget. Override if using Bootstrap 3
+         * @type module:settings/js/widgets/path-widget.PathWidget~PathTemplate
+         */
+        template: _.template(template),
 
+        /**
+         * @desc Renders the widget
+         */
+        render: function() {
+            Widget.prototype.render.call(this);
+            this.$content.append(this.template({strings: this.strings}));
+            this.$path = this.$('input[name="path"]');
+        },
 
+        /**
+         * @typedef PathConfig
+         * @property {string} path The path given by the config
+         */
+        /**
+         * @desc Gets the config represented by the widget
+         * @returns {PathConfig} The config represented by the widget
+         */
+        getConfig: function() {
+            //noinspection JSValidateTypes
+            return {path: this.$path.val()};
+        },
 
+        /**
+         * @desc Updates the widget with the given config
+         * @param {PathConfig} config
+         */
+        updateConfig: function(config) {
+            Widget.prototype.updateConfig.apply(this, arguments);
+            this.$path.val(config.path);
+        },
 
+        /**
+         * @desc Validates the widget and applies formatting accordingly
+         * @returns {boolean} False if the path is empty; true otherwise
+         */
+        validateInputs: function() {
+            if (this.$path.val() === '') {
+                this.updateInputValidation(this.$path, false);
+                return false;
+            }
 
+            return true;
+        }
+    });
 
-
-
-
-	
-	
-
-
-
-
-
-    <section class="readme-section">
-        <article><h1>Settings Page</h1><p><a href="https://travis-ci.org/hpe-idol/settings-page"><img src="https://travis-ci.org/hpe-idol/settings-page.svg?branch=master" alt="Build Status"></a></p>
-<p>A Backbone and Bootstrap settings page, allowing users to configure a web application through a simple, easy to use UI.</p>
-<p>This project exposes AMD modules. The path to the project root directory must be aliased as settings. The module names<br>in the documentation reflect this.</p>
-<p>Documentation can be found <a href="http://hpe-idol.github.io/settings-page">here</a>.</p>
-<p>This repo uses git-flow. develop is the development branch. master is the last known good branch.</p>
-<h2>Installation</h2><pre class="prettyprint source"><code>bower install hp-autonomy-settings-page</code></pre><h2>Grunt tasks</h2><ul>
-<li>grunt : runs the lint, test, and coverage tasks</li>
-<li>grunt test : Runs the Jasmine tests in Phantom JS</li>
-<li>grunt browser-test : Starts a server on localhost:8000, which can be used to run the Jasmine tests in the browser</li>
-<li>grunt coverage : Generates code coverage statistics</li>
-<li>grunt lint : Runs js-lint and coffeelint</li>
-<li>grunt doc : Generates project documentation</li>
-</ul>
-<h2>Is it any good?</h2><p>Yes.</p>
-<h2>License</h2><p>Copyright 2013-2015 Hewlett-Packard Development Company, L.P.<br>Copyright 2015-2016 Hewlett Packard Enterprise Development LP.</p>
-<p>Licensed under the MIT License (the &quot;License&quot;); you may not use this project except in compliance with the License.</p></article>
-    </section>
-
-
+});
+</pre>
+	</article>
+</section>
 
 
 
@@ -315,10 +378,6 @@
 				</footer>
 			</div>
 
-			
-			<div class="span3">
-				<div id="toc"></div>
-			</div>
 			
 			<br clear="both">
 		</div>

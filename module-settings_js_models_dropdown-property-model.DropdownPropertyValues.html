@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>HP Autonomy Settings Page Index</title>
+	<title>HP Autonomy Settings Page Class: DropdownPropertyValues</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -248,50 +248,326 @@
 					
 
 
+	<h1 class="page-title">Class: DropdownPropertyValues</h1>
+<section>
+
+<header>
+    <h2>
+    DropdownPropertyValues
+    </h2>
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+
+    
+        
+<dt>
+    <h4 class="name" id="DropdownPropertyValues"><span class="type-signature"></span>new DropdownPropertyValues<span class="signature">(attributes, options)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Model for fetching security types</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
 	
-	<span class="page-title">Index</span>
+
+        <tr>
+            
+                <td class="name"><code>attributes</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">DropdownPropertyAttributes</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Initial attributes</p></td>
+        </tr>
+
 	
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">DropdownPropertyOptions</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Options for the model</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+
+    
+    
+    
+<dl class="details">
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
 	
 
 
 
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="models_dropdown-property-model.js.html">models/dropdown-property-model.js</a>,
+				 <a href="models_dropdown-property-model.js.html#sunlight-1-line-18">line 18</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+    
+    </div>
+
+    
+        <h3 class="subsection-title">Extends</h3>
+
+        <ul>
+            <li>Backbone.Model</li>
+        </ul>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        <dl>
+            
+<dt>
+    <h4 class="name" id="fetch"><span class="type-signature"></span>fetch<span class="signature">(options)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Fetches the dropdown property values. If already fetching, the previous request is aborted</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
 
 
+            
+            </td>
 
+            
 
+            
 
+            <td class="description last"><p>Backbone fetch options</p></td>
+        </tr>
 
+	
+	</tbody>
+</table>
+
+    
+    
+    
+<dl class="details">
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
 
 
 
 	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="models_dropdown-property-model.js.html">models/dropdown-property-model.js</a>,
+				 <a href="models_dropdown-property-model.js.html#sunlight-1-line-35">line 35</a>
+			</li>
+		</ul>
+	</dd>
 	
 
+	
 
+	
 
+	
+</dl>
 
+    
+    
 
-    <section class="readme-section">
-        <article><h1>Settings Page</h1><p><a href="https://travis-ci.org/hpe-idol/settings-page"><img src="https://travis-ci.org/hpe-idol/settings-page.svg?branch=master" alt="Build Status"></a></p>
-<p>A Backbone and Bootstrap settings page, allowing users to configure a web application through a simple, easy to use UI.</p>
-<p>This project exposes AMD modules. The path to the project root directory must be aliased as settings. The module names<br>in the documentation reflect this.</p>
-<p>Documentation can be found <a href="http://hpe-idol.github.io/settings-page">here</a>.</p>
-<p>This repo uses git-flow. develop is the development branch. master is the last known good branch.</p>
-<h2>Installation</h2><pre class="prettyprint source"><code>bower install hp-autonomy-settings-page</code></pre><h2>Grunt tasks</h2><ul>
-<li>grunt : runs the lint, test, and coverage tasks</li>
-<li>grunt test : Runs the Jasmine tests in Phantom JS</li>
-<li>grunt browser-test : Starts a server on localhost:8000, which can be used to run the Jasmine tests in the browser</li>
-<li>grunt coverage : Generates code coverage statistics</li>
-<li>grunt lint : Runs js-lint and coffeelint</li>
-<li>grunt doc : Generates project documentation</li>
-</ul>
-<h2>Is it any good?</h2><p>Yes.</p>
-<h2>License</h2><p>Copyright 2013-2015 Hewlett-Packard Development Company, L.P.<br>Copyright 2015-2016 Hewlett Packard Enterprise Development LP.</p>
-<p>Licensed under the MIT License (the &quot;License&quot;); you may not use this project except in compliance with the License.</p></article>
-    </section>
+    
 
+    
+    
+    
+    
+    
+    
+    
+</dd>
 
+        </dl>
+    
 
+    
+
+    
+</article>
+
+</section>
 
 
 

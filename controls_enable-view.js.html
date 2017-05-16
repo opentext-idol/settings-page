@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>HP Autonomy Settings Page Index</title>
+	<title>HP Autonomy Settings Page Source: controls/enable-view.js</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -242,55 +242,134 @@
 	<div class="row-fluid">
 
 		
-		<div class="span8">
-			
+			<div class="span12">
+				
 				<div id="main">
 					
 
 
-	
-	<span class="page-title">Index</span>
-	
-	
+		<h1 class="page-title">Source: controls/enable-view.js</h1>
+    
+<section>
+	<article>
+		<pre
+			class="sunlight-highlight-javascript linenums">/*
+ * Copyright 2013-2015 Hewlett-Packard Development Company, L.P.
+ * Licensed under the MIT License (the "License"); you may not use this file except in compliance with the License.
+ */
 
+/**
+ * @module settings/js/controls/enable-view
+ */
+define([
+    'backbone',
+    'text!settings/templates/controls/enable-view.html'
+], function(Backbone, template) {
 
+    template = _.template(template);
 
+    /**
+     * @typedef EnableViewStrings
+     * @property {string} enable Text for the button saying it will enable the view
+     * @property {string} enabled Label text saying the widget is enabled
+     * @property {string} disable Text for the button saying it will disable the view
+     * @property {string} disabled Label text saying the widget is disabled
+     * @property {string} loading Text for the button saying the configuration is loading
+     */
+    /**
+     * @typedef EnableViewOptions
+     * @property {string} enableIcon Classname for the icon of the enable button
+     * @property {EnableViewStrings} strings Strings for the view
+     */
+    /**
+     * @name module:settings/js/controls/enable-view.EnableView
+     * @desc Utility control for widgets which may be disabled
+     * @param {EnableViewOptions} options
+     * @constructor
+     * @extends Backbone.View
+     */
+    return Backbone.View.extend(/** @lends module:settings/js/controls/enable-view.EnableView.prototype */ {
+        /**
+         * @desc Classname for view. Override if using Bootstrap 3
+         * @default control-group
+         */
+        className: 'control-group',
 
+        events: {
+            'click button[name=enable]': 'toggleEnabled'
+        },
 
+        initialize: function(options) {
+            _.bindAll(this, 'getConfig', 'updateConfig', 'updateFormatting');
+            this.icon = options.enableIcon;
+            this.strings = options.strings;
+        },
 
+        /**
+         * @desc Renders the view
+         */
+        render: function() {
+            this.$el.html(template({strings: this.strings}));
+            this.$button = this.$('button[name=enable]');
+        },
 
+        /**
+         * @desc Returns the current state of the view
+         * @returns {boolean} True if the widget is enabled; false otherwise
+         */
+        getConfig: function() {
+            return this.enabled;
+        },
 
+        /**
+         * @desc Changes the enabled state to its negation and calls updateFormatting
+         * @fires change Event fired with the new state of the view
+         */
+        toggleEnabled: function() {
+            if (!_.isUndefined(this.enabled)) {
+                this.enabled = !this.enabled;
+                this.trigger('change', this.enabled);
+                this.updateFormatting();
+            }
+        },
 
+        /**
+         * @desc Set the state of the view. Calls updateFormatting
+         * @param {boolean} config True if the view is enabled; false otherwise
+         */
+        updateConfig: function(config) {
+            var old = this.enabled;
+            this.enabled = config;
 
+            if (this.enabled !== old){
+                this.trigger('change', this.enabled);
+            }
 
+            this.updateFormatting();
+        },
 
-	
-	
+        /**
+         * @desc Updates the formatting of the view.
+         * &lt;p>If the view is enabled, sets the CSS class of the button to btn-danger, the icon to icon-remove, the button
+         * text to this.strings.disable, and the label to this.strings.enabled.
+         * &lt;p>If the view is disabled, sets the CSS class of the button to btn-success, the icon to options.enableIcon, the
+         * button text to this.strings.enable and the label to this.strings.disabled
+         */
+        updateFormatting: function() {
+            this.$button.toggleClass('btn-success', !this.enabled)
+                .toggleClass('btn-danger', this.enabled)
+                .html(this.enabled ? '&lt;i class="icon-remove">&lt;/i> ' + this.strings.disable
+                    : '&lt;i class="' + this.icon + '">&lt;/i> ' + this.strings.enable)
+                .siblings('label').text(
+                    this.enabled ? this.strings.enabled
+                        : this.strings.disabled);
+        }
+    });
 
-
-
-
-
-    <section class="readme-section">
-        <article><h1>Settings Page</h1><p><a href="https://travis-ci.org/hpe-idol/settings-page"><img src="https://travis-ci.org/hpe-idol/settings-page.svg?branch=master" alt="Build Status"></a></p>
-<p>A Backbone and Bootstrap settings page, allowing users to configure a web application through a simple, easy to use UI.</p>
-<p>This project exposes AMD modules. The path to the project root directory must be aliased as settings. The module names<br>in the documentation reflect this.</p>
-<p>Documentation can be found <a href="http://hpe-idol.github.io/settings-page">here</a>.</p>
-<p>This repo uses git-flow. develop is the development branch. master is the last known good branch.</p>
-<h2>Installation</h2><pre class="prettyprint source"><code>bower install hp-autonomy-settings-page</code></pre><h2>Grunt tasks</h2><ul>
-<li>grunt : runs the lint, test, and coverage tasks</li>
-<li>grunt test : Runs the Jasmine tests in Phantom JS</li>
-<li>grunt browser-test : Starts a server on localhost:8000, which can be used to run the Jasmine tests in the browser</li>
-<li>grunt coverage : Generates code coverage statistics</li>
-<li>grunt lint : Runs js-lint and coffeelint</li>
-<li>grunt doc : Generates project documentation</li>
-</ul>
-<h2>Is it any good?</h2><p>Yes.</p>
-<h2>License</h2><p>Copyright 2013-2015 Hewlett-Packard Development Company, L.P.<br>Copyright 2015-2016 Hewlett Packard Enterprise Development LP.</p>
-<p>Licensed under the MIT License (the &quot;License&quot;); you may not use this project except in compliance with the License.</p></article>
-    </section>
-
-
+});
+</pre>
+	</article>
+</section>
 
 
 
@@ -315,10 +394,6 @@
 				</footer>
 			</div>
 
-			
-			<div class="span3">
-				<div id="toc"></div>
-			</div>
 			
 			<br clear="both">
 		</div>

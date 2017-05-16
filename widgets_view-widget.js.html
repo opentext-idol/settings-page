@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>HP Autonomy Settings Page Index</title>
+	<title>HP Autonomy Settings Page Source: widgets/view-widget.js</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -242,55 +242,200 @@
 	<div class="row-fluid">
 
 		
-		<div class="span8">
-			
+			<div class="span12">
+				
 				<div id="main">
 					
 
 
-	
-	<span class="page-title">Index</span>
-	
-	
+		<h1 class="page-title">Source: widgets/view-widget.js</h1>
+    
+<section>
+	<article>
+		<pre
+			class="sunlight-highlight-javascript linenums">/*
+ * Copyright 2013-2016 Hewlett-Packard Development Company, L.P.
+ * Licensed under the MIT License (the "License"); you may not use this file except in compliance with the License.
+ */
 
+/**
+ * @module settings/js/widgets/view-widget
+ */
+define([
+    'settings/js/widgets/aci-widget',
+    'text!settings/templates/widgets/view-widget.html'
+], function(AciWidget, template) {
+    /**
+     * @typedef ViewWidgetStrings
+     * @desc Extends AciWidgetStrings
+     * @property {string} referenceFieldLabel The label of the reference field dropdown
+     * @property {string} referenceFieldBlank The error message to display when the reference field is blank
+     * @property {string} referenceFieldPlaceholder Placeholder for the reference field input
+     * @property {string} connector Label for the connector section
+     * @property {string} viewingMode Label for the viewing mode dropdown
+     */
+    /**
+     * @typedef ViewWidgetOptions
+     * @desc Extends AciWidgetOptions
+     * @property {ViewWidgetStrings} strings Strings for the widget
+     */
+    /**
+     * @name module:settings/js/widgets/view-widget.ViewWidget
+     * @desc Widget for configuring a View server
+     * @constructor
+     * @extends module:settings/js/widgets/aci-widget.AciWidget
+     */
+    return AciWidget.extend({
 
+        /**
+         * @typedef ViewWidgetTemplateParameters
+         * @property {ViewWidgetStrings} strings Strings for the template
+         */
+        /**
+         * @callback module:settings/js/widgets/view-widget.ViewWidget~ViewTemplate
+         * @param {ViewWidgetTemplateParameters} parameters
+         */
+        /**
+         * @desc Base template for the widget. Override if using Bootstrap 3
+         * @type module:settings/js/widgets/view-widget.ViewWidget~ViewTemplate
+         */
+        viewTemplate: _.template(template),
 
+        /**
+         * @desc Renders the widget
+         */
+        render: function() {
+            AciWidget.prototype.render.call(this);
 
+            this.$('button[name="validate"]').parent().before(this.viewTemplate({
+                strings: this.strings
+            }));
 
+            this.$('.connector-container').append(this.aciTemplate({
+                strings: this.strings
+            }));
 
+            this.$modeSelect = this.$('.viewing-mode-input');
 
+            this.$referenceField = this.$('[name="referenceField"]');
 
+            // make sure we don't get the ones for connectors
+            this.$host = this.$('input[name=host]').eq(0);
+            this.$port = this.$('input[name=port]').eq(0);
+            this.$protocol = this.$('select[name=protocol]').eq(0);
 
+            this.$connectorHost = this.$('.connector-container input[name=host]');
+            this.$connectorPort = this.$('.connector-container input[name=port]');
+            this.$connectorProtocol = this.$('.connector-container select[name=protocol]');
 
+            this.$modeSelect.on('change', _.bind(this.toggleInputs, this));
+        },
 
+        toggleInputs: function() {
+            this.$('.connector-container').toggle(this.$modeSelect.val() === 'CONNECTOR');
+            this.$('.field-form-group').toggle(this.$modeSelect.val() === 'FIELD');
+        },
 
-	
-	
+        /**
+         * @desc Updates the widget with new configuration
+         * @param config The new config for the wizard
+         */
+        updateConfig: function(config) {
+            AciWidget.prototype.updateConfig.apply(this, arguments);
 
+            this.$modeSelect.val(config.viewingMode);
+            this.$referenceField.val(config.referenceField);
 
+            this.$connectorHost.val(config.connector.host);
+            this.$connectorPort.val(config.connector.port);
+            this.$connectorProtocol.val(config.connector.protocol);
 
+            this.productTypeRegex = config.connector.productTypeRegex;
 
+            this.toggleInputs();
+        },
 
-    <section class="readme-section">
-        <article><h1>Settings Page</h1><p><a href="https://travis-ci.org/hpe-idol/settings-page"><img src="https://travis-ci.org/hpe-idol/settings-page.svg?branch=master" alt="Build Status"></a></p>
-<p>A Backbone and Bootstrap settings page, allowing users to configure a web application through a simple, easy to use UI.</p>
-<p>This project exposes AMD modules. The path to the project root directory must be aliased as settings. The module names<br>in the documentation reflect this.</p>
-<p>Documentation can be found <a href="http://hpe-idol.github.io/settings-page">here</a>.</p>
-<p>This repo uses git-flow. develop is the development branch. master is the last known good branch.</p>
-<h2>Installation</h2><pre class="prettyprint source"><code>bower install hp-autonomy-settings-page</code></pre><h2>Grunt tasks</h2><ul>
-<li>grunt : runs the lint, test, and coverage tasks</li>
-<li>grunt test : Runs the Jasmine tests in Phantom JS</li>
-<li>grunt browser-test : Starts a server on localhost:8000, which can be used to run the Jasmine tests in the browser</li>
-<li>grunt coverage : Generates code coverage statistics</li>
-<li>grunt lint : Runs js-lint and coffeelint</li>
-<li>grunt doc : Generates project documentation</li>
-</ul>
-<h2>Is it any good?</h2><p>Yes.</p>
-<h2>License</h2><p>Copyright 2013-2015 Hewlett-Packard Development Company, L.P.<br>Copyright 2015-2016 Hewlett Packard Enterprise Development LP.</p>
-<p>Licensed under the MIT License (the &quot;License&quot;); you may not use this project except in compliance with the License.</p></article>
-    </section>
+        /**
+         * @desc Returns the configuration for the widget
+         * @returns The configuration for the widget
+         */
+        getConfig: function() {
+            var config = AciWidget.prototype.getConfig.call(this);
 
+            return _.extend({
+                referenceField: this.$referenceField.val(),
+                viewingMode: this.$modeSelect.val(),
+                connector: {
+                    host: this.$connectorHost.val(),
+                    port: this.$connectorPort.val(),
+                    productTypeRegex: this.productTypeRegex,
+                    protocol: this.$connectorProtocol.val()
+                }
+            }, config);
+        },
 
+        /**
+         * @desc Handles the results of server side validation
+         */
+        handleValidation: function(config, response) {
+            if (_.isEqual(config, this.lastValidationConfig)) {
+                if (response.data &amp;&amp; response.data.validation === 'CONNECTOR_VALIDATION_ERROR') {
+                    this.updateInputValidation(this.$('.connector-container .form-group'), false, this.getValidationFailureMessage(response.data.connectorValidation))
+                }
+                else if(response.data === "REFERENCE_FIELD_BLANK") {
+                    this.updateInputValidation(this.$referenceField, false, this.strings.referenceFieldBlank);
+                }
+                else {
+                    AciWidget.prototype.handleValidation.apply(this, arguments);
+                }
+            }
+        },
+
+        /**
+         * @desc Validates the widget and applies formatting appropriately
+         * @returns {boolean} False if
+         * &lt;ul>
+         * &lt;li> Viewing mode is Reference, and the reference field is blank
+         * &lt;li> Viewing mode is connector, and the connector host is blank or the port number is invalid
+         * &lt;li> The view server settings are invalid
+         * &lt;/ul>
+         */
+        validateInputs: function() {
+            var isValid = AciWidget.prototype.validateInputs.apply(this, arguments);
+
+            if (isValid) {
+                var mode = this.$modeSelect.val();
+
+                if (mode === 'FIELD') {
+                    if (this.$referenceField.val() === '') {
+                        this.updateInputValidation(this.$referenceField, false);
+                        return false;
+                    }
+                }
+                else if (mode === 'CONNECTOR') {
+                    if (this.$connectorHost.val() === '') {
+                        this.updateInputValidation(this.$connectorHost, false, this.strings.validateHostBlank);
+                        return false;
+                    }
+
+                    var port = Number(this.$connectorPort.val());
+
+                    if (port &lt;= 0 || port > 65535) {
+                        this.updateInputValidation(this.$connectorPort, false, this.strings.validatePortInvalid);
+                        return false;
+                    }
+
+                    return true;
+                }
+            }
+
+            return isValid;
+        }
+    });
+
+});</pre>
+	</article>
+</section>
 
 
 
@@ -315,10 +460,6 @@
 				</footer>
 			</div>
 
-			
-			<div class="span3">
-				<div id="toc"></div>
-			</div>
 			
 			<br clear="both">
 		</div>

@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>HP Autonomy Settings Page Index</title>
+	<title>HP Autonomy Settings Page Source: widgets/optional-database-widget.js</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -242,55 +242,70 @@
 	<div class="row-fluid">
 
 		
-		<div class="span8">
-			
+			<div class="span12">
+				
 				<div id="main">
 					
 
 
-	
-	<span class="page-title">Index</span>
-	
-	
+		<h1 class="page-title">Source: widgets/optional-database-widget.js</h1>
+    
+<section>
+	<article>
+		<pre
+			class="sunlight-highlight-javascript linenums">define([
+    'settings/js/widgets/database-widget',
+    'settings/js/controls/enable-view'
+], function (DatabaseWidget, EnableView) {
+    return DatabaseWidget.extend({
+        initialize: function (options) {
+            DatabaseWidget.prototype.initialize.call(this, options);
+            this.enableView = new EnableView({enableIcon: 'icon-file', strings: this.strings});
+        },
 
+        render: function () {
+            DatabaseWidget.prototype.render.call(this);
+            this.enableView.render();
+            this.$validateButtonParent.before(this.enableView.$el);
+        },
 
+        getConfig: function () {
+            var datasourceConfig = DatabaseWidget.prototype.getConfig.call(this);
+            return {
+                datasource: datasourceConfig,
+                enabled: this.enableView.getConfig()
+            };
+        },
 
+        /**
+         * @returns {boolean} True if the database is enabled; false otherwise
+         */
+        shouldValidate: function() {
+            return this.enableView.getConfig();
+        },
 
+        updateConfig: function(config) {
+            this.enableView.updateConfig(config.enabled);
+            if (config.enabled) {
+                DatabaseWidget.prototype.updateConfig.call(this, config.datasource);
+            }
+        },
 
+        validateInputs: function () {
+            var isValid = true;
 
+            if (this.shouldValidate()) {
+                var config = this.getConfig();
+                isValid = this.validateDatasourceConfig(config.datasource);
+            }
 
-
-
-
-
-
-	
-	
-
-
-
-
-
-    <section class="readme-section">
-        <article><h1>Settings Page</h1><p><a href="https://travis-ci.org/hpe-idol/settings-page"><img src="https://travis-ci.org/hpe-idol/settings-page.svg?branch=master" alt="Build Status"></a></p>
-<p>A Backbone and Bootstrap settings page, allowing users to configure a web application through a simple, easy to use UI.</p>
-<p>This project exposes AMD modules. The path to the project root directory must be aliased as settings. The module names<br>in the documentation reflect this.</p>
-<p>Documentation can be found <a href="http://hpe-idol.github.io/settings-page">here</a>.</p>
-<p>This repo uses git-flow. develop is the development branch. master is the last known good branch.</p>
-<h2>Installation</h2><pre class="prettyprint source"><code>bower install hp-autonomy-settings-page</code></pre><h2>Grunt tasks</h2><ul>
-<li>grunt : runs the lint, test, and coverage tasks</li>
-<li>grunt test : Runs the Jasmine tests in Phantom JS</li>
-<li>grunt browser-test : Starts a server on localhost:8000, which can be used to run the Jasmine tests in the browser</li>
-<li>grunt coverage : Generates code coverage statistics</li>
-<li>grunt lint : Runs js-lint and coffeelint</li>
-<li>grunt doc : Generates project documentation</li>
-</ul>
-<h2>Is it any good?</h2><p>Yes.</p>
-<h2>License</h2><p>Copyright 2013-2015 Hewlett-Packard Development Company, L.P.<br>Copyright 2015-2016 Hewlett Packard Enterprise Development LP.</p>
-<p>Licensed under the MIT License (the &quot;License&quot;); you may not use this project except in compliance with the License.</p></article>
-    </section>
-
-
+            return isValid;
+        }
+    });
+});
+</pre>
+	</article>
+</section>
 
 
 
@@ -315,10 +330,6 @@
 				</footer>
 			</div>
 
-			
-			<div class="span3">
-				<div id="toc"></div>
-			</div>
 			
 			<br clear="both">
 		</div>
