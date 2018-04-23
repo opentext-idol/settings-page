@@ -160,7 +160,9 @@ define([
          * Callback which will be called when the save is complete; can be overridden by subclasses.
          * @param config the saved configuration
          */
-        onConfigSaved: function(config){},
+        onConfigSaved: function(config){
+            /* jshint unused:vars */
+        },
 
         /**
          * @desc Template for the view
