@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2015 Hewlett-Packard Development Company, L.P.
+ * Copyright 2013-2018 Micro Focus International plc.
  * Licensed under the MIT License (the "License"); you may not use this file except in compliance with the License.
  */
 
@@ -7,13 +7,14 @@
  * @module settings/js/settings-page
  */
 define([
+    'underscore',
     'js-whatever/js/base-page',
     'settings/js/validate-on-save-modal',
     'js-whatever/js/confirm',
     'js-whatever/js/ensure-array',
     'js-whatever/js/listenable',
     'text!settings/templates/settings-page.html'
-], function(BasePage, SaveModal, confirm, ensureArray, listenable, template) {
+], function(_, BasePage, SaveModal, confirm, ensureArray, listenable, template) {
 
     /**
      * @name module:settings/js/settings-page.SettingsPage
@@ -154,6 +155,14 @@ define([
          * @default ValidateOnSaveModal
          */
         SaveModalConstructor: SaveModal,
+
+        /**
+         * Callback which will be called when the save is complete; can be overridden by subclasses.
+         * @param config the saved configuration
+         */
+        onConfigSaved: function(config){
+            /* jshint unused:vars */
+        },
 
         /**
          * @desc Template for the view
@@ -332,6 +341,7 @@ define([
                         this.lastSavedConfig = currentConfig;
                         this.$scrollElement.scrollTop(0);
                         this.hasSavedSettings = true;
+                        this.onConfigSaved(currentConfig);
                     }, this),
                     strings: this.strings.saveModal
                 });

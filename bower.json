@@ -22,7 +22,7 @@
     "bootstrap"
   ],
   "license": "MIT",
-  "homepage": "https://github.com/hpautonomy/settings-page",
+  "homepage": "https://github.com/hpe-idol/settings-page",
   "ignore": [
     "**/.*",
     "node_modules",
