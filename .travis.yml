@@ -8,7 +8,8 @@ branches:
   - develop
 env:
   global:
-    - secure: "ZBbV6vqjQUkx9A8vd2gwRr0WdUR7SV2VLwlSTwgWnnBWTh3ZdKcHVqVlA3mjtaIyUx6J4mdtcMq7/U/vNCbXdqKyqKFIQtKiKWfJVQXGtscp0CK8QeVxG/v2DajRNUxeS3IsLMK9lnPv/tuT7eAKMecSG2CI190B9SWhAZYG3kk="
+    # GPG_KEY
+    - secure: "ZgLHEaOmeYMRjSCXwQoGc2nThG8mPoJK82gR0vMYh7vj+KA82Sm9J0rhYvmhzXEJReHs85wgSxDNNM9r+42wd8VXwbpaygWkH3OaIWsmYqs0eZa+4jxaDoM2YXlvmBvFkDvAOrnig7dg+wyhFIA4VWnBVQAAsTGfMXkF4kxL5Qc="
 before_install:
 - npm install -g grunt-cli
 - npm install -g bower
