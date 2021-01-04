@@ -12,9 +12,8 @@ define([
     'settings/js/validate-on-save-modal',
     'js-whatever/js/confirm',
     'js-whatever/js/ensure-array',
-    'js-whatever/js/listenable',
     'text!settings/templates/settings-page.html'
-], function(_, BasePage, SaveModal, confirm, ensureArray, listenable, template) {
+], function(_, BasePage, SaveModal, confirm, ensureArray, template) {
 
     /**
      * @name module:settings/js/settings-page.SettingsPage
@@ -38,17 +37,17 @@ define([
 
         /**
          * @desc CSS class to use for widget groups
-         * @default span4
+         * @default col-md-4
          * @type String
          */
-        groupClass: 'span4',
+        groupClass: 'col-md-4',
 
         /**
          * @desc Icon for the page
-         * @default icon-cog
+         * @default glyphicon-cog
          * @type String
          */
-        icon: 'icon-cog',
+        icon: 'glyphicon-cog',
 
         /**
          * @desc Method for initializing this.widgetGroups
@@ -147,7 +146,7 @@ define([
          * @desc CSS selector for the DOM element that the widget groups will be attached to
          * @type String
          */
-        widgetGroupParent: 'form .row-fluid',
+        widgetGroupParent: 'form .row',
 
         /**
          * @desc Constructor function for the save modal
@@ -178,9 +177,9 @@ define([
 
         initialize: function() {
             BasePage.prototype.initialize.apply(this, arguments);
+            _.bindAll(this, 'handleBeforeUnload');
 
-            // TODO: Listenable should take a context
-            this.listenTo(listenable(window), 'beforeunload', _.bind(this.handleBeforeUnload, this));
+            $(window).on('beforeunload', this.handleBeforeUnload);
             this.initializeWidgets();
             this.widgets = _.flatten(this.widgetGroups);
 
@@ -266,11 +265,11 @@ define([
         handleCancelButton: function() {
             confirm({
                 cancelClass: '',
-                cancelIcon: 'icon-remove',
+                cancelIcon: 'glyphicon-remove',
                 cancelText: this.strings.cancelCancel,
                 okText: this.strings.cancelOk,
                 okClass: 'btn-warning',
-                okIcon: 'icon-undo',
+                okIcon: 'glyphicon-undo',
                 message: this.strings.cancelMessage,
                 title: this.strings.cancelTitle,
                 okHandler: _.bind(function() {
@@ -424,6 +423,11 @@ define([
                     });
                 }
             });
+        },
+
+        remove: function () {
+            $(window).off('beforeunload', this.handleBeforeUnload);
         }
+
     });
 });

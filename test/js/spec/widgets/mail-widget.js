@@ -116,49 +116,49 @@ define([
             isValid = this.widget.validateInputs();
 
             expect(isValid).toBeFalsy();
-            expect(this.$host.closest('.control-group')).toHaveClass('error');
+            expect(this.$host.closest('.form-group')).toHaveClass('has-error');
             expect(this.$from.siblings('.settings-client-validation')).toHaveClass('hide');
-            expect(this.widget.$el).not.toHaveClass('success');
+            expect(this.widget.$el).not.toHaveClass('has-success');
 
             this.$from.val('');
             isValid = this.widget.validateInputs();
             expect(isValid).toBeFalsy();
-            expect(this.$host.closest('.control-group')).toHaveClass('error');
+            expect(this.$host.closest('.form-group')).toHaveClass('has-error');
             expect(this.$host.siblings('.settings-client-validation')).not.toHaveClass('hide');
-            expect(this.$from.closest('.control-group')).toHaveClass('error');
+            expect(this.$from.closest('.form-group')).toHaveClass('has-error');
             expect(this.$from.siblings('.settings-client-validation')).not.toHaveClass('hide');
-            expect(this.widget.$el).not.toHaveClass('success');
+            expect(this.widget.$el).not.toHaveClass('has-success');
         });
 
         it('should remove previous client side validation on next validation', function() {
-            var $hostControlGroup = this.$host.closest('.control-group');
+            var $hostControlGroup = this.$host.closest('.form-group');
             var $hostValidationSpan = this.$host.siblings('.settings-client-validation');
             this.widget.lastValidationConfig = initialConfig;
 
             this.$host.val('');
             this.widget.$('button[name="validate"]').click();
 
-            expect(this.widget.$el).not.toHaveClass('success');
-            expect(this.widget.$el).not.toHaveClass('error');
-            expect($hostControlGroup).toHaveClass('error');
+            expect(this.widget.$el).not.toHaveClass('has-success');
+            expect(this.widget.$el).not.toHaveClass('has-error');
+            expect($hostControlGroup).toHaveClass('has-error');
             expect(this.validationSpy).not.toHaveBeenCalled();
             expect($hostValidationSpan).not.toHaveClass('hide');
 
             this.$host.val('example.com');
             this.widget.$('button[name="validate"]').click();
 
-            expect(this.widget.$el).not.toHaveClass('success');
-            expect(this.widget.$el).not.toHaveClass('error');
-            expect($hostControlGroup).not.toHaveClass('error');
+            expect(this.widget.$el).not.toHaveClass('has-success');
+            expect(this.widget.$el).not.toHaveClass('has-error');
+            expect($hostControlGroup).not.toHaveClass('has-error');
             expect(this.validationSpy).toHaveBeenCalled();
             expect($hostValidationSpan).toHaveClass('hide');
 
             this.$host.val(initialConfig.host).trigger('change');
             this.widget.handleValidation(initialConfig, {valid: true});
 
-            expect(this.widget.$el).toHaveClass('success');
-            expect(this.widget.$el).not.toHaveClass('error');
-            expect($hostControlGroup).not.toHaveClass('error');
+            expect(this.widget.$el).toHaveClass('has-success');
+            expect(this.widget.$el).not.toHaveClass('has-error');
+            expect($hostControlGroup).not.toHaveClass('has-error');
             expect($hostValidationSpan).toHaveClass('hide');
         });
 

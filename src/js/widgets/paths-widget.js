@@ -51,13 +51,13 @@ define([
          * @param {PathsWidgetTemplateParameters} parameters
          */
         /**
-         * @desc Template for each individual row. Override if using Bootstrap 3
+         * @desc Template for each individual row.
          * @type module:settings/js/widgets/path-widget.PathWidget~PathTemplate
          */
         itemTemplate: _.template(itemTemplate),
 
         /**
-         * @desc Base template for the widget. Override if using Bootstrap 3
+         * @desc Base template for the widget.
          * @type module:settings/js/widgets/paths-widget.PathsWidget~PathsTemplate
          */
         template: _.template(template),
@@ -144,7 +144,7 @@ define([
                 if (!model.get('path')) {
                     isValid = false;
                     var $item = this.listView.$('[data-cid="' + model.cid + '"]');
-                    $item.addClass('error');
+                    $item.addClass('has-error');
                     this.updateInputValidation($item.find('input'), false);
                 }
             }, this);

@@ -43,11 +43,11 @@ define([
      */
     return Backbone.View.extend(/**@lends module:settings/js/widget.Widget.prototype */ {
         /**
-         * @desc Classes applied to the widget. Override if using Bootstrap 3
+         * @desc Classes applied to the widget.
          * @type string
-         * @default row-fluid accordion-group
+         * @default row panel panel-default
          */
-        className: 'row-fluid accordion-group',
+        className: 'row panel panel-default',
 
         /**
          * @desc Returns the config associated with the widget
@@ -57,28 +57,28 @@ define([
         getConfig: $.noop,
 
         /**
-         * @desc Class applied to control groups. Set to 'form-group' if using Bootstrap 3
-         * @default control-group
+         * @desc Class applied to control groups.
+         * @default form-group
          */
-        controlGroupClass: 'control-group',
+        controlGroupClass: 'form-group',
 
         /**
-         * @desc Class applied to form controls. Set to 'form-control' if using Bootstrap 3
-         * @default ''
+         * @desc Class applied to form controls.
+         * @default 'form-control'
          */
-        formControlClass: '',
+        formControlClass: 'form-control',
 
         /**
-         * @desc Class used to indicate successful validation. Set to 'has-success' if using Bootstrap 3
-         * @default success
+         * @desc Class used to indicate successful validation.
+         * @default has-success
          */
-        successClass: 'success',
+        successClass: 'has-success',
 
         /**
-         * @desc Class used to indicate failed validation. Set to 'has-error' if using Bootstrap 3
-         * @default error
+         * @desc Class used to indicate failed validation.
+         * @default has-error
          */
-        errorClass: 'error',
+        errorClass: 'has-error',
 
         /**
          * @typedef WidgetTemplateParameters
@@ -93,7 +93,7 @@ define([
          * @param {WidgetTemplateParameters} parameters
          */
         /**
-         * @desc Base template for the widget. Override if using Bootstrap 3
+         * @desc Base template for the widget.
          * @type module:settings/js/widget.Widget~WidgetTemplate
          */
         widgetTemplate: _.template(template),

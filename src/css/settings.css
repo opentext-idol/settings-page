@@ -32,8 +32,8 @@
 }
 
 label.settings-optional-toggle,
-.control-group.success label.settings-optional-toggle,
-.control-group.error label.settings-optional-toggle {
+.form-group.has-success label.settings-optional-toggle,
+.form-group.has-error label.settings-optional-toggle {
     color: #555555;
 }
 

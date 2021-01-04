@@ -34,7 +34,7 @@ define([
             } else if (state === 'enabled') {
                 expect(this.$button).not.toHaveClass('btn-success');
                 expect(this.$button).toHaveClass('btn-danger');
-                expect($icon).toHaveClass('icon-remove');
+                expect($icon).toHaveClass('glyphicon-remove');
                 expect(this.enableView.getConfig()).toBeTruthy();
             } else if (state === 'disabled') {
                 expect(this.$button).toHaveClass('btn-success');

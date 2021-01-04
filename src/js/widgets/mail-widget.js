@@ -75,7 +75,7 @@ define([
             });
 
             this.enableView = new EnableView({
-                enableIcon: 'icon-envelope',
+                enableIcon: 'glyphicon-envelope',
                 strings: this.strings
             });
 

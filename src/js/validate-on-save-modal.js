@@ -50,12 +50,12 @@ define([
      */
     return Backbone.View.extend(/** @lends module:settings/js/validate-on-save-modal.ValidateOnSaveModal.prototype */{
         /**
-         * @desc Classes initially applied to the modal. Override if using Bootstrap 3
+         * @desc Classes initially applied to the modal.
          */
         className: 'modal hide fade',
 
         /**
-         * @desc Default template. Override if using Bootstrap 3
+         * @desc Default template.
          */
         template: _.template(template),
 
@@ -74,7 +74,7 @@ define([
 
             this.errorTemplate = _.template(errorTemplate, undefined, {variable: 'ctx'});
 
-            this.throbberTemplate = _.template('<i class="icon-spinner icon-spin icon-2x" style="vertical-align: middle;"></i> <strong style="vertical-align: middle;"><%-strings.saving%></strong>');
+            this.throbberTemplate = _.template('<i class="glyphicon glyphicon-spinner glyphicon-spin glyphicon-2x" style="vertical-align: middle;"></i> <strong style="vertical-align: middle;"><%-strings.saving%></strong>');
 
             this.render();
         },
@@ -90,7 +90,7 @@ define([
                     backdrop: 'static',
                     keyboard: false
                 })
-                .on('hidden', this.remove);
+                .on('hidden.bs.modal', this.remove);
 
             this.$cancel = this.$('button[data-dismiss="modal"]');
             this.$ok = this.$('#settings-save-ok');
@@ -107,7 +107,7 @@ define([
          */
         handleError: function(model, xhr) {
             this.$('button').removeAttr('disabled');
-            this.$ok.html('<i class="icon-save"></i> ' + this.strings.retry);
+            this.$ok.html('<i class="glyphicon glyphicon-save"></i> ' + this.strings.retry);
 
             try {
                 var response = JSON.parse(xhr.responseText);
@@ -148,7 +148,7 @@ define([
          */
         handleSuccess: function() {
             this.$ok.hide();
-            this.$cancel.removeAttr('disabled').html('<i class="icon-remove"></i> ' + this.strings.close);
+            this.$cancel.removeAttr('disabled').html('<i class="glyphicon glyphicon-remove"></i> ' + this.strings.close);
             this.$body.html(this.successTemplate({strings: this.strings}));
             this.successCallback();
             this.trigger('validation', 'SUCCESS');

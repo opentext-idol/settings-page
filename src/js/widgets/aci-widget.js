@@ -50,7 +50,7 @@ define([
          * @param {AciWidgetTemplateParameters} parameters
          */
         /**
-         * @desc Base template for the widget. Override if using Bootstrap 3
+         * @desc Base template for the widget.
          * @type module:settings/js/widgets/aci-widget.AciWidget~AciTemplate
          */
         aciTemplate: _.template(template),

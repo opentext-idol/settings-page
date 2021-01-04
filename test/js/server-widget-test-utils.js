@@ -19,8 +19,8 @@ define([
     function testValidationFormatting(isValid) {
         var $span = this.widget.$('.settings-server-validation');
 
-        expect(this.widget.$el).toHaveClass(isValid ? 'success' : 'error');
-        expect(this.widget.$el).not.toHaveClass(isValid ? 'error' : 'success');
+        expect(this.widget.$el).toHaveClass(isValid ? 'has-success' : 'has-error');
+        expect(this.widget.$el).not.toHaveClass(isValid ? 'has-error' : 'has-success');
         expect($span).toHaveText(isValid ? 'validateSuccess' : 'validateFailed');
     }
 
@@ -78,18 +78,18 @@ define([
         it('should restore the previous validation formatting if the validated config is re-entered', function() {
             this.widget.lastValidationConfig = initialConfig;
             this.widget.handleValidation(initialConfig, {valid: true});
-            expect(this.widget.$el).toHaveClass('success');
-            expect(this.widget.$el).not.toHaveClass('error');
+            expect(this.widget.$el).toHaveClass('has-success');
+            expect(this.widget.$el).not.toHaveClass('has-error');
 
             var $host = this.widget.$('input[name=host]');
             var validHost = $host.val();
             $host.val('junk').trigger('change');
-            expect(this.widget.$el).not.toHaveClass('success');
-            expect(this.widget.$el).not.toHaveClass('error');
+            expect(this.widget.$el).not.toHaveClass('has-success');
+            expect(this.widget.$el).not.toHaveClass('has-error');
 
             $host.val(validHost).trigger('change');
-            expect(this.widget.$el).toHaveClass('success');
-            expect(this.widget.$el).not.toHaveClass('error');
+            expect(this.widget.$el).toHaveClass('has-success');
+            expect(this.widget.$el).not.toHaveClass('has-error');
         });
 
         it('should deal with two validation requests in quick succession', function() {
@@ -98,12 +98,12 @@ define([
             this.widget.lastValidationConfig = goodConfig;
 
             this.widget.handleValidation(goodConfig, {valid: true});
-            expect(this.widget.$el).toHaveClass('success');
-            expect(this.widget.$el).not.toHaveClass('error');
+            expect(this.widget.$el).toHaveClass('has-success');
+            expect(this.widget.$el).not.toHaveClass('has-error');
 
             this.widget.handleValidation(initialConfig, {valid: false});
-            expect(this.widget.$el).toHaveClass('success');
-            expect(this.widget.$el).not.toHaveClass('error');
+            expect(this.widget.$el).toHaveClass('has-success');
+            expect(this.widget.$el).not.toHaveClass('has-error');
         });
 
         it('should only update the server validation formatting if the inputs have not changed since the validation was requested', function() {
@@ -112,19 +112,19 @@ define([
             this.widget.$('input[name="host"]').val('yoda').trigger('change');
             this.widget.handleValidation(initialConfig, {valid: false});
 
-            expect(this.widget.$el).not.toHaveClass('success');
-            expect(this.widget.$el).not.toHaveClass('error');
+            expect(this.widget.$el).not.toHaveClass('has-success');
+            expect(this.widget.$el).not.toHaveClass('has-error');
 
             this.widget.$('input[name="host"]').val(initialHost).trigger('change');
 
-            expect(this.widget.$el).toHaveClass('error');
-            expect(this.widget.$el).not.toHaveClass('success');
+            expect(this.widget.$el).toHaveClass('has-error');
+            expect(this.widget.$el).not.toHaveClass('has-success');
         });
 
         it('should pass client side validation with all required inputs completed', function() {
             expect(this.widget.validateInputs()).toBeTruthy();
-            expect(this.widget.$el.find('.control-group')).not.toHaveClass('success');
-            expect(this.widget.$el.find('.control-group')).not.toHaveClass('error');
+            expect(this.widget.$el.find('.form-group')).not.toHaveClass('has-success');
+            expect(this.widget.$el.find('.form-group')).not.toHaveClass('has-error');
         });
 
         it('should trigger validation on clicking the test button if client side validation passes', function() {

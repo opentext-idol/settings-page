@@ -103,14 +103,14 @@ define([
             spyOn(this.typesModel, 'fetch');
             this.widget.render();
             this.$loginType = this.widget.$('select[name="aci-widget-dropdown"]');
-            this.$aciDetails = this.widget.$('div.control-group').eq(0);
+            this.$aciDetails = this.widget.$('div.form-group').eq(0);
         });
 
         it('should render correctly', function() {
             expect(this.widget.$el).toDisplayConfig({community: {host: '', port: 0, protocol: 'HTTP'}, method: null});
             expect(this.$loginType).toHaveAttr('disabled');
-            expect(this.$aciDetails).not.toHaveClass('success');
-            expect(this.$aciDetails).not.toHaveClass('error');
+            expect(this.$aciDetails).not.toHaveClass('has-success');
+            expect(this.$aciDetails).not.toHaveClass('has-error');
         });
 
         _.each(['cas', 'external'], function(type) {
@@ -127,7 +127,7 @@ define([
                 this.typesModel.securityTypes = communityTypes;
                 this.typesModel.trigger('change');
 
-                expect(this.$loginType).toContainOptions(_.union(communityTypes, type));
+                expect(this.$loginType).toContainOptions(_.union(communityTypes, [type]));
                 expect(this.$loginType).not.toHaveAttr('disabled');
                 expect(this.widget.$el).toDisplayConfig(currentConfig);
             });
@@ -154,8 +154,8 @@ define([
                 this.widget.lastValidationConfig = initialConfig;
                 this.widget.handleValidation(initialConfig, {valid: false});
 
-                expect(this.$aciDetails).toHaveClass('error');
-                expect(this.$aciDetails).not.toHaveClass('success');
+                expect(this.$aciDetails).toHaveClass('has-error');
+                expect(this.$aciDetails).not.toHaveClass('has-success');
                 expect(this.typesModel.fetch).not.toHaveBeenCalled();
             });
 
@@ -166,37 +166,37 @@ define([
                 this.widget.lastValidationConfig = initialConfig;
                 this.widget.handleValidation(initialConfig, {valid: true});
 
-                expect(this.widget.$el).not.toHaveClass('success');
-                expect(this.$aciDetails).toHaveClass('success');
+                expect(this.widget.$el).not.toHaveClass('has-success');
+                expect(this.$aciDetails).toHaveClass('has-success');
                 expect($clientValidationSpan).toHaveClass('hide');
 
                 $host.val('').trigger('change');
 
-                expect(this.widget.$el).not.toHaveClass('success');
-                expect(this.$aciDetails).not.toHaveClass('success');
-                expect(this.$aciDetails).not.toHaveClass('error');
+                expect(this.widget.$el).not.toHaveClass('has-success');
+                expect(this.$aciDetails).not.toHaveClass('has-success');
+                expect(this.$aciDetails).not.toHaveClass('has-error');
                 expect($clientValidationSpan).toHaveClass('hide');
 
                 var isValid = this.widget.validateInputs();
 
                 expect(isValid).toBeFalsy();
-                expect(this.widget.$el).not.toHaveClass('success');
-                expect(this.$aciDetails).toHaveClass('error');
-                expect(this.$aciDetails).not.toHaveClass('success');
+                expect(this.widget.$el).not.toHaveClass('has-success');
+                expect(this.$aciDetails).toHaveClass('has-error');
+                expect(this.$aciDetails).not.toHaveClass('has-success');
                 expect($clientValidationSpan).toHaveClass('hide');
 
                 $host.val('yoda').trigger('change');
 
-                expect(this.widget.$el).not.toHaveClass('success');
-                expect(this.$aciDetails).not.toHaveClass('error');
-                expect(this.$aciDetails).not.toHaveClass('success');
+                expect(this.widget.$el).not.toHaveClass('has-success');
+                expect(this.$aciDetails).not.toHaveClass('has-error');
+                expect(this.$aciDetails).not.toHaveClass('has-success');
                 expect($clientValidationSpan).toHaveClass('hide');
 
                 $host.val(initialConfig.community.host).trigger('change');
 
-                expect(this.widget.$el).not.toHaveClass('success');
-                expect(this.$aciDetails).toHaveClass('success');
-                expect(this.$aciDetails).not.toHaveClass('error');
+                expect(this.widget.$el).not.toHaveClass('has-success');
+                expect(this.$aciDetails).toHaveClass('has-success');
+                expect(this.$aciDetails).not.toHaveClass('has-error');
                 expect($clientValidationSpan).toHaveClass('hide');
             });
 
@@ -209,12 +209,12 @@ define([
                     this.widget.lastValidationConfig = initialConfig;
                     this.widget.handleValidation(initialConfig, {valid: true});
 
-                    expect(this.$aciDetails).not.toHaveClass('success');
+                    expect(this.$aciDetails).not.toHaveClass('has-success');
 
                     this.$port.val(9003).trigger('change');
 
-                    expect(this.$aciDetails).toHaveClass('success');
-                    expect(this.$aciDetails).not.toHaveClass('error');
+                    expect(this.$aciDetails).toHaveClass('has-success');
+                    expect(this.$aciDetails).not.toHaveClass('has-error');
                 });
             });
 
@@ -225,10 +225,10 @@ define([
                 });
 
                 it('should apply success formatting to the aci details inputs', function() {
-                    expect(this.$aciDetails).toHaveClass('success');
-                    expect(this.$aciDetails).not.toHaveClass('error');
-                    expect(this.widget.$el).not.toHaveClass('success');
-                    expect(this.widget.$el).not.toHaveClass('error');
+                    expect(this.$aciDetails).toHaveClass('has-success');
+                    expect(this.$aciDetails).not.toHaveClass('has-error');
+                    expect(this.widget.$el).not.toHaveClass('has-success');
+                    expect(this.widget.$el).not.toHaveClass('has-error');
                 });
 
                 it('should keep the login types input disabled and fetch new security types', function() {
@@ -259,8 +259,8 @@ define([
                     });
 
                     it('should clear validation formatting', function() {
-                        expect(this.$aciDetails).not.toHaveClass('success');
-                        expect(this.$aciDetails).not.toHaveClass('error');
+                        expect(this.$aciDetails).not.toHaveClass('has-success');
+                        expect(this.$aciDetails).not.toHaveClass('has-error');
                     });
 
                     it('should not enable the login types input on new security types', function() {
@@ -277,8 +277,8 @@ define([
                     it('should return validation formatting if it is changed back', function() {
                         this.$host.val('example.com').trigger('change');
 
-                        expect(this.$aciDetails).toHaveClass('success');
-                        expect(this.$aciDetails).not.toHaveClass('error');
+                        expect(this.$aciDetails).toHaveClass('has-success');
+                        expect(this.$aciDetails).not.toHaveClass('has-error');
                     });
 
                     it('should return the correct config', function() {

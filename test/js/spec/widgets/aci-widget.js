@@ -72,9 +72,9 @@ define([
             var isValid = this.widget.validateInputs();
 
             expect(isValid).toBeFalsy();
-            expect(this.widget.$el).not.toHaveClass('success');
-            expect(this.widget.$el).not.toHaveClass('error');
-            expect(this.widget.$el.find('.control-group')).toHaveClass('error');
+            expect(this.widget.$el).not.toHaveClass('has-success');
+            expect(this.widget.$el).not.toHaveClass('has-error');
+            expect(this.widget.$el.find('.form-group')).toHaveClass('has-error');
             expect(this.widget.$el.find('.settings-client-validation')).not.toHaveClass('hide');
         });
 
@@ -83,9 +83,9 @@ define([
             var isValid = this.widget.validateInputs();
 
             expect(isValid).toBeFalsy();
-            expect(this.widget.$el).not.toHaveClass('success');
-            expect(this.widget.$el).not.toHaveClass('error');
-            expect(this.widget.$el.find('.control-group')).toHaveClass('error');
+            expect(this.widget.$el).not.toHaveClass('has-success');
+            expect(this.widget.$el).not.toHaveClass('has-error');
+            expect(this.widget.$el.find('.form-group')).toHaveClass('has-error');
             expect(this.widget.$el.find('.settings-client-validation')).not.toHaveClass('hide');
         });
 
@@ -94,36 +94,36 @@ define([
             var isValid = this.widget.validateInputs();
 
             expect(isValid).toBeFalsy();
-            expect(this.widget.$el).not.toHaveClass('success');
-            expect(this.widget.$el).not.toHaveClass('error');
-            expect(this.widget.$el.find('.control-group')).toHaveClass('error');
+            expect(this.widget.$el).not.toHaveClass('has-success');
+            expect(this.widget.$el).not.toHaveClass('has-error');
+            expect(this.widget.$el.find('.form-group')).toHaveClass('has-error');
             expect(this.widget.$el.find('.settings-client-validation')).not.toHaveClass('hide');
         });
 
         it('should remove previous client side validation on next validation', function() {
-            var $hostControlGroup = this.widget.$el.find('.control-group');
+            var $hostControlGroup = this.widget.$el.find('.form-group');
             this.widget.lastValidationConfig = initialConfig;
             this.widget.handleValidation(initialConfig, {valid: true});
 
-            expect(this.widget.$el).toHaveClass('success');
-            expect(this.widget.$el).not.toHaveClass('error');
-            expect($hostControlGroup).not.toHaveClass('error');
+            expect(this.widget.$el).toHaveClass('has-success');
+            expect(this.widget.$el).not.toHaveClass('has-error');
+            expect($hostControlGroup).not.toHaveClass('has-error');
 
             this.$host.val('');
             this.widget.$('button[name="validate"]').click();
 
-            expect(this.widget.$el).not.toHaveClass('success');
-            expect(this.widget.$el).not.toHaveClass('error');
-            expect($hostControlGroup).toHaveClass('error');
+            expect(this.widget.$el).not.toHaveClass('has-success');
+            expect(this.widget.$el).not.toHaveClass('has-error');
+            expect($hostControlGroup).toHaveClass('has-error');
             expect(this.validationSpy).not.toHaveBeenCalled();
             expect(this.widget.$('.settings-client-validation')).not.toHaveClass('hide');
 
             this.$host.val('example.com');
             this.widget.$('button[name="validate"]').click();
 
-            expect(this.widget.$el).not.toHaveClass('success');
-            expect(this.widget.$el).not.toHaveClass('error');
-            expect($hostControlGroup).not.toHaveClass('error');
+            expect(this.widget.$el).not.toHaveClass('has-success');
+            expect(this.widget.$el).not.toHaveClass('has-error');
+            expect($hostControlGroup).not.toHaveClass('has-error');
             expect(this.validationSpy).toHaveBeenCalled();
             expect(this.widget.$('.settings-client-validation')).toHaveClass('hide');
         });

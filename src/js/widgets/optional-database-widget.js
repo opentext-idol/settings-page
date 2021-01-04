@@ -5,7 +5,7 @@ define([
     return DatabaseWidget.extend({
         initialize: function (options) {
             DatabaseWidget.prototype.initialize.call(this, options);
-            this.enableView = new EnableView({enableIcon: 'icon-file', strings: this.strings});
+            this.enableView = new EnableView({enableIcon: 'glyphicon-file', strings: this.strings});
         },
 
         render: function () {

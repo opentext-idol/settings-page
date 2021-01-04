@@ -44,7 +44,7 @@ define([
          * @param {LocaleWidgetOptions} parameters Parameters for the widget
          */
         /**
-         * @desc Template for the widget. Override if using Bootstrap 3
+         * @desc Template for the widget.
          * @type module:settings/js/widgets/locale-widget.LocaleWidget~LocaleWidgetTemplate
          */
         localeTemplate: _.template(template),

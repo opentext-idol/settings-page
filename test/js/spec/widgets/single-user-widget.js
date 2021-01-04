@@ -27,7 +27,7 @@ define([
                 strings: {
                     confirmPassword: 'Confirm password',
                     currentPassword: 'Current Password',
-                    iconClass: 'icon-fighter-jet',
+                    iconClass: 'glyphicon-fighter-jet',
                     newPassword: 'New Password',
                     passwordMismatch: "Passwords don't match",
                     passwordRedacted: 'Password Redacted',

@@ -147,7 +147,7 @@ define([
                 description: function(configEnv, configPath) {
                     return configEnv + ' ' + configPath;
                 },
-                icon: 'icon-fire-extinguisher',
+                icon: 'glyphicon-fire-extinguisher',
                 saveButton: 'save',
                 saveDescription: 'This will save all the things.',
                 saveModal: {
@@ -236,7 +236,7 @@ define([
                 expect(widget.render).toHaveBeenCalled();
             });
 
-            var $widgets = this.settingsPage.$('.span4');
+            var $widgets = this.settingsPage.$('.col-md-4');
 
             expect($widgets).toHaveLength(3);
             expect($widgets.filter(':contains(Community)')).toHaveLength(1);
@@ -340,12 +340,6 @@ define([
                 $('.modal-backdrop').click();
 
                 waitFor(modalToClose, done);
-            });
-
-            it('should display a modal', function(done) {
-                this.settingsPage.$('.settings-restore').click();
-
-                waitFor(modalToOpen, done);
             });
 
             it('should be possible to cancel the modal', function(done) {

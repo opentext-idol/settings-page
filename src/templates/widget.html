@@ -1,6 +1,6 @@
-<div class="accordion-heading">
+<div class="panel-heading">
     <a class="accordion-toggle settings-widget-title" data-toggle="collapse" data-target=".collapse-<%- configItem%>">
-        <h3><i class="icon-<%- iconClass%>"></i> <%-title%></h3>
+        <h3><i class="glyphicon glyphicon-<%- iconClass%>"></i> <%-title%></h3>
     </a>
 </div>
 
@@ -9,13 +9,13 @@
 %>
 
 <% if (description) { %>
-    <div class="accordion-body collapse collapse-<%- configItem%> <%- openedClass %>">
-        <div class="accordion-inner">
+    <div class="panel-collapse collapse collapse-<%- configItem%> <%- openedClass %>">
+        <div class="panel-body">
             <p><%-description%></p>
         </div>
     </div>
 <% } %>
 
-<div class="accordion-body collapse collapse-<%- configItem%> <%- openedClass %>">
-    <div class="accordion-inner widget-content"></div>
+<div class="panel-collapse collapse collapse-<%- configItem%> <%- openedClass %>">
+    <div class="panel-body widget-content"></div>
 </div>

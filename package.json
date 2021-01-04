@@ -15,5 +15,8 @@
     "grunt-template-jasmine-istanbul": "^0.4.0",
     "grunt-template-jasmine-requirejs": "^0.2.3",
     "ink-docstrap": "^0.4.12"
+  },
+  "dependencies": {
+    "auditjs": "latest"
   }
 }

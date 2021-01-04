@@ -92,12 +92,12 @@ define([
             this.testURL = options.testURL;
 
             this.logFileToggle = new EnableView({
-                enableIcon: 'icon-file-text',
+                enableIcon: 'glyphicon-file-text',
                 strings: this.strings.logFileToggle
             });
 
             this.syslogToggle = new EnableView({
-                enableIcon: 'icon-' + this.strings.iconClass,
+                enableIcon: 'glyphicon-' + this.strings.iconClass,
                 strings: this.strings.syslogToggle
             });
         },
@@ -195,14 +195,14 @@ define([
             if (this.syslogToggle.getConfig()) {
                 if (this.testRequest) {
                     this.$testButton.prop('disabled', true);
-                    $i.addClass('icon-spin icon-refresh');
+                    $i.addClass('glyphicon-spin glyphicon-refresh');
                 } else {
                     this.$testButton.prop('disabled', false);
-                    $i.addClass('icon-ok');
+                    $i.addClass('glyphicon-ok');
                 }
             } else {
                 this.$testButton.prop('disabled', true);
-                $i.addClass('icon-ok');
+                $i.addClass('glyphicon-ok');
             }
         },
 

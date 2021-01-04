@@ -61,13 +61,13 @@ define([
          * @param {DatabaseWidgetTemplateParameters} parameters
          */
         /**
-         * @desc Base template for the widget. Override if using Bootstrap 3
+         * @desc Base template for the widget.
          * @type module:settings/js/widgets/database-widget.DatabaseWidget~DatabaseTemplate
          */
         databaseTemplate: _.template(template),
         databasesTemplate: _.template(selectionTemplate),
 
-        formControlClass: '',
+        formControlClass: 'form-control',
 
         initialize: function (options) {
             ServerWidget.prototype.initialize.call(this, options);

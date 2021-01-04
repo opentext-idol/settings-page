@@ -32,13 +32,13 @@
     "travis.sh"
   ],
   "dependencies": {
-    "underscore": "1.5.2",
-    "backbone": "1.1.2",
-    "hp-autonomy-js-whatever": "2.12.1",
-    "requirejs": "2.1.22",
-    "bootstrap": "components/bootstrap#2.3",
+    "underscore": "1.8.3",
+    "backbone": "1.2.3",
+    "hp-autonomy-js-whatever": "#d749d9e7498e8dd7f8162780af4dab27be9e2528",
+    "requirejs": "2.3.3",
+    "bootstrap": "3.4.1",
     "requirejs-text": "2.0.15",
-    "jquery": "components/jquery#1.10.2"
+    "jquery": "3.5.1"
   },
   "devDependencies": {
     "hp-autonomy-js-testing-utils": "2.2.0",
@@ -46,12 +46,7 @@
     "jasmine-jquery": "2.1.1"
   },
   "resolutions": {
-    "underscore": "1.5.2",
-    "jquery": "1.10.2",
-    "bootstrap": "2.3",
-    "backbone": "1.1.2",
-    "jasmine": "2.4",
-    "requirejs-text": "2.0.15",
-    "requirejs": "2.1.22"
+    "backbone": "1.2.3",
+    "jquery": "3.5.1"
   }
 }

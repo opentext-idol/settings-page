@@ -37,7 +37,7 @@ define([
     /**
      * @typedef PasswordViewOptions
      * @property {boolean} [enabled=true] True if the view should be enabled; false otherwise
-     * @property {string} [formControlClass=''] Class applied to form inputs. Set to form-control if using Bootstrap 3
+     * @property {string} [formControlClass='form-control'] Class applied to form inputs.
      * @property {PasswordViewStrings} strings
      */
     /**
@@ -49,10 +49,10 @@ define([
      */
     return Backbone.View.extend(/** @lends module:settings/js/controls/password-view.PasswordView.prototype*/ {
         /**
-         * @desc Class applied to the view. Override if using Bootstrap 3
-         * @default control-group
+         * @desc Class applied to the view.
+         * @default form-group
          */
-        className: 'control-group',
+        className: 'form-group',
 
         events: {
             'change input': 'handleInputChange'
@@ -62,7 +62,7 @@ define([
             _.bindAll(this, 'getConfig', 'updateConfig');
             this.enabled = !_.isUndefined(options.enabled) ? options.enabled : true;
             this.strings = options.strings;
-            this.formControlClass = options.formControlClass || '';
+            this.formControlClass = options.formControlClass || 'form-control';
         },
 
         /**
@@ -95,7 +95,7 @@ define([
          * @desc Handler called when an input changes. Removes validation formatting and error messages
          */
         handleInputChange: function() {
-            this.$el.removeClass('success, error');
+            this.$el.removeClass('has-success, has-error');
             this.$('.settings-client-validation').addClass('hide');
         },
 
@@ -147,7 +147,7 @@ define([
          */
         validateInputs: function() {
             if (this.enabled && !this.isRedacted && this.$input.val() === '') {
-                this.$el.addClass('error');
+                this.$el.addClass('has-error');
                 this.$('.settings-client-validation').removeClass('hide');
                 return false;
             }
