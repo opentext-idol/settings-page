@@ -2,15 +2,15 @@
   "name": "hp-autonomy-settings-page",
   "authors": [
     "Alessando Galli",
-    "Tung Jin Chew <tung-jin.chew@hp.com>",
-    "Matthew Gordon <matthew.gordon2@hp.com>",
+    "Tung Jin Chew",
+    "Matthew Gordon",
     "Xiaochen Guo",
-    "Alyona Ivanova <alyona.ivanova@hp.com>",
-    "David Knipe <david.knipe@hp.com>",
+    "Alyona Ivanova",
+    "David Knipe",
     "Luca Mandrioli",
-    "Alex Scown <alex.scown@hp.com>",
-    "Wojciech Kaluza <wojciech.kaluza@hpe.com>",
-    "Daniel Grayling <daniel.grayling@hpe.com"
+    "Alex Scown",
+    "Wojciech Kaluza",
+    "Daniel Grayling"
   ],
   "description": "An application settings page and a collection of widgets",
   "moduleType": [
