@@ -22,7 +22,7 @@
     "bootstrap"
   ],
   "license": "MIT",
-  "homepage": "https://github.com/microfocus-idol/settings-page",
+  "homepage": "https://github.com/opentext-idol/settings-page",
   "ignore": [
     "**/.*",
     "node_modules",

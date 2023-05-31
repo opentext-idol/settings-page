@@ -1,6 +1,6 @@
 {
   "name": "hp-autonomy-settings-page",
-  "repository": "https://github.com/microfocus-idol/settings-page",
+  "repository": "https://github.com/opentext-idol/settings-page",
   "version": "1.0.0",
   "devDependencies": {
     "coffeelint": "^1.6.0",

@@ -1,13 +1,11 @@
 # Settings Page
 
-[![Build Status](https://travis-ci.org/microfocus-idol/settings-page.svg?branch=master)](https://travis-ci.org/microfocus-idol/settings-page)
-
 A Backbone and Bootstrap settings page, allowing users to configure a web application through a simple, easy to use UI.
 
 This project exposes AMD modules. The path to the project root directory must be aliased as settings. The module names
 in the documentation reflect this.
 
-Documentation can be found [here](http://microfocus-idol.github.io/settings-page).
+Documentation can be found [here](http://opentext-idol.github.io/settings-page).
 
 This repo uses git-flow. develop is the development branch. master is the last known good branch.
 
@@ -28,6 +26,6 @@ Yes.
 
 ## License
 
-(c) Copyright 2013-2018 OpenText or one of its affiliates.
+Copyright 2013-2018 OpenText or one of its affiliates.
 
 Licensed under the MIT License (the "License"); you may not use this project except in compliance with the License.
