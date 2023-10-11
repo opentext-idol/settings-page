@@ -13,8 +13,9 @@
  */
 
 define([
+    'underscore',
     'backbone'
-], function(Backbone) {
+], function(_, Backbone) {
 
     var exceptionString = 'Security types mock error: Invalid arguments!';
 

@@ -16,9 +16,10 @@
  * @module settings/js/controls/enable-view
  */
 define([
+    'underscore',
     'backbone',
     'text!settings/templates/controls/enable-view.html'
-], function(Backbone, template) {
+], function(_, Backbone, template) {
 
     template = _.template(template);
 

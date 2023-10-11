@@ -16,10 +16,11 @@
  * @module settings/js/widgets/aci-widget
  */
 define([
+    'underscore',
     'settings/js/server-widget',
     'text!settings/templates/widgets/server-selection-template.html',
     'text!settings/templates/widgets/distributed-widget.html'
-], function(ServerWidget, serverSelectionTemplate, template) {
+], function(_, ServerWidget, serverSelectionTemplate, template) {
 
     var viewState = {
         standard: 'standard',

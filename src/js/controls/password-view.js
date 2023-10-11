@@ -16,9 +16,10 @@
  * @module settings/js/controls/password-view
  */
 define([
+    'underscore',
     'backbone',
     'text!settings/templates/controls/password-view.html'
-], function(Backbone, template) {
+], function(_, Backbone, template) {
 
     template = _.template(template);
 

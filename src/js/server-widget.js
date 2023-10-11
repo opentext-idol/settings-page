@@ -16,9 +16,10 @@
  * @module settings/js/server-widget
  */
 define([
+    'underscore',
     'settings/js/widget',
     'text!settings/templates/server-widget.html'
-], function(Widget, template) {
+], function(_, Widget, template) {
 
     /**
      * @typedef ServerWidgetStrings

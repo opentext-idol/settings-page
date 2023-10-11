@@ -14,7 +14,7 @@
 
 define([
     'underscore'
-], function() {
+], function(_) {
 
     return {
         createStringMap: function() {

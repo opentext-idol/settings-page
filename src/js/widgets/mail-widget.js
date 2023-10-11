@@ -16,11 +16,12 @@
  * @module settings/js/widgets/mail-widget
  */
 define([
+    'underscore',
     'settings/js/server-widget',
     'settings/js/controls/password-view',
     'settings/js/controls/enable-view',
     'text!settings/templates/widgets/mail-widget.html'
-], function(ServerWidget, PasswordView, EnableView, template) {
+], function(_, ServerWidget, PasswordView, EnableView, template) {
 
     var defaultPorts = {
         NONE: 25,

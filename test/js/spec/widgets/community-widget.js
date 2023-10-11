@@ -13,10 +13,11 @@
  */
 
 define([
+    'underscore',
     'settings/js/widgets/community-widget',
     'test/test-utils',
     'jasmine-jquery'
-], function(CommunityWidget, utils) {
+], function(_, CommunityWidget, utils) {
 
     describe('Community widget', function() {
         var strings = utils.createStringMap('confirmOkText', 'confirmMessage', 'confirmTitle', 'connectionSecurity',

@@ -16,12 +16,13 @@
  * @module settings/js/widgets/paths-widget
  */
 define([
+    'underscore',
     'settings/js/widget',
     'backbone',
     'js-whatever/js/list-view',
     'text!settings/templates/widgets/paths-widget.html',
     'text!settings/templates/widgets/paths-widget-row.html'
-], function(Widget, Backbone, ListView, template, itemTemplate) {
+], function(_, Widget, Backbone, ListView, template, itemTemplate) {
 
     /**
      * @typedef PathsWidgetStrings

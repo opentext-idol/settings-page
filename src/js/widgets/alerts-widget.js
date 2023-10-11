@@ -16,9 +16,10 @@
  * @module settings/js/widgets/alerts-widget
  */
 define([
+    'underscore',
     'settings/js/widget',
     'text!settings/templates/widgets/alerts-widget.html'
-], function(Widget, template) {
+], function(_, Widget, template) {
 
     template = _.template(template);
 

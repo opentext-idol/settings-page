@@ -13,11 +13,12 @@
  */
 
 define([
+    'underscore',
     'settings/js/settings-page',
     'backbone',
     'sinon',
     'jasmine-jquery'
-], function(SettingsPage, Backbone) {
+], function(_, SettingsPage, Backbone) {
 
     describe('Settings page', function() {
         var waitTime = 300;

@@ -16,9 +16,10 @@
  * @module settings/js/widget
  */
 define([
+    'underscore',
     'backbone',
     'text!settings/templates/widget.html'
-], function(Backbone, template) {
+], function(_, Backbone, template) {
 
     /**
      * @typedef WidgetStrings

@@ -16,9 +16,10 @@
  * @module settings/js/widgets/view-widget
  */
 define([
+    'underscore',
     'settings/js/widgets/aci-widget',
     'text!settings/templates/widgets/view-widget.html'
-], function(AciWidget, template) {
+], function(_, AciWidget, template) {
     /**
      * @typedef ViewWidgetStrings
      * @desc Extends AciWidgetStrings

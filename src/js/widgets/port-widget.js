@@ -16,9 +16,10 @@
  * @module settings/js/widgets/port-widget
  */
 define([
+    'underscore',
     'settings/js/widget',
     'text!settings/templates/widgets/port-widget.html'
-], function(Widget, template) {
+], function(_, Widget, template) {
 
     /**
      * @typedef PortWidgetStrings
