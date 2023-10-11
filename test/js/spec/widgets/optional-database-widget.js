@@ -13,10 +13,11 @@
  */
 
 define([
+    'underscore',
     'settings/js/widgets/optional-database-widget',
     'test/server-widget-test-utils',
     'jasmine-jquery'
-], function(DatabaseWidget, serverUtils) {
+], function(_, DatabaseWidget, serverUtils) {
 
     describe('Optional database widget', function() {
         function testDatabaseCheckbox(initialConfig) {

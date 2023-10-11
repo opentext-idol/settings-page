@@ -16,10 +16,11 @@
  * @module settings/js/widgets/logging-widget
  */
 define([
+    'underscore',
     'settings/js/widget',
     'settings/js/controls/enable-view',
     'text!settings/templates/widgets/logging-widget.html'
-], function(Widget, EnableView, template) {
+], function(_, Widget, EnableView, template) {
 
     var templateFunction = _.template(template);
 

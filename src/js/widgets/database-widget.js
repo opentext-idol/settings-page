@@ -16,11 +16,12 @@
  * @module settings/js/widgets/database-widget
  */
 define([
+    'underscore',
     'settings/js/server-widget',
     'settings/js/controls/password-view',
     'text!settings/templates/widgets/database-widget.html',
     'text!settings/templates/widgets/databases-widget.html'
-], function (ServerWidget, PasswordView, template, selectionTemplate) {
+], function(_, ServerWidget, PasswordView, template, selectionTemplate) {
     /**
      * @typedef DatabaseWidgetStrings
      * @desc Includes all properties from ServerWidgetStrings and PasswordViewStrings

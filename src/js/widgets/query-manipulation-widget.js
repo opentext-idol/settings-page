@@ -13,10 +13,11 @@
  */
 
 define([
+    'underscore',
     'settings/js/widgets/aci-widget',
     'settings/js/controls/enable-view',
     'text!settings/templates/widgets/query-manipulation-widget.html'
-], function(AciWidget, EnableView, queryManipulationTemplate) {
+], function(_, AciWidget, EnableView, queryManipulationTemplate) {
 
     return AciWidget.extend({
         EnableView: EnableView,

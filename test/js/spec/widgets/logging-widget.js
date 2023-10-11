@@ -18,7 +18,7 @@ define([
     'sinon',
     'underscore',
     'jasmine-jquery'
-], function(LoggingWidget, testUtils, sinon) {
+], function(LoggingWidget, testUtils, sinon, _) {
 
     describe('Logging Widget', function() {
         beforeEach(function() {

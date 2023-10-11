@@ -13,8 +13,9 @@
  */
 
 define([
+    'underscore',
     'test/test-utils'
-], function(utils) {
+], function(_, utils) {
 
     function testValidationFormatting(isValid) {
         var $span = this.widget.$('.settings-server-validation');

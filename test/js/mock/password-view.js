@@ -13,8 +13,9 @@
  */
 
 define([
+    'underscore',
     'backbone'
-], function(Backbone) {
+], function(_, Backbone) {
 
     return Backbone.View.extend({
         initialize: function(options) {

@@ -16,10 +16,11 @@
  * @module settings/js/widgets/single-user-widget
  */
 define([
+    'underscore',
     'settings/js/widget',
     'settings/js/controls/password-view',
     'text!settings/templates/widgets/single-user-widget.html'
-], function(Widget, PasswordView, template) {
+], function(_, Widget, PasswordView, template) {
 
     template = _.template(template);
 

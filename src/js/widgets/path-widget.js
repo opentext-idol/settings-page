@@ -16,9 +16,10 @@
  * @module settings/js/widgets/path-widget
  */
 define([
+    'underscore',
     'settings/js/widget',
     'text!settings/templates/widgets/path-widget.html'
-], function(Widget, template) {
+], function(_, Widget, template) {
 
     /**
      * @typedef PathWidgetStrings

@@ -13,9 +13,10 @@
  */
 
 define([
+    'underscore',
     'real/js/models/security-types-model',
     'sinon'
-], function(SecurityTypesModel) {
+], function(_, SecurityTypesModel) {
 
     describe('Security types model', function() {
         beforeEach(function() {

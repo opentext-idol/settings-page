@@ -13,11 +13,12 @@
  */
 
 define([
+    'underscore',
     'settings/js/widgets/mail-widget',
     'test/server-widget-test-utils',
     'test/test-utils',
     'jasmine-jquery'
-], function(MailWidget, serverUtils, utils) {
+], function(_, MailWidget, serverUtils, utils) {
 
     describe('Mail widget', function() {
         var initialConfig = {

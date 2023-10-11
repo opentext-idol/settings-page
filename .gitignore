@@ -5,7 +5,6 @@
 .idea/
 
 node_modules/
-bower_components/
 
 # Build products
 spec-runner.html

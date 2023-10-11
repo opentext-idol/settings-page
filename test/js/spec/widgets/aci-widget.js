@@ -13,10 +13,11 @@
  */
 
 define([
+    'underscore',
     'settings/js/widgets/aci-widget',
     'test/server-widget-test-utils',
     'jasmine-jquery'
-], function(AciWidget, serverUtils) {
+], function(_, AciWidget, serverUtils) {
 
     describe('ACI widget', function() {
         var initialConfig = {

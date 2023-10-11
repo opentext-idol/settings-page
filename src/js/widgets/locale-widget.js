@@ -16,9 +16,10 @@
  * @module settings/js/widgets/locale-widget
  */
 define([
+    'underscore',
     'settings/js/widget',
     'text!settings/templates/widgets/locale-widget.html'
-], function(Widget, template) {
+], function(_, Widget, template) {
 
     /**
      * @typedef LocaleWidgetStrings
