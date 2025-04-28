@@ -84,8 +84,10 @@ define([
 
             this.listView = new ListView({
                 collection: this.collection,
-                itemTemplate: this.itemTemplate,
-                itemTemplateOptions: {strings: this.strings}
+                itemOptions: {
+                    template: this.itemTemplate,
+                    templateOptions: {strings: this.strings}
+                }
             });
 
             this.listenTo(this.collection, 'add remove reset', this.updateRemoveButtons);

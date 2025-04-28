@@ -81,29 +81,18 @@ define([
             this.databaseTypes = {
                 postgres: {
                     protocol: 'jdbc:postgresql',
-                    hibernateDialect: 'org.hibernate.dialect.PostgreSQL82Dialect',
-                    driverClassName: 'org.postgresql.Driver',
-                    buildUrl: _.bind(function () {
-                        var database = this.$databaseCheckbox.prop('checked') ? this.$username.val() : this.$database.val();
-                        return 'jdbc:postgresql://' + this.$host.val() + ':' + this.$port.val() + '/' + database;
-                    }, this),
-                    parseUrl: function (url) {
-                        var captureGroups = /^jdbc:postgresql:\/\/([^:]*):(\d*)\/(.*)$/.exec(url);
-                        return captureGroups ? {
-                            protocol: 'jdbc:postgresql',
-                            host: captureGroups[1],
-                            port: captureGroups[2],
-                            database: captureGroups[3]
-                        } : {protocol: 'jdbc:postgresql'}
-                    }
+                    getConfig: _.bind(function () {
+                        return {
+                            host: this.$host.val(),
+                            port: this.$port.val(),
+                            database: this.$databaseCheckbox.prop('checked') ? this.$username.val() : this.$database.val(),
+                            username: this.$username.val()
+
+                        };
+                    }, this)
                 },
                 h2: {
-                    hibernateDialect: 'org.hibernate.dialect.H2Dialect',
-                    driverClassName: 'org.h2.Driver',
-                    username: 'sa',
-                    buildUrl: function () {
-                        return 'jdbc:h2:' + (options.databaseDir ? 'file:' + options.databaseDir + '/data/' : 'mem:') + options.databaseName + ';DB_CLOSE_ON_EXIT=FALSE';
-                    }
+                    getConfig: () => {}
                 }
             };
 
@@ -158,18 +147,11 @@ define([
         getConfig: function () {
             var databaseType = this.databaseType || this.$databaseType.val();
             var datasourceInfo = this.databaseTypes[databaseType];
-            var dataBaseOptions = {
-                platform: databaseType,
-                hibernateDialect: datasourceInfo.hibernateDialect,
-                driverClassName: datasourceInfo.driverClassName,
-                url: datasourceInfo.buildUrl(),
-                username: datasourceInfo.username || this.$username.val(),
-                password: '',
-                passwordRedacted: false
-            };
-
-            // user cant set embedded password.
-            return databaseType === 'h2' ? dataBaseOptions : _.extend(dataBaseOptions, this.passwordView.getConfig());
+            return _.extend(
+                { platform: databaseType },
+                datasourceInfo.getConfig(),
+                databaseType === 'h2' ? {} : this.passwordView.getConfig()
+            );
         },
 
         /**
@@ -230,23 +212,21 @@ define([
         updateConfig: function (config) {
             ServerWidget.prototype.updateConfig.apply(this, arguments);
 
-            if (config.platform && config.platform !== 'h2') {
-                var serverConfig = this.databaseTypes[config.platform].parseUrl(config.url);
-                this.protocol = serverConfig.protocol;
-                this.$protocol.text(this.protocol);
-                this.$database.val(serverConfig.database);
-                this.$host.val(serverConfig.host);
-                this.$port.val(serverConfig.port);
+            var databaseType = this.databaseType || config.platform;
+            this.$databaseType.val(databaseType);
+
+            if (databaseType !== 'h2') {
+                this.$host.val(config.host);
+                this.$port.val(config.port);
+                this.$database.val(config.database);
                 this.$username.val(config.username);
                 this.passwordView.updateConfig(config);
 
-                if (!serverConfig.database && config.username) {
+                if (!config.database && config.username) {
                     this.$database.val(config.username);
                 }
 
-                this.$databaseType.val(config.platform);
                 this.toggleInputs();
-
             }
 
             var checkboxState = this.$database.val() === this.$username.val();
@@ -272,10 +252,14 @@ define([
 
         validateDatasourceConfig: function (config) {
             var isValid = true;
+            var databaseType = this.databaseType || config.platform;
 
-            if (config.platform && config.platform !== 'h2') {
-                var serverConfig = this.databaseTypes[config.platform].parseUrl(config.url);
-                if (!serverConfig.host) {
+            if (!databaseType) {
+                return false;
+            }
+
+            if (databaseType !== 'h2') {
+                if (!config.host) {
                     isValid = false;
                     this.updateInputValidation(this.$host, false);
                 }
@@ -283,11 +267,6 @@ define([
                 if (!config.username) {
                     isValid = false;
                     this.updateInputValidation(this.$username, false);
-                }
-
-                if (!serverConfig.database) {
-                    isValid = false;
-                    this.updateInputValidation(this.$database, false);
                 }
 
                 // needs to be this way round to apply formatting
