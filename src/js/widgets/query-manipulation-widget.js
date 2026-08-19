@@ -12,67 +12,64 @@
  * information contained herein is subject to change without notice.
  */
 
-define([
-    'underscore',
-    'settings/js/widgets/aci-widget',
-    'settings/js/controls/enable-view',
-    'text!settings/templates/widgets/query-manipulation-widget.html'
-], function(_, AciWidget, EnableView, queryManipulationTemplate) {
+const _ = require('underscore');
+const AciWidget = require('./aci-widget');
+const EnableView = require('../controls/enable-view');
+const queryManipulationTemplate = require('../../templates/widgets/query-manipulation-widget.html');
 
-    return AciWidget.extend({
-        EnableView: EnableView,
-        queryManipulationTemplate: _.template(queryManipulationTemplate),
+module.exports = AciWidget.extend({
+    EnableView: EnableView,
+    queryManipulationTemplate: _.template(queryManipulationTemplate),
 
-        initialize: function() {
-            AciWidget.prototype.initialize.apply(this, arguments);
+    initialize: function() {
+        AciWidget.prototype.initialize.apply(this, arguments);
 
-            this.enableView = new this.EnableView({
-                enableIcon: 'fa fa-file',
-                strings: this.strings
-            });
+        this.enableView = new this.EnableView({
+            enableIcon: 'fa fa-file',
+            strings: this.strings
+        });
 
-            this.listenTo(this.enableView, 'change', function() {
-                this.$('.settings-required-flag').toggleClass('hide', !this.enableView.getConfig());
-            });
-        },
+        this.listenTo(this.enableView, 'change', function() {
+            this.$('.settings-required-flag').toggleClass('hide', !this.enableView.getConfig());
+        });
+    },
 
-        render: function() {
-            AciWidget.prototype.render.apply(this, arguments);
+    render: function() {
+        AciWidget.prototype.render.apply(this, arguments);
 
-            var $validateButtonParent = this.$('button[name=validate]').parent();
+        var $validateButtonParent = this.$('button[name=validate]').parent();
 
-            $validateButtonParent.before(this.queryManipulationTemplate({
-                strings: this.strings
-            }));
+        $validateButtonParent.before(this.queryManipulationTemplate({
+            strings: this.strings
+        }));
 
-            this.$typeahead = this.$('.typeahead-input');
+        this.$typeahead = this.$('.typeahead-input');
 
-            this.enableView.render();
-            $validateButtonParent.before(this.enableView.el);
-        },
+        this.enableView.render();
+        $validateButtonParent.before(this.enableView.el);
+    },
 
-        getConfig: function() {
-            return {
-                enabled: this.enableView.getConfig(),
-                server: AciWidget.prototype.getConfig.call(this),
-                typeAheadMode: this.$typeahead.val()
-            };
-        },
+    getConfig: function() {
+        return {
+            enabled: this.enableView.getConfig(),
+            server: AciWidget.prototype.getConfig.call(this),
+            typeAheadMode: this.$typeahead.val()
+        };
+    },
 
-        updateConfig: function(config) {
-            AciWidget.prototype.updateConfig.call(this, config.server);
+    updateConfig: function(config) {
+        AciWidget.prototype.updateConfig.call(this, config.server);
 
-            this.$typeahead.val(config.typeAheadMode);
-            this.enableView.updateConfig(config.enabled);
-        },
+        this.$typeahead.val(config.typeAheadMode);
+        this.enableView.updateConfig(config.enabled);
+    },
 
-        validateInputs: function() {
-            return !this.enableView.getConfig() || AciWidget.prototype.validateInputs.call(this);
-        },
+    validateInputs: function() {
+        return !this.enableView.getConfig() || AciWidget.prototype.validateInputs.call(this);
+    },
 
-        shouldValidate: function() {
-            return this.enableView.getConfig();
-        }
-    });
-
+    shouldValidate: function() {
+        return this.enableView.getConfig();
+    }
 });
+

@@ -1,14 +1,15 @@
 {
   "name": "hp-autonomy-settings-page",
-  "version": "0.15.1",
+  "version": "1.0.0",
   "repository": "https://github.com/opentext-idol/settings-page",
+  "engines": {
+    "node": ">=20"
+  },
   "dependencies": {
     "backbone": "^1.2.3",
     "bootstrap": "^3.4.1",
-    "hp-autonomy-js-whatever": "github:opentext-idol/jsWhatever#2.14.1",
+    "hp-autonomy-js-whatever": "github:opentext-idol/jsWhatever#3.0.0",
     "jquery": "^3.7.1",
-    "requirejs": "^2.3.7",
-    "requirejs-text": "^2.0.15",
     "underscore": "^1.13.8"
   },
   "devDependencies": {

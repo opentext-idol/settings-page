@@ -15,94 +15,91 @@
 /**
  * @module settings/js/widgets/path-widget
  */
-define([
-    'underscore',
-    'settings/js/widget',
-    'text!settings/templates/widgets/path-widget.html'
-], function(_, Widget, template) {
+const _ = require('underscore');
+const Widget = require('../widget');
+const template = require('../../templates/widgets/path-widget.html');
+
+/**
+ * @typedef PathWidgetStrings
+ * @desc Extends WidgetStrings
+ * @property {string} label Label for the input
+ * @property {string} validatePathBlank Message displayed if the input is empty
+ */
+/**
+ * @typedef PathWidgetOptions
+ * @desc Extends WidgetOptions
+ * @property {PathWidgetStrings} strings Strings for the widget
+ */
+/**
+ * @name module:settings/js/widgets/path-widget.PathWidget
+ * @desc Widget which allows the configuration of a single file path
+ * @constructor
+ * @param {PathWidgetOptions} options Options for the widget
+ * @extends module:settings/js/widget.Widget
+ */
+module.exports = Widget.extend(/**@lends module:settings/js/widgets/path-widget.PathWidget.prototype */{
+    /**
+     * @desc CSS classes for the widget.
+     * @default {@link module:settings/js/widget.Widget#className|Widget#className} + ' form-horizontal'
+     */
+    className: Widget.prototype.className + ' form-horizontal',
 
     /**
-     * @typedef PathWidgetStrings
-     * @desc Extends WidgetStrings
-     * @property {string} label Label for the input
-     * @property {string} validatePathBlank Message displayed if the input is empty
+     * @typedef PathWidgetTemplateParameters
+     * @property {PathWidgetStrings} strings Strings for the template
      */
     /**
-     * @typedef PathWidgetOptions
-     * @desc Extends WidgetOptions
-     * @property {PathWidgetStrings} strings Strings for the widget
+     * @callback module:settings/js/widgets/path-widget.PathWidget~PathTemplate
+     * @param {PathWidgetTemplateParameters} parameters
      */
     /**
-     * @name module:settings/js/widgets/path-widget.PathWidget
-     * @desc Widget which allows the configuration of a single file path
-     * @constructor
-     * @param {PathWidgetOptions} options Options for the widget
-     * @extends module:settings/js/widget.Widget
+     * @desc Base template for the widget. Override if using Bootstrap 3
+     * @type module:settings/js/widgets/path-widget.PathWidget~PathTemplate
      */
-    return Widget.extend(/**@lends module:settings/js/widgets/path-widget.PathWidget.prototype */{
-        /**
-         * @desc CSS classes for the widget.
-         * @default {@link module:settings/js/widget.Widget#className|Widget#className} + ' form-horizontal'
-         */
-        className: Widget.prototype.className + ' form-horizontal',
+    template: _.template(template),
 
-        /**
-         * @typedef PathWidgetTemplateParameters
-         * @property {PathWidgetStrings} strings Strings for the template
-         */
-        /**
-         * @callback module:settings/js/widgets/path-widget.PathWidget~PathTemplate
-         * @param {PathWidgetTemplateParameters} parameters
-         */
-        /**
-         * @desc Base template for the widget. Override if using Bootstrap 3
-         * @type module:settings/js/widgets/path-widget.PathWidget~PathTemplate
-         */
-        template: _.template(template),
+    /**
+     * @desc Renders the widget
+     */
+    render: function() {
+        Widget.prototype.render.call(this);
+        this.$content.append(this.template({strings: this.strings}));
+        this.$path = this.$('input[name="path"]');
+    },
 
-        /**
-         * @desc Renders the widget
-         */
-        render: function() {
-            Widget.prototype.render.call(this);
-            this.$content.append(this.template({strings: this.strings}));
-            this.$path = this.$('input[name="path"]');
-        },
+    /**
+     * @typedef PathConfig
+     * @property {string} path The path given by the config
+     */
+    /**
+     * @desc Gets the config represented by the widget
+     * @returns {PathConfig} The config represented by the widget
+     */
+    getConfig: function() {
+        //noinspection JSValidateTypes
+        return {path: this.$path.val()};
+    },
 
-        /**
-         * @typedef PathConfig
-         * @property {string} path The path given by the config
-         */
-        /**
-         * @desc Gets the config represented by the widget
-         * @returns {PathConfig} The config represented by the widget
-         */
-        getConfig: function() {
-            //noinspection JSValidateTypes
-            return {path: this.$path.val()};
-        },
+    /**
+     * @desc Updates the widget with the given config
+     * @param {PathConfig} config
+     */
+    updateConfig: function(config) {
+        Widget.prototype.updateConfig.apply(this, arguments);
+        this.$path.val(config.path);
+    },
 
-        /**
-         * @desc Updates the widget with the given config
-         * @param {PathConfig} config
-         */
-        updateConfig: function(config) {
-            Widget.prototype.updateConfig.apply(this, arguments);
-            this.$path.val(config.path);
-        },
-
-        /**
-         * @desc Validates the widget and applies formatting accordingly
-         * @returns {boolean} False if the path is empty; true otherwise
-         */
-        validateInputs: function() {
-            if (this.$path.val() === '') {
-                this.updateInputValidation(this.$path, false);
-                return false;
-            }
-
-            return true;
+    /**
+     * @desc Validates the widget and applies formatting accordingly
+     * @returns {boolean} False if the path is empty; true otherwise
+     */
+    validateInputs: function() {
+        if (this.$path.val() === '') {
+            this.updateInputValidation(this.$path, false);
+            return false;
         }
-    });
 
+        return true;
+    }
 });
+

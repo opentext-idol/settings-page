@@ -1,50 +1,49 @@
-define([
-    'settings/js/widgets/database-widget',
-    'settings/js/controls/enable-view'
-], function (DatabaseWidget, EnableView) {
-    return DatabaseWidget.extend({
-        initialize: function (options) {
-            DatabaseWidget.prototype.initialize.call(this, options);
-            this.enableView = new EnableView({enableIcon: 'icon-file', strings: this.strings});
-        },
+const DatabaseWidget = require('./database-widget');
+const EnableView = require('../controls/enable-view');
 
-        render: function () {
-            DatabaseWidget.prototype.render.call(this);
-            this.enableView.render();
-            this.$validateButtonParent.before(this.enableView.$el);
-        },
+module.exports = DatabaseWidget.extend({
+    initialize: function (options) {
+        DatabaseWidget.prototype.initialize.call(this, options);
+        this.enableView = new EnableView({enableIcon: 'icon-file', strings: this.strings});
+    },
 
-        getConfig: function () {
-            var datasourceConfig = DatabaseWidget.prototype.getConfig.call(this);
-            return {
-                datasource: datasourceConfig,
-                enabled: this.enableView.getConfig()
-            };
-        },
+    render: function () {
+        DatabaseWidget.prototype.render.call(this);
+        this.enableView.render();
+        this.$validateButtonParent.before(this.enableView.$el);
+    },
 
-        /**
-         * @returns {boolean} True if the database is enabled; false otherwise
-         */
-        shouldValidate: function() {
-            return this.enableView.getConfig();
-        },
+    getConfig: function () {
+        var datasourceConfig = DatabaseWidget.prototype.getConfig.call(this);
+        return {
+            datasource: datasourceConfig,
+            enabled: this.enableView.getConfig()
+        };
+    },
 
-        updateConfig: function(config) {
-            this.enableView.updateConfig(config.enabled);
-            if (config.enabled) {
-                DatabaseWidget.prototype.updateConfig.call(this, config.datasource);
-            }
-        },
+    /**
+     * @returns {boolean} True if the database is enabled; false otherwise
+     */
+    shouldValidate: function() {
+        return this.enableView.getConfig();
+    },
 
-        validateInputs: function () {
-            var isValid = true;
-
-            if (this.shouldValidate()) {
-                var config = this.getConfig();
-                isValid = this.validateDatasourceConfig(config.datasource);
-            }
-
-            return isValid;
+    updateConfig: function(config) {
+        this.enableView.updateConfig(config.enabled);
+        if (config.enabled) {
+            DatabaseWidget.prototype.updateConfig.call(this, config.datasource);
         }
-    });
+    },
+
+    validateInputs: function () {
+        var isValid = true;
+
+        if (this.shouldValidate()) {
+            var config = this.getConfig();
+            isValid = this.validateDatasourceConfig(config.datasource);
+        }
+
+        return isValid;
+    }
 });
+

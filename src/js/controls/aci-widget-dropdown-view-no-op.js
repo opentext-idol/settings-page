@@ -15,47 +15,45 @@
 /**
  * Allows dropdown view to be cleanly removed from widgets if desired
  */
-define([
-    'backbone'
-], function (Backbone) {
-    return Backbone.View.extend({
-        $el: '',
+const Backbone = require('backbone');
 
-        initialize: function () {
-        },
+module.exports = Backbone.View.extend({
+    $el: '',
 
-        render: function () {
-        },
+    initialize: function () {
+    },
 
-        fetchNewValues: function () {
-        },
+    render: function () {
+    },
 
-        hasValues: function () {
-            return false;
-        },
+    fetchNewValues: function () {
+    },
 
-        getConfig: function () {
-            return null;
-        },
-        
-        handleNewValues: function () {
-        },
+    hasValues: function () {
+        return false;
+    },
 
-        clearValidationFormatting: function () {
-        },
-        
-        toggleInput: function () {
-        },
+    getConfig: function () {
+        return null;
+    },
+    
+    handleNewValues: function () {
+    },
 
-        updateConfig: function () {
-        },
-        
-        updateDropdown: function () {
-        },
-        
-        getDropdownElement: function () {
-            return null;
-        }
-    });
+    clearValidationFormatting: function () {
+    },
+    
+    toggleInput: function () {
+    },
 
+    updateConfig: function () {
+    },
+    
+    updateDropdown: function () {
+    },
+    
+    getDropdownElement: function () {
+        return null;
+    }
 });
+
