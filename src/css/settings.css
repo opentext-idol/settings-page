@@ -31,9 +31,9 @@
     padding-left: 3px;
 }
 
-label.settings-optional-toggle,
-.control-group.success label.settings-optional-toggle,
-.control-group.error label.settings-optional-toggle {
+.settings-optional-toggle,
+.has-success .settings-optional-toggle,
+.has-error .settings-optional-toggle {
     color: #555555;
 }
 
@@ -46,6 +46,11 @@ label.settings-optional-toggle,
     width: 5em;
 }
 
+.form-control.auto {
+    display: inline-block;
+    width: auto;
+}
+
 .settings-servergroup select[name="protocol"] {
     width: 5em;
 }
@@ -54,7 +59,11 @@ label.settings-optional-toggle,
     margin-bottom: 0;
 }
 
-a[data-toggle="collapse"] {
+.m-t-sm {
+    margin-top: 10px;
+}
+
+[data-toggle="collapse"] {
     cursor: pointer;
 }
 
@@ -71,11 +80,7 @@ a[data-toggle="collapse"] {
     margin-bottom: 0;
 }
 
-a.settings-widget-title:hover {
-    text-decoration: none;
-}
-
-a.settings-widget-title h3:hover {
+.settings-widget-title:hover {
     color: rgb(42, 165, 235);
 }
 

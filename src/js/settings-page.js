@@ -45,17 +45,17 @@ module.exports = BasePage.extend(/** @lends module:settings/js/settings-page.Set
 
     /**
      * @desc CSS class to use for widget groups
-     * @default span4
+     * @default col-sm-4
      * @type String
      */
-    groupClass: 'span4',
+    groupClass: 'col-sm-4',
 
     /**
-     * @desc Icon for the page
-     * @default icon-cog
+     * @desc Icon for the page. Combined with the fa base class, e.g. fa fa-cog
+     * @default fa-cog
      * @type String
      */
-    icon: 'icon-cog',
+    icon: 'fa-cog',
 
     /**
      * @desc Method for initializing this.widgetGroups
@@ -154,7 +154,7 @@ module.exports = BasePage.extend(/** @lends module:settings/js/settings-page.Set
      * @desc CSS selector for the DOM element that the widget groups will be attached to
      * @type String
      */
-    widgetGroupParent: 'form .row-fluid',
+    widgetGroupParent: 'form',
 
     /**
      * @desc Constructor function for the save modal
@@ -273,11 +273,11 @@ module.exports = BasePage.extend(/** @lends module:settings/js/settings-page.Set
     handleCancelButton: function() {
         confirm({
             cancelClass: '',
-            cancelIcon: 'icon-remove',
+            cancelIcon: 'fa fa-remove',
             cancelText: this.strings.cancelCancel,
             okText: this.strings.cancelOk,
             okClass: 'btn-warning',
-            okIcon: 'icon-undo',
+            okIcon: 'fa fa-undo',
             message: this.strings.cancelMessage,
             title: this.strings.cancelTitle,
             okHandler: _.bind(function() {
@@ -403,9 +403,7 @@ module.exports = BasePage.extend(/** @lends module:settings/js/settings-page.Set
      * @param {module:settings/js/widget.Widget} widget The widget to scroll to
      */
     scrollToWidget: function(widget) {
-        widget.$('.collapse-' + widget.configItem).collapse('show').on('shown', _.bind(function() {
-            this.$scrollElement.scrollTop(this.$scrollElement.scrollTop() + widget.$el.position().top - this.$scrollElement.offset().top);
-        }, this));
+        this.$scrollElement.scrollTop(this.$scrollElement.scrollTop() + widget.$el.position().top - this.$scrollElement.offset().top);
     },
 
     /**

@@ -92,28 +92,28 @@ define([
             this.passwordView.updateConfig({password: null, passwordRedacted: true});
 
             expect($validationSpan).toHaveClass('hide');
-            expect(this.passwordView.$el).not.toHaveClass('success');
-            expect(this.passwordView.$el).not.toHaveClass('error');
+            expect(this.passwordView.$el).not.toHaveClass('has-success');
+            expect(this.passwordView.$el).not.toHaveClass('has-error');
 
             this.$input.val('').trigger('change');
             isValid = this.passwordView.validateInputs();
 
             expect(isValid).toBeFalsy();
-            expect(this.passwordView.$el).toHaveClass('error');
+            expect(this.passwordView.$el).toHaveClass('has-error');
             expect($validationSpan).not.toHaveClass('hide');
 
             this.$input.val('my-password').trigger('change');
 
             expect($validationSpan).toHaveClass('hide');
-            expect(this.passwordView.$el).not.toHaveClass('success');
-            expect(this.passwordView.$el).not.toHaveClass('error');
+            expect(this.passwordView.$el).not.toHaveClass('has-success');
+            expect(this.passwordView.$el).not.toHaveClass('has-error');
 
             isValid = this.passwordView.validateInputs();
 
             expect(isValid).toBeTruthy();
             expect($validationSpan).toHaveClass('hide');
-            expect(this.passwordView.$el).not.toHaveClass('success');
-            expect(this.passwordView.$el).not.toHaveClass('error');
+            expect(this.passwordView.$el).not.toHaveClass('has-success');
+            expect(this.passwordView.$el).not.toHaveClass('has-error');
         });
 
         it('should update the input state appropriately when setEnabled is called', function() {

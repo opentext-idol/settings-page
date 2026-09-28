@@ -41,10 +41,10 @@ const template = _.template(require('../../templates/controls/enable-view.html')
  */
 module.exports = Backbone.View.extend(/** @lends module:settings/js/controls/enable-view.EnableView.prototype */ {
     /**
-     * @desc Classname for view. Override if using Bootstrap 3
-     * @default control-group
+     * @desc Classname for view.
+     * @default form-group
      */
-    className: 'control-group',
+    className: 'form-group',
 
     events: {
         'click button[name=enable]': 'toggleEnabled'
@@ -101,7 +101,7 @@ module.exports = Backbone.View.extend(/** @lends module:settings/js/controls/ena
 
     /**
      * @desc Updates the formatting of the view.
-     * <p>If the view is enabled, sets the CSS class of the button to btn-danger, the icon to icon-remove, the button
+     * <p>If the view is enabled, sets the CSS class of the button to btn-danger, the icon to fa fa-remove, the button
      * text to this.strings.disable, and the label to this.strings.enabled.
      * <p>If the view is disabled, sets the CSS class of the button to btn-success, the icon to options.enableIcon, the
      * button text to this.strings.enable and the label to this.strings.disabled
@@ -109,7 +109,7 @@ module.exports = Backbone.View.extend(/** @lends module:settings/js/controls/ena
     updateFormatting: function() {
         this.$button.toggleClass('btn-success', !this.enabled)
             .toggleClass('btn-danger', this.enabled)
-            .html(this.enabled ? '<i class="icon-remove"></i> ' + this.strings.disable
+            .html(this.enabled ? '<i class="fa fa-remove"></i> ' + this.strings.disable
                 : '<i class="' + this.icon + '"></i> ' + this.strings.enable)
             .siblings('label').text(
                 this.enabled ? this.strings.enabled

@@ -46,16 +46,16 @@ define([
         });
 
         it('should fail client side validation on blank path', function() {
-            var $controlGroup = this.$path.closest('.control-group');
+            var $controlGroup = this.$path.closest('.form-group');
             this.$path.val('');
             var isValid = this.widget.validateInputs();
 
             expect(isValid).toBeFalsy();
-            expect($controlGroup).toHaveClass('error');
+            expect($controlGroup).toHaveClass('has-error');
 
             this.$path.val('/opt').trigger('change');
 
-            expect($controlGroup).not.toHaveClass('error');
+            expect($controlGroup).not.toHaveClass('has-error');
         });
     });
 

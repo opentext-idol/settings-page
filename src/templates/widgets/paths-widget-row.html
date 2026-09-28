@@ -1,8 +1,10 @@
-<div class="control-group">
-    <div class="input-append no-bottom-margin">
-        <input type="text" name="path" class="input-xlarge" value="<%=data.path%>">
-        <button type="button" name="remove-path" class="btn btn-danger"><i class="icon-minus"></i></button>
+<div class="form-group">
+    <div class="input-group no-bottom-margin">
+        <input type="text" name="path" class="form-control" value="<%=data.path%>">
+        <span class="input-group-btn">
+            <button type="button" name="remove-path" class="btn btn-danger"><i class="fa fa-minus"></i></button>
+        </span>
     </div>
-    <span class="settings-required-flag"><i class="icon-asterisk"></i></span>
+    <span class="settings-required-flag"><i class="fa fa-asterisk"></i></span>
     <span class="settings-client-validation settings-info hide"><%-strings.validatePathBlank%></span>
 </div>

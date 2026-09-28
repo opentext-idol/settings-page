@@ -61,13 +61,11 @@ module.exports = ServerWidget.extend(/** @lends module:settings/js/widgets/datab
      * @param {DatabaseWidgetTemplateParameters} parameters
      */
     /**
-     * @desc Base template for the widget. Override if using Bootstrap 3
+     * @desc Base template for the widget. Override if using Bootstrap 2
      * @type module:settings/js/widgets/database-widget.DatabaseWidget~DatabaseTemplate
      */
     databaseTemplate: _.template(template),
     databasesTemplate: _.template(selectionTemplate),
-
-    formControlClass: '',
 
     initialize: function (options) {
         ServerWidget.prototype.initialize.call(this, options);
@@ -122,7 +120,7 @@ module.exports = ServerWidget.extend(/** @lends module:settings/js/widgets/datab
         this.$protocol = this.$('.protocol');
 
         this.passwordView.render();
-        this.$databaseCheckbox.parent().before(this.passwordView.$el);
+        this.$databaseCheckbox.parent().parent().before(this.passwordView.$el);
 
         if (this.databaseType) {
             this.$('.database-type-selection').addClass('hide');

@@ -91,12 +91,12 @@ module.exports = Widget.extend(/** @lends module:settings/js/widgets/logging-wid
         this.testURL = options.testURL;
 
         this.logFileToggle = new EnableView({
-            enableIcon: 'icon-file-text',
+            enableIcon: 'fa fa-file-text',
             strings: this.strings.logFileToggle
         });
 
         this.syslogToggle = new EnableView({
-            enableIcon: 'icon-' + this.strings.iconClass,
+            enableIcon: 'fa fa-' + this.strings.iconClass,
             strings: this.strings.syslogToggle
         });
     },
@@ -194,14 +194,14 @@ module.exports = Widget.extend(/** @lends module:settings/js/widgets/logging-wid
         if (this.syslogToggle.getConfig()) {
             if (this.testRequest) {
                 this.$testButton.prop('disabled', true);
-                $i.addClass('icon-spin icon-refresh');
+                $i.addClass('fa fa-spin fa-refresh');
             } else {
                 this.$testButton.prop('disabled', false);
-                $i.addClass('icon-ok');
+                $i.addClass('fa fa-ok');
             }
         } else {
             this.$testButton.prop('disabled', true);
-            $i.addClass('icon-ok');
+            $i.addClass('fa fa-ok');
         }
     },
 

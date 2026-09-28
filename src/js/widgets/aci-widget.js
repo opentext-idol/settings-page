@@ -49,7 +49,7 @@ module.exports = ServerWidget.extend(/** @lends module:settings/js/widgets/aci-w
      * @param {AciWidgetTemplateParameters} parameters
      */
     /**
-     * @desc Base template for the widget. Override if using Bootstrap 3
+     * @desc Base template for the widget. Override if using Bootstrap 2
      * @type module:settings/js/widgets/aci-widget.AciWidget~AciTemplate
      */
     aciTemplate: _.template(template),

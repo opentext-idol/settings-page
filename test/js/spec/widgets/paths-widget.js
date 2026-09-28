@@ -118,11 +118,11 @@ define([
             var cid = this.collection.at(0).cid;
 
             // Add the path input since the list view handles this
-            this.listView.$el.append('<div class="control-group" data-cid="' + cid + '"><input name="path"></div>');
+            this.listView.$el.append('<div class="form-group" data-cid="' + cid + '"><input name="path"></div>');
             var $input = this.widget.$('[data-cid="' + cid + '"] input').val('').change();
 
             expect(this.widget.validateInputs()).toBe(false);
-            expect($input.closest('.control-group')).toHaveClass('error');
+            expect($input.closest('.form-group')).toHaveClass('has-error');
         });
     });
 

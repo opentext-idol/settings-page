@@ -237,7 +237,7 @@ define([
                 expect(widget.render).toHaveBeenCalled();
             });
 
-            var $widgets = this.settingsPage.$('.span4');
+            var $widgets = this.settingsPage.$('.col-sm-4');
 
             expect($widgets).toHaveLength(3);
             expect($widgets.filter(':contains(Community)')).toHaveLength(1);

@@ -46,56 +46,56 @@ define([
         });
 
         it('should fail client side validation on blank port', function() {
-            var $controlGroup = this.$port.closest('.control-group');
+            var $controlGroup = this.$port.closest('.form-group');
             this.$port.val('');
             var isValid = this.widget.validateInputs();
 
             expect(isValid).toBeFalsy();
-            expect($controlGroup).toHaveClass('error');
+            expect($controlGroup).toHaveClass('has-error');
         });
 
         it('should fail client side validation on port equal to zero', function() {
-            var $controlGroup = this.$port.closest('.control-group');
+            var $controlGroup = this.$port.closest('.form-group');
             this.$port.val(0);
             var isValid = this.widget.validateInputs();
 
             expect(isValid).toBeFalsy();
-            expect($controlGroup).toHaveClass('error');
+            expect($controlGroup).toHaveClass('has-error');
         });
 
         it('should fail client side validation on port less than zero', function() {
-            var $controlGroup = this.$port.closest('.control-group');
+            var $controlGroup = this.$port.closest('.form-group');
             this.$port.val(-10);
             var isValid = this.widget.validateInputs();
 
             expect(isValid).toBeFalsy();
-            expect($controlGroup).toHaveClass('error');
+            expect($controlGroup).toHaveClass('has-error');
         });
 
         it('should fail client side validation on port greater than 65536', function() {
-            var $controlGroup = this.$port.closest('.control-group');
+            var $controlGroup = this.$port.closest('.form-group');
             this.$port.val(65536 + 10);
             var isValid = this.widget.validateInputs();
 
             expect(isValid).toBeFalsy();
-            expect($controlGroup).toHaveClass('error');
+            expect($controlGroup).toHaveClass('has-error');
         });
 
         it('should pass client side validation on port greater than zero but less than 65536', function() {
-            var $controlGroup = this.$port.closest('.control-group');
+            var $controlGroup = this.$port.closest('.form-group');
             this.$port.val(101);
             var isValid = this.widget.validateInputs();
 
             expect(isValid).toBeTruthy();
-            expect($controlGroup).not.toHaveClass('error');
+            expect($controlGroup).not.toHaveClass('has-error');
         });
 
         it('should remove validation formatting on input change', function() {
-            var $controlGroup = this.$port.closest('.control-group');
+            var $controlGroup = this.$port.closest('.form-group');
             this.$port.val('');
             this.$port.val(101).trigger('change');
 
-            expect($controlGroup).not.toHaveClass('error');
+            expect($controlGroup).not.toHaveClass('has-error');
         });
     });
 

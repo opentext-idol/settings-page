@@ -1,14 +1,14 @@
 <% var uid = _.uniqueId('settings'); %>
 
-<div class="control-group">
-    smtp:// <input name="host" type="text" value="" placeholder="<%-strings.hostPlaceholder%>"> :
-    <input class="settings-port-input" name="port" type="number" min="1" max="65535" maxlength="5" value="" placeholder="<%-strings.portPlaceholder%>">
-    <span class="settings-required-flag"><i class="icon-asterisk"></i></span>
+<div class="form-group">
+    smtp:// <input class="form-control auto" name="host" type="text" value="" placeholder="<%-strings.hostPlaceholder%>"> :
+    <input class="settings-port-input form-control auto" name="port" type="number" min="1" max="65535" maxlength="5" value="" placeholder="<%-strings.portPlaceholder%>">
+    <span class="settings-required-flag"><i class="fa fa-asterisk"></i></span>
     <span class="settings-client-validation settings-info hide"><%-strings.validateHostBlank%></span>
 </div>
-<div class="control-group">
+<div class="form-group">
     <label class="settings-label" for="connection-security-<%-uid%>"><%-strings.connectionSecurity%>:</label>
-    <select id="connection-security-<%-uid%>" name="connection-security">
+    <select id="connection-security-<%-uid%>" name="connection-security" class="form-control auto">
 
     <% _.each(securityTypes, function(string, key) { %>
         <option value="<%-key%>"><%-string%></option>
@@ -16,25 +16,27 @@
 
     </select>
 </div>
-<div class="control-group">
+<div class="form-group">
     <label class="settings-label" for="from-<%-uid%>"><%-strings.fromLabel%>:</label>
-    <input id="from-<%-uid%>" name="from" type="email" value="">
-    <span class="settings-required-flag"><i class="icon-asterisk"></i></span>
+    <input id="from-<%-uid%>" class="form-control auto" name="from" type="email" value="">
+    <span class="settings-required-flag"><i class="fa fa-asterisk"></i></span>
     <span class="settings-client-validation settings-info hide"><%-strings.validateFromBlank%></span>
 </div>
-<div class="control-group">
+<div class="form-group">
     <label class="settings-label" for="to-<%-uid%>"><%-strings.toLabel%>:</label>
-    <input id="to-<%-uid%>" name="to" type="email" multiple value="">
-    <span class="settings-required-flag"><i class="icon-asterisk"></i></span>
+    <input id="to-<%-uid%>" class="form-control auto" name="to" type="email" multiple value="">
+    <span class="settings-required-flag"><i class="fa fa-asterisk"></i></span>
     <span class="settings-info"><%-strings.toDescription%></span>
     <span class="settings-client-validation settings-info hide"><%-strings.validateToBlank%></span>
 </div>
-<label class="checkbox settings-optional-toggle" for="authentication-checkbox-<%-uid%>">
-    <input type="checkbox" id="authentication-checkbox-<%-uid%>"> <%-strings.mailCheckbox%>
-</label>
-<div class="control-group">
+<div class="checkbox settings-optional-toggle">
+    <label for="authentication-checkbox-<%-uid%>">
+        <input type="checkbox" id="authentication-checkbox-<%-uid%>"> <%-strings.mailCheckbox%>
+    </label>
+</div>
+<div class="form-group">
     <label class="settings-label" for="username-<%-uid%>"><%-strings.usernameLabel%>:</label>
-    <input id="username-<%-uid%>" name="username" type="text" value="" disabled>
-    <span class="settings-required-flag hide"><i class="icon-asterisk"></i></span>
+    <input id="username-<%-uid%>" class="form-control auto" name="username" type="text" value="" disabled>
+    <span class="settings-required-flag hide"><i class="fa fa-asterisk"></i></span>
     <span class="settings-client-validation settings-info hide"><%-strings.validateUsernameBlank%></span>
 </div>

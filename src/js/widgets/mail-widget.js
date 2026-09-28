@@ -73,7 +73,7 @@ module.exports = ServerWidget.extend(/** @lends module:settings/js/widgets/mail-
         });
 
         this.enableView = new EnableView({
-            enableIcon: 'icon-envelope',
+            enableIcon: 'fa fa-envelope',
             strings: this.strings
         });
 

@@ -19,8 +19,19 @@ const _ = require('underscore');
 const Widget = require('../widget');
 const Backbone = require('backbone');
 const ListView = require('hp-autonomy-js-whatever/src/js/list-view');
+const ListItemView = require('hp-autonomy-js-whatever/src/js/list-item-view');
 const template = require('../../templates/widgets/paths-widget.html');
 const itemTemplate = require('../../templates/widgets/paths-widget-row.html');
+
+/**
+ * @desc ListItemView which identifies its element by the model's cid rather than its id, since path models are
+ * transient and never have an id
+ */
+const PathItemView = ListItemView.extend({
+    setDataIdAttribute: function() {
+        this.$el.attr('data-cid', this.model.cid);
+    }
+});
 
 /**
  * @typedef PathsWidgetStrings
@@ -50,13 +61,13 @@ module.exports = Widget.extend(/** @lends module:settings/js/widgets/paths-widge
      * @param {PathsWidgetTemplateParameters} parameters
      */
     /**
-     * @desc Template for each individual row. Override if using Bootstrap 3
+     * @desc Template for each individual row. Override if using Bootstrap 2
      * @type module:settings/js/widgets/path-widget.PathWidget~PathTemplate
      */
     itemTemplate: _.template(itemTemplate),
 
     /**
-     * @desc Base template for the widget. Override if using Bootstrap 3
+     * @desc Base template for the widget. Override if using Bootstrap 2
      * @type module:settings/js/widgets/paths-widget.PathsWidget~PathsTemplate
      */
     template: _.template(template),
@@ -82,6 +93,7 @@ module.exports = Widget.extend(/** @lends module:settings/js/widgets/paths-widge
 
         this.listView = new ListView({
             collection: this.collection,
+            ItemView: PathItemView,
             itemOptions: {
                 template: this.itemTemplate,
                 templateOptions: {strings: this.strings}

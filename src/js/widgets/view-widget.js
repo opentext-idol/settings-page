@@ -50,7 +50,7 @@ module.exports = AciWidget.extend({
      * @param {ViewWidgetTemplateParameters} parameters
      */
     /**
-     * @desc Base template for the widget. Override if using Bootstrap 3
+     * @desc Base template for the widget. Override if using Bootstrap 2
      * @type module:settings/js/widgets/view-widget.ViewWidget~ViewTemplate
      */
     viewTemplate: _.template(template),

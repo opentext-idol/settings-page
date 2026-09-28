@@ -92,14 +92,14 @@ define([
                 var isValid = this.widget.validateInputs();
 
                 expect(isValid).toBeFalsy();
-                expect(this.widget.$el).not.toHaveClass('success');
-                expect(this.widget.$el).not.toHaveClass('error');
+                expect(this.widget.$el).not.toHaveClass('has-success');
+                expect(this.widget.$el).not.toHaveClass('has-error');
 
-                expect($host.closest('.control-group')).toHaveClass('error');
+                expect($host.closest('.form-group')).toHaveClass('has-error');
                 expect($host.siblings('.settings-client-validation')).not.toHaveClass('hide');
-                expect($username.closest('.control-group')).toHaveClass('error');
+                expect($username.closest('.form-group')).toHaveClass('has-error');
                 expect($username.siblings('.settings-client-validation')).not.toHaveClass('hide');
-                expect(this.widget.$('input[name="database"]').closest('.control-group')).not.toHaveClass('error');
+                expect(this.widget.$('input[name="database"]').closest('.form-group')).not.toHaveClass('has-error');
             });
 
             testDatabaseCheckbox.call(this, initialConfig);

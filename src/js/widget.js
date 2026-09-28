@@ -30,7 +30,7 @@ const template = require('../templates/widget.html');
  * @property {string} serverName (deprecated) Name of the server
  * @property {WidgetStrings} strings Internationalisation strings for the widget
  * @property {string} title Title for the widget
- * @property {boolean} isOpened True if the widget should start opened; false otherwise
+ * @property {boolean} [isOpened=true] True if the widget should start opened; false otherwise
  */
 /**
  * @name module:settings/js/widget.Widget
@@ -42,11 +42,11 @@ const template = require('../templates/widget.html');
  */
 module.exports = Backbone.View.extend(/**@lends module:settings/js/widget.Widget.prototype */ {
     /**
-     * @desc Classes applied to the widget. Override if using Bootstrap 3
+     * @desc Classes applied to the widget.
      * @type string
-     * @default row-fluid accordion-group
+     * @default ''
      */
-    className: 'row-fluid accordion-group',
+    className: '',
 
     /**
      * @desc Returns the config associated with the widget
@@ -56,28 +56,28 @@ module.exports = Backbone.View.extend(/**@lends module:settings/js/widget.Widget
     getConfig: $.noop,
 
     /**
-     * @desc Class applied to control groups. Set to 'form-group' if using Bootstrap 3
-     * @default control-group
+     * @desc Class applied to control groups.
+     * @default form-group
      */
-    controlGroupClass: 'control-group',
+    controlGroupClass: 'form-group',
 
     /**
-     * @desc Class applied to form controls. Set to 'form-control' if using Bootstrap 3
-     * @default ''
+     * @desc Class applied to form controls.
+     * @default form-control
      */
-    formControlClass: '',
+    formControlClass: 'form-control',
 
     /**
-     * @desc Class used to indicate successful validation. Set to 'has-success' if using Bootstrap 3
-     * @default success
+     * @desc Class used to indicate successful validation.
+     * @default has-success
      */
-    successClass: 'success',
+    successClass: 'has-success',
 
     /**
-     * @desc Class used to indicate failed validation. Set to 'has-error' if using Bootstrap 3
-     * @default error
+     * @desc Class used to indicate failed validation.
+     * @default has-error
      */
-    errorClass: 'error',
+    errorClass: 'has-error',
 
     /**
      * @typedef WidgetTemplateParameters
@@ -92,7 +92,7 @@ module.exports = Backbone.View.extend(/**@lends module:settings/js/widget.Widget
      * @param {WidgetTemplateParameters} parameters
      */
     /**
-     * @desc Base template for the widget. Override if using Bootstrap 3
+     * @desc Base template for the widget. Override if using Bootstrap 2
      * @type module:settings/js/widget.Widget~WidgetTemplate
      */
     widgetTemplate: _.template(template),
@@ -113,7 +113,7 @@ module.exports = Backbone.View.extend(/**@lends module:settings/js/widget.Widget
         this.serverName = options.serverName;
         this.strings = options.strings;
         this.title = options.title;
-        this.isOpened = options.isOpened;
+        this.isOpened = options.isOpened !== false;
     },
 
     /**

@@ -40,11 +40,11 @@ const template = require('../templates/server-widget.html');
  */
 module.exports = Widget.extend(/** @lends module:settings/js/server-widget.ServerWidget.prototype */{
     /**
-     * @desc Classes applied to the widget. Override if using Bootstrap 3
+     * @desc Classes applied to the widget.
      * @type string
-     * @default Widget.prototype.className + ' settings-servergroup control-group form-horizontal'
+     * @default Widget.prototype.className + ' settings-servergroup form-horizontal'
      */
-    className: Widget.prototype.className + ' settings-servergroup control-group form-horizontal',
+    className: Widget.prototype.className + ' settings-servergroup form-horizontal',
 
     /**
      * @typedef ServerWidgetTemplateParameters
@@ -55,7 +55,7 @@ module.exports = Widget.extend(/** @lends module:settings/js/server-widget.Serve
      * @param {ServerWidgetTemplateParameters} parameters
      */
     /**
-     * @desc Base template for the widget. Override if using Bootstrap 3
+     * @desc Base template for the widget. Override if using Bootstrap 2
      * @type module:settings/js/server-widget.ServerWidget~ServerWidgetTemplate
      */
     serverTemplate: _.template(template),
