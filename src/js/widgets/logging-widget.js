@@ -197,7 +197,7 @@ module.exports = Widget.extend(/** @lends module:settings/js/widgets/logging-wid
                 $i.addClass('fa fa-spin fa-refresh');
             } else {
                 this.$testButton.prop('disabled', false);
-                $i.addClass('fa fa-ok');
+                $i.addClass('fa fa-check');
             }
         } else {
             this.$testButton.prop('disabled', true);
