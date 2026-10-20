@@ -8,7 +8,7 @@
   "dependencies": {
     "backbone": "^1.2.3",
     "fontawesome": "4.7.2",
-    "hp-autonomy-js-whatever": "github:opentext-idol/jsWhatever#3.1.0",
+    "hp-autonomy-js-whatever": "file:../jsWhatever",
     "jquery": "^3.7.1",
     "underscore": "^1.13.8"
   },
@@ -27,7 +27,7 @@
     "grunt-jsdoc": "^2.1.0",
     "grunt-template-jasmine-istanbul": "^0.4.0",
     "grunt-template-jasmine-requirejs": "https://github.com/cloudchen/grunt-template-jasmine-requirejs#e5770cd8a75f88e5e09a5f2d4f389ec23bb2dad2",
-    "hp-autonomy-js-testing-utils": "opentext-idol/js-testing-utils#2.4.0",
+    "hp-autonomy-js-testing-utils": "file:../js-testing-utils",
     "ink-docstrap": "^0.4.12",
     "jasmine-jquery": "^2.1.1",
     "sinon": "^1.9.1"
