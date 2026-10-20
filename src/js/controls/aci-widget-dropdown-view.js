@@ -99,7 +99,7 @@ module.exports = Backbone.View.extend({
 
     clearValidationFormatting: function (errorClass) {
         this.$dropdown.parent().removeClass(errorClass);
-        this.$valuesSpan.removeClass('hide');
+        this.$valuesSpan.removeClass('d-none');
     },
 
     /**
@@ -107,7 +107,7 @@ module.exports = Backbone.View.extend({
      * @param {boolean} isEnabled True if dropdown values should be enabled; false otherwise
      */
     toggleInput: function (isEnabled) {
-        this.$valuesSpan.toggleClass('hide', isEnabled);
+        this.$valuesSpan.toggleClass('d-none', isEnabled);
         this.$dropdown.attr('disabled', !isEnabled);
     },
 

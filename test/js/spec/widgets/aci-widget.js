@@ -46,7 +46,7 @@ define([
 
         it('should validate on load', function() {
             expect(this.widget.shouldValidate()).toBeTruthy();
-            expect(this.widget.$('.settings-client-validation')).toHaveClass('hide');
+            expect(this.widget.$('.settings-client-validation')).toHaveClass('d-none');
         });
 
         it('should display the correct config', function() {
@@ -76,7 +76,7 @@ define([
             expect(this.widget.$el).not.toHaveClass('has-success');
             expect(this.widget.$el).not.toHaveClass('has-error');
             expect(this.widget.$el.find('.form-group')).toHaveClass('has-error');
-            expect(this.widget.$el.find('.settings-client-validation')).not.toHaveClass('hide');
+            expect(this.widget.$el.find('.settings-client-validation')).not.toHaveClass('d-none');
         });
 
         it('should fail if the port is negative', function() {
@@ -87,7 +87,7 @@ define([
             expect(this.widget.$el).not.toHaveClass('has-success');
             expect(this.widget.$el).not.toHaveClass('has-error');
             expect(this.widget.$el.find('.form-group')).toHaveClass('has-error');
-            expect(this.widget.$el.find('.settings-client-validation')).not.toHaveClass('hide');
+            expect(this.widget.$el.find('.settings-client-validation')).not.toHaveClass('d-none');
         });
 
         it('should fail if the port is greater than 65535', function() {
@@ -98,7 +98,7 @@ define([
             expect(this.widget.$el).not.toHaveClass('has-success');
             expect(this.widget.$el).not.toHaveClass('has-error');
             expect(this.widget.$el.find('.form-group')).toHaveClass('has-error');
-            expect(this.widget.$el.find('.settings-client-validation')).not.toHaveClass('hide');
+            expect(this.widget.$el.find('.settings-client-validation')).not.toHaveClass('d-none');
         });
 
         it('should remove previous client side validation on next validation', function() {
@@ -117,7 +117,7 @@ define([
             expect(this.widget.$el).not.toHaveClass('has-error');
             expect($hostControlGroup).toHaveClass('has-error');
             expect(this.validationSpy).not.toHaveBeenCalled();
-            expect(this.widget.$('.settings-client-validation')).not.toHaveClass('hide');
+            expect(this.widget.$('.settings-client-validation')).not.toHaveClass('d-none');
 
             this.$host.val('example.com');
             this.widget.$('button[name="validate"]').click();
@@ -126,7 +126,7 @@ define([
             expect(this.widget.$el).not.toHaveClass('has-error');
             expect($hostControlGroup).not.toHaveClass('has-error');
             expect(this.validationSpy).toHaveBeenCalled();
-            expect(this.widget.$('.settings-client-validation')).toHaveClass('hide');
+            expect(this.widget.$('.settings-client-validation')).toHaveClass('d-none');
         });
 
         describe('getValidationFailureMessage', function() {

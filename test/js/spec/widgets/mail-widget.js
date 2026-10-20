@@ -118,16 +118,16 @@ define([
 
             expect(isValid).toBeFalsy();
             expect(this.$host.closest('.form-group')).toHaveClass('has-error');
-            expect(this.$from.siblings('.settings-client-validation')).toHaveClass('hide');
+            expect(this.$from.siblings('.settings-client-validation')).toHaveClass('d-none');
             expect(this.widget.$el).not.toHaveClass('has-success');
 
             this.$from.val('');
             isValid = this.widget.validateInputs();
             expect(isValid).toBeFalsy();
             expect(this.$host.closest('.form-group')).toHaveClass('has-error');
-            expect(this.$host.siblings('.settings-client-validation')).not.toHaveClass('hide');
+            expect(this.$host.siblings('.settings-client-validation')).not.toHaveClass('d-none');
             expect(this.$from.closest('.form-group')).toHaveClass('has-error');
-            expect(this.$from.siblings('.settings-client-validation')).not.toHaveClass('hide');
+            expect(this.$from.siblings('.settings-client-validation')).not.toHaveClass('d-none');
             expect(this.widget.$el).not.toHaveClass('has-success');
         });
 
@@ -143,7 +143,7 @@ define([
             expect(this.widget.$el).not.toHaveClass('has-error');
             expect($hostControlGroup).toHaveClass('has-error');
             expect(this.validationSpy).not.toHaveBeenCalled();
-            expect($hostValidationSpan).not.toHaveClass('hide');
+            expect($hostValidationSpan).not.toHaveClass('d-none');
 
             this.$host.val('example.com');
             this.widget.$('button[name="validate"]').click();
@@ -152,7 +152,7 @@ define([
             expect(this.widget.$el).not.toHaveClass('has-error');
             expect($hostControlGroup).not.toHaveClass('has-error');
             expect(this.validationSpy).toHaveBeenCalled();
-            expect($hostValidationSpan).toHaveClass('hide');
+            expect($hostValidationSpan).toHaveClass('d-none');
 
             this.$host.val(initialConfig.host).trigger('change');
             this.widget.handleValidation(initialConfig, {valid: true});
@@ -160,7 +160,7 @@ define([
             expect(this.widget.$el).toHaveClass('has-success');
             expect(this.widget.$el).not.toHaveClass('has-error');
             expect($hostControlGroup).not.toHaveClass('has-error');
-            expect($hostValidationSpan).toHaveClass('hide');
+            expect($hostValidationSpan).toHaveClass('d-none');
         });
 
         it('should correctly decide whether to retain the checkbox state on updateConfig', function() {
@@ -183,14 +183,14 @@ define([
             var isValid = this.widget.validateInputs();
 
             expect(isValid).toBeFalsy();
-            expect($usernameInfo).not.toHaveClass('hide');
+            expect($usernameInfo).not.toHaveClass('d-none');
             expect(this.widget.passwordView.validateInputs).toHaveBeenCalled();
 
             this.$checkbox.prop('checked', false).trigger('change');
 
             isValid = this.widget.validateInputs();
             expect(isValid).toBeTruthy();
-            expect($usernameInfo).toHaveClass('hide');
+            expect($usernameInfo).toHaveClass('d-none');
             expect(this.widget.passwordView.validateInputs).toHaveCallCount(1);
         });
     });

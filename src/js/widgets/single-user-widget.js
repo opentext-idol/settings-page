@@ -184,7 +184,7 @@ module.exports = Widget.extend(/** @lends module:settings/js/widgets/single-user
         if((!currentPasswordConfig.isRedacted || !newPasswordConfig.isRedacted || !confirmPasswordConfig.isRedacted) &&
                 newPasswordConfig.password !== confirmPasswordConfig.password) {
             isValid = false;
-            this.$('.password-mismatch').removeClass('hide');
+            this.$('.password-mismatch').removeClass('d-none');
         }
 
         return isValid;

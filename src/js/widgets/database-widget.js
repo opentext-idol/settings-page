@@ -123,12 +123,12 @@ module.exports = ServerWidget.extend(/** @lends module:settings/js/widgets/datab
         this.$databaseCheckbox.parent().parent().before(this.passwordView.$el);
 
         if (this.databaseType) {
-            this.$('.database-type-selection').addClass('hide');
+            this.$('.database-type-selection').addClass('d-none');
         }
 
         this.toggleInputs = _.bind(function () {
             var databaseType = this.databaseType || this.$databaseType.val();
-            this.$('.database-config').toggleClass('hide', databaseType === 'h2');
+            this.$('.database-config').toggleClass('d-none', databaseType === 'h2');
             this.$protocol.text(this.databaseTypes[databaseType].protocol);
         }, this);
 

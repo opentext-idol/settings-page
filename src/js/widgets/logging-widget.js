@@ -74,10 +74,10 @@ module.exports = Widget.extend(/** @lends module:settings/js/widgets/logging-wid
                         this.updateTestSyslogButton();
                     }, this),
                     error: _.bind(function() {
-                        this.$testResponse.text(this.strings.testFailure).removeClass('hide');
+                        this.$testResponse.text(this.strings.testFailure).removeClass('d-none');
                     }, this),
                     success: _.bind(function(response) {
-                        this.$testResponse.text(this.strings.testSuccess(response.message)).removeClass('hide');
+                        this.$testResponse.text(this.strings.testSuccess(response.message)).removeClass('d-none');
                     }, this)
                 });
 
@@ -132,7 +132,7 @@ module.exports = Widget.extend(/** @lends module:settings/js/widgets/logging-wid
                 this.testRequest = null;
             }
 
-            this.$testResponse.addClass('hide');
+            this.$testResponse.addClass('d-none');
             this.syslogToggle.$el.closest('.settings-logging-section').find('.logging-control').prop('disabled', !enabled);
             this.updateTestSyslogButton();
         });

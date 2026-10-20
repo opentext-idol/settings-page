@@ -36,7 +36,7 @@ module.exports = AciWidget.extend({
         //noinspection JSUnresolvedFunction
         this.listenTo(this.enableView, 'change', function () {
             //noinspection JSUnresolvedFunction
-            this.$('.settings-required-flag').toggleClass('hide', !this.enableView.getConfig());
+            this.$('.settings-required-flag').toggleClass('d-none', !this.enableView.getConfig());
         });
 
         this.dropdownView = new this.DropdownView({

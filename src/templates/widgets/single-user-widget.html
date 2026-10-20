@@ -3,7 +3,7 @@
     <label class="single-user-settings-label" for="username-<%=uniqueId%>"><%- strings.username %>:</label>
     <input id="username-<%=uniqueId%>" class="form-control auto" type="text" name="username" value=""/>
     <span class="settings-required-flag"><i class="fa fa-asterisk"></i></span>
-    <span class="settings-client-validation settings-info hide"><%-strings.validateUsernameBlank%></span>
+    <span class="settings-client-validation settings-info d-none"><%-strings.validateUsernameBlank%></span>
 </div>
 <div class="passwords"></div>
-<div class="password-mismatch settings-client-validation hide text-danger"><%-strings.passwordMismatch%></div>
+<div class="password-mismatch settings-client-validation d-none text-danger"><%-strings.passwordMismatch%></div>

@@ -169,7 +169,7 @@ module.exports = Backbone.View.extend(/**@lends module:settings/js/widget.Widget
      * @desc Hides any validation information (elements with the settings-client-validation class)
      */
     hideValidationInfo: function() {
-        this.$('.settings-client-validation').addClass('hide');
+        this.$('.settings-client-validation').addClass('d-none');
     },
 
     /**
@@ -225,10 +225,10 @@ module.exports = Backbone.View.extend(/**@lends module:settings/js/widget.Widget
 
         if (isValid) {
             $controlGroup.removeClass(this.errorClass);
-            $span.addClass('hide');
+            $span.addClass('d-none');
         } else {
             $controlGroup.addClass(this.errorClass);
-            $span.removeClass('hide');
+            $span.removeClass('d-none');
         }
     },
 

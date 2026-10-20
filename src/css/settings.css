@@ -20,10 +20,6 @@
     color: #BD4247;
 }
 
-.hide {
-    display: none;
-}
-
 .settings-required-flag {
     color: #FF0000;
     font-size: 11px;
@@ -35,6 +31,10 @@
 .has-success .settings-optional-toggle,
 .has-error .settings-optional-toggle {
     color: #555555;
+}
+
+.form-group {
+    margin-bottom: 1rem;
 }
 
 .settings-label {
@@ -63,7 +63,7 @@
     margin-top: 10px;
 }
 
-[data-toggle="collapse"] {
+[data-bs-toggle="collapse"] {
     cursor: pointer;
 }
 

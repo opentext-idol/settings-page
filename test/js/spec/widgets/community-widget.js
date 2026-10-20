@@ -169,14 +169,14 @@ define([
 
                 expect(this.widget.$el).not.toHaveClass('has-success');
                 expect(this.$aciDetails).toHaveClass('has-success');
-                expect($clientValidationSpan).toHaveClass('hide');
+                expect($clientValidationSpan).toHaveClass('d-none');
 
                 $host.val('').trigger('change');
 
                 expect(this.widget.$el).not.toHaveClass('has-success');
                 expect(this.$aciDetails).not.toHaveClass('has-success');
                 expect(this.$aciDetails).not.toHaveClass('has-error');
-                expect($clientValidationSpan).toHaveClass('hide');
+                expect($clientValidationSpan).toHaveClass('d-none');
 
                 var isValid = this.widget.validateInputs();
 
@@ -184,21 +184,21 @@ define([
                 expect(this.widget.$el).not.toHaveClass('has-success');
                 expect(this.$aciDetails).toHaveClass('has-error');
                 expect(this.$aciDetails).not.toHaveClass('has-success');
-                expect($clientValidationSpan).toHaveClass('hide');
+                expect($clientValidationSpan).toHaveClass('d-none');
 
                 $host.val('yoda').trigger('change');
 
                 expect(this.widget.$el).not.toHaveClass('has-success');
                 expect(this.$aciDetails).not.toHaveClass('has-error');
                 expect(this.$aciDetails).not.toHaveClass('has-success');
-                expect($clientValidationSpan).toHaveClass('hide');
+                expect($clientValidationSpan).toHaveClass('d-none');
 
                 $host.val(initialConfig.community.host).trigger('change');
 
                 expect(this.widget.$el).not.toHaveClass('has-success');
                 expect(this.$aciDetails).toHaveClass('has-success');
                 expect(this.$aciDetails).not.toHaveClass('has-error');
-                expect($clientValidationSpan).toHaveClass('hide');
+                expect($clientValidationSpan).toHaveClass('d-none');
             });
 
             describe('after a change to the port input', function() {

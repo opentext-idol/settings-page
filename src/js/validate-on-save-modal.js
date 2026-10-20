@@ -89,9 +89,9 @@ module.exports = Backbone.View.extend(/** @lends module:settings/js/validate-on-
                 backdrop: 'static',
                 keyboard: false
             })
-            .on('hidden', this.remove);
+            .on('hidden.bs.modal', this.remove);
 
-        this.$cancel = this.$('button[data-dismiss="modal"]');
+        this.$cancel = this.$('button[data-bs-dismiss="modal"]');
         this.$ok = this.$('#settings-save-ok');
         this.$body = this.$('.modal-body');
     },

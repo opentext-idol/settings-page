@@ -30,7 +30,7 @@ module.exports = AciWidget.extend({
         });
 
         this.listenTo(this.enableView, 'change', function() {
-            this.$('.settings-required-flag').toggleClass('hide', !this.enableView.getConfig());
+            this.$('.settings-required-flag').toggleClass('d-none', !this.enableView.getConfig());
         });
     },
 

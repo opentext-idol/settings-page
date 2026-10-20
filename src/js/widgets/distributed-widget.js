@@ -93,8 +93,8 @@ module.exports = ServerWidget.extend({
 
     update: function() {
         this.removeMainMessage();
-        this.$distributedView.toggleClass('hide', this.viewState !== viewState.distributed);
-        this.$standardView.toggleClass('hide', this.viewState === viewState.distributed);
+        this.$distributedView.toggleClass('d-none', this.viewState !== viewState.distributed);
+        this.$standardView.toggleClass('d-none', this.viewState === viewState.distributed);
     },
 
     displayDistributedValidationResult: function($target, result) {
@@ -104,14 +104,14 @@ module.exports = ServerWidget.extend({
             $target.text(this.strings[result]);
         }
 
-        $target.removeClass('hide');
+        $target.removeClass('d-none');
     },
 
     distributedError: function(result, $target) {
         if(result) {
             this.displayDistributedValidationResult($target, result.data);
         } else {
-            $target.addClass('hide');
+            $target.addClass('d-none');
         }
     },
 

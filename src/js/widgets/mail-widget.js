@@ -179,7 +179,7 @@ module.exports = ServerWidget.extend(/** @lends module:settings/js/widgets/mail-
     updateAuthState: function(authRequired) {
         this.$authCheckbox.prop('checked', authRequired);
         this.$username.prop('disabled', !authRequired);
-        this.$username.siblings('.settings-required-flag').toggleClass('hide', !authRequired);
+        this.$username.siblings('.settings-required-flag').toggleClass('d-none', !authRequired);
         this.passwordView.setEnabled(authRequired);
     },
 

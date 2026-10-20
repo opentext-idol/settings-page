@@ -425,7 +425,7 @@ define([
                 it('should not be possible to close the modal after clicking save', function() {
                     this.$save.click();
                     expect(this.$save).toHaveAttr('disabled');
-                    expect($('button[data-dismiss="modal"]')).toHaveAttr('disabled');
+                    expect($('button[data-bs-dismiss="modal"]')).toHaveAttr('disabled');
                 });
 
                 describe('on success', function() {
@@ -439,7 +439,7 @@ define([
                     });
 
                     it('should be possible to close the modal', function(done) {
-                        $('button[data-dismiss="modal"]').click();
+                        $('button[data-bs-dismiss="modal"]').click();
 
                         waitFor(modalToClose, done);
                     });
@@ -466,7 +466,7 @@ define([
                     var testErrorHandling = function() {
                         expect(this.$save).not.toHaveAttr('disabled');
                         expect(this.$save).not.toBeHidden();
-                        expect($('button[data-dismiss="modal"]')).not.toHaveAttr('disabled');
+                        expect($('button[data-bs-dismiss="modal"]')).not.toHaveAttr('disabled');
                     };
 
                     beforeEach(function() {

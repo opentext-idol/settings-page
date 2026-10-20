@@ -249,7 +249,7 @@ define([
                     this.server.requests[0].respond(200, [], JSON.stringify({message: 'All good'}));
 
                     expect(this.widget.testRequest).toBeFalsy();
-                    expect(this.widget.$testResponse).not.toHaveClass('hide');
+                    expect(this.widget.$testResponse).not.toHaveClass('d-none');
 
                     // the success message function is the identity function
                     expect(this.widget.$testResponse).toHaveText('All good');
@@ -261,7 +261,7 @@ define([
                     this.server.requests[0].respond(500);
 
                     expect(this.widget.testRequest).toBeFalsy();
-                    expect(this.widget.$testResponse).not.toHaveClass('hide');
+                    expect(this.widget.$testResponse).not.toHaveClass('d-none');
                     expect(this.widget.$testResponse).toHaveText('testFailure');
                     expect(this.widget.$testButton).toHaveProp('disabled', false);
                 });

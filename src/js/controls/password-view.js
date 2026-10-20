@@ -73,7 +73,7 @@ module.exports = Backbone.View.extend(/** @lends module:settings/js/controls/pas
         }));
 
         this.$input = this.$('input[name="password"]').prop('disabled', !this.enabled);
-        this.$required = this.$('.settings-required-flag').toggleClass('hide', !this.enabled);
+        this.$required = this.$('.settings-required-flag').toggleClass('d-none', !this.enabled);
     },
 
     /**
@@ -93,7 +93,7 @@ module.exports = Backbone.View.extend(/** @lends module:settings/js/controls/pas
      */
     handleInputChange: function() {
         this.$el.removeClass('has-success has-error');
-        this.$('.settings-client-validation').addClass('hide');
+        this.$('.settings-client-validation').addClass('d-none');
     },
 
     /**
@@ -103,7 +103,7 @@ module.exports = Backbone.View.extend(/** @lends module:settings/js/controls/pas
     setEnabled: function(state) {
         this.enabled = state;
         this.$input.prop('disabled', !state);
-        this.$required.toggleClass('hide', !state);
+        this.$required.toggleClass('d-none', !state);
     },
 
     /**
@@ -145,7 +145,7 @@ module.exports = Backbone.View.extend(/** @lends module:settings/js/controls/pas
     validateInputs: function() {
         if (this.enabled && !this.isRedacted && this.$input.val() === '') {
             this.$el.addClass('has-error');
-            this.$('.settings-client-validation').removeClass('hide');
+            this.$('.settings-client-validation').removeClass('d-none');
             return false;
         }
 

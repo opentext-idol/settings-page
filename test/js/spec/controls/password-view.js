@@ -91,7 +91,7 @@ define([
             var $validationSpan = this.passwordView.$('.settings-client-validation');
             this.passwordView.updateConfig({password: null, passwordRedacted: true});
 
-            expect($validationSpan).toHaveClass('hide');
+            expect($validationSpan).toHaveClass('d-none');
             expect(this.passwordView.$el).not.toHaveClass('has-success');
             expect(this.passwordView.$el).not.toHaveClass('has-error');
 
@@ -100,18 +100,18 @@ define([
 
             expect(isValid).toBeFalsy();
             expect(this.passwordView.$el).toHaveClass('has-error');
-            expect($validationSpan).not.toHaveClass('hide');
+            expect($validationSpan).not.toHaveClass('d-none');
 
             this.$input.val('my-password').trigger('change');
 
-            expect($validationSpan).toHaveClass('hide');
+            expect($validationSpan).toHaveClass('d-none');
             expect(this.passwordView.$el).not.toHaveClass('has-success');
             expect(this.passwordView.$el).not.toHaveClass('has-error');
 
             isValid = this.passwordView.validateInputs();
 
             expect(isValid).toBeTruthy();
-            expect($validationSpan).toHaveClass('hide');
+            expect($validationSpan).toHaveClass('d-none');
             expect(this.passwordView.$el).not.toHaveClass('has-success');
             expect(this.passwordView.$el).not.toHaveClass('has-error');
         });

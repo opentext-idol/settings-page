@@ -96,9 +96,9 @@ define([
                 expect(this.widget.$el).not.toHaveClass('has-error');
 
                 expect($host.closest('.form-group')).toHaveClass('has-error');
-                expect($host.siblings('.settings-client-validation')).not.toHaveClass('hide');
+                expect($host.siblings('.settings-client-validation')).not.toHaveClass('d-none');
                 expect($username.closest('.form-group')).toHaveClass('has-error');
-                expect($username.siblings('.settings-client-validation')).not.toHaveClass('hide');
+                expect($username.siblings('.settings-client-validation')).not.toHaveClass('d-none');
                 expect(this.widget.$('input[name="database"]').closest('.form-group')).not.toHaveClass('has-error');
             });
 
@@ -135,11 +135,11 @@ define([
             });
 
             it('should not display database type dropdown', function() {
-                expect(this.widget.$('.database-type-selection')).toHaveClass('hide');
+                expect(this.widget.$('.database-type-selection')).toHaveClass('d-none');
             });
 
             it('should display postgres datasource widget', function() {
-                expect(this.widget.$('.database-config')).not.toHaveClass('hide');
+                expect(this.widget.$('.database-config')).not.toHaveClass('d-none');
             });
 
             testPostgres.call(this, initialConfig);
@@ -169,11 +169,11 @@ define([
             });
 
             it('should display database type dropdown', function() {
-                expect(this.widget.$('.database-type-selection')).not.toHaveClass('hide');
+                expect(this.widget.$('.database-type-selection')).not.toHaveClass('d-none');
             });
 
             it('should not display datasource widget', function() {
-                expect(this.widget.$('.database-config')).toHaveClass('hide');
+                expect(this.widget.$('.database-config')).toHaveClass('d-none');
             });
 
             it('should return the correct h2 config', function() {
