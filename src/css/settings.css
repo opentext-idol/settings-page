@@ -46,7 +46,8 @@
     width: 5em;
 }
 
-.form-control.auto {
+.form-control.auto,
+.form-select.auto {
     display: inline-block;
     width: auto;
 }
